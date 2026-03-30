@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Australia: First Day</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      color: white;
+      text-align: center;
+      padding: 40px 20px 60px;
+      position: relative;
+    }
+
+    .header .back-home {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: 0.2s;
+    }
+
+    .header .back-home:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .header .flag {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .header p {
+      color: #c7d2fe;
+      font-size: 1rem;
+      max-width: 500px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+
+    .header .tag-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #c7d2fe;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+
+    /* WAVE */
+    .wave {
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      line-height: 0;
+    }
+
+    .wave svg {
+      display: block;
+      width: 100%;
+    }
+
+    /* MAIN CONTENT */
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    /* PROGRESS BANNER */
+    .progress-banner {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 36px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      flex-wrap: wrap;
+    }
+
+    .progress-banner .emoji {
+      font-size: 2rem;
+    }
+
+    .progress-banner .text h3 {
+      font-size: 1rem;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .progress-banner .text p {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .progress-bar-wrap {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .progress-bar-bg {
+      background: #e5e7eb;
+      border-radius: 999px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      background: linear-gradient(90deg, #e94560, #f97316);
+      height: 100%;
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    .progress-label {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    /* SECTION TITLE */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      margin-top: 36px;
+    }
+
+    .section-title .line {
+      width: 4px;
+      height: 22px;
+      background: #e94560;
+      border-radius: 4px;
+    }
+
+    .section-title span {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #6b7280;
+    }
+
+    /* SCENARIO CARD */
+    .scenario-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .scenario-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      border: 2px solid transparent;
+      transition: 0.25s ease;
+      position: relative;
+    }
+
+    .scenario-card:hover {
+      border-color: #e94560;
+      transform: translateX(4px);
+      box-shadow: 0 4px 20px rgba(233,69,96,0.12);
+    }
+
+    .scenario-card.locked {
+      opacity: 0.6;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .scenario-card .number {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #e94560, #f97316);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .scenario-card.locked .number {
+      background: #d1d5db;
+    }
+
+    .scenario-card .icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .scenario-card .info {
+      flex: 1;
+    }
+
+    .scenario-card .info h3 {
+      font-size: 1.05rem;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .scenario-card .info p {
+      font-size: 0.875rem;
+      color: #6b7280;
+      line-height: 1.4;
+    }
+
+    .scenario-card .arrow {
+      font-size: 1.3rem;
+      color: #e94560;
+      flex-shrink: 0;
+    }
+
+    .scenario-card.locked .arrow {
+      color: #d1d5db;
+    }
+
+    /* BADGE */
+    .badge {
+      position: absolute;
+      top: -8px;
+      right: 16px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .badge.new {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    .badge.soon {
+      background: #fef9c3;
+      color: #ca8a04;
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #9ca3af;
+      font-size: 0.85rem;
+    }
+
+    .footer a {
+      color: #e94560;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <a href="https://teetalkenglish.github.io" class="back-home">← All Games</a>
+    <div class="flag">🇦🇺</div>
+    <h1>Australia: First Day</h1>
+    <p>Practice real conversations for your first day in Australia — taxi, SIM card, accommodation and more!</p>
+    <div class="tag-row">
+      <div class="tag">🗣️ Speaking Practice</div>
+      <div class="tag">✈️ Travel English</div>
+      <div class="tag">⭐ Beginner Friendly</div>
+    </div>
+  </div>
+
+  <div class="wave">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#f0f4f8" d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z"/>
+    </svg>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="content">
+
+    <!-- PROGRESS -->
+    <div class="progress-banner">
+      <div class="emoji">🎯</div>
+      <div class="text">
+        <h3>Your Progress</h3>
+        <p>Complete all scenarios to finish First Day!</p>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-label" id="progressLabel">0 of 5 completed</div>
+      </div>
+    </div>
+
+    <!-- SECTION 1 — GETTING AROUND -->
+    <div class="section-title">
+      <div class="line"></div>
+      <span>🚕 Getting Around</span>
+    </div>
+
+    <div class="scenario-list">
+
+      <a class="scenario-card" href="scenario1-taxi/index.html">
+        <div class="badge new">NEW</div>
+        <div class="number">1</div>
+        <div class="icon">🚕</div>
+        <div class="info">
+          <h3>Finding a Taxi</h3>
+          <p>Ask airport staff for directions to the taxi rank and get a ride</p>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+      <a class="scenario-card" href="scenario2-simcard/index.html">
+        <div class="badge new">NEW</div>
+        <div class="number">2</div>
+        <div class="icon">📱</div>
+        <div class="info">
+          <h3>Buying a SIM Card</h3>
+          <p>Buy an Australian SIM card at the airport phone shop</p>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+    </div>
+
+    <!-- SECTION 2 — SETTLING IN -->
+    <div class="section-title">
+      <div class="line"></div>
+      <span>🏠 Settling In</span>
+    </div>
+
+    <div class="scenario-list">
+
+      <a class="scenario-card" href="scenario3-accommodation/index.html">
+        <div class="badge new">NEW</div>
+        <div class="number">3</div>
+        <div class="icon">🏠</div>
+        <div class="info">
+          <h3>Checking Into Accommodation</h3>
+          <p>Talk to your host or landlord when you arrive at your new place</p>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+      <a class="scenario-card" href="scenario4-supermarket/index.html">
+        <div class="badge new">NEW</div>
+        <div class="number">4</div>
+        <div class="icon">🛒</div>
+        <div class="info">
+          <h3>Buying Groceries</h3>
+          <p>Shop at an Australian supermarket for the first time</p>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+    </div>
+
+    <!-- SECTION 3 — STAYING HEALTHY -->
+    <div class="section-title">
+      <div class="line"></div>
+      <span>💊 Staying Healthy</span>
+    </div>
+
+    <div class="scenario-list">
+
+      <a class="scenario-card" href="scenario5-pharmacy/index.html">
+        <div class="badge new">NEW</div>
+        <div class="number">5</div>
+        <div class="icon">💊</div>
+        <div class="info">
+          <h3>At the Pharmacy</h3>
+          <p>Buy basic medicine and ask for help at an Australian pharmacy</p>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Made with ❤️ by <a href="https://teetalkenglish.github.io">TeeTalk English</a>
+  </div>
+
+  <script>
+    // Simple progress tracker using localStorage
+    const total = 5;
+    let completed = 0;
+
+    const scenarios = [
+      "scenario1-taxi",
+      "scenario2-simcard",
+      "scenario3-accommodation",
+      "scenario4-supermarket",
+      "scenario5-pharmacy"
+    ];
+
+    scenarios.forEach(s => {
+      if (localStorage.getItem(s + "-done") === "true") {
+        completed++;
+      }
+    });
+
+    const percent = (completed / total) * 100;
+    document.getElementById("progressFill").style.width = percent + "%";
+    document.getElementById("progressLabel").textContent =
+      `${completed} of ${total} completed`;
+  </script>
+
+</body>
+</html>

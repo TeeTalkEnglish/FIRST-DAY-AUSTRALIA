@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finding a Taxi — Australia: First Day</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      color: #1a1a2e;
+    }
+
+    /* HOME SCREEN */
+    .home-screen {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .back-link {
+      display: inline-block;
+      color: #6b7280;
+      text-decoration: none;
+      font-size: 0.85rem;
+      margin-bottom: 30px;
+      border: 1px solid #e5e7eb;
+      padding: 8px 16px;
+      border-radius: 20px;
+      transition: 0.2s;
+      background: white;
+    }
+
+    .back-link:hover {
+      border-color: #e94560;
+      color: #e94560;
+    }
+
+    .scenario-badge {
+      background: #fff0f3;
+      border: 1px solid #fecdd3;
+      color: #e94560;
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .home-screen h1 {
+      font-size: 2.4rem;
+      color: #1a1a2e;
+      margin-bottom: 12px;
+    }
+
+    .home-screen .subtitle {
+      color: #6b7280;
+      font-size: 1rem;
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .scene-illustration {
+      width: 100%;
+      max-width: 500px;
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      border-radius: 24px;
+      padding: 40px 20px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scene-illustration .scene-bg {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 0 0 24px 24px;
+    }
+
+    .scene-illustration .scene-emoji-row {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 16px;
+      font-size: 3.5rem;
+      margin-bottom: 16px;
+    }
+
+    .scene-illustration .scene-title {
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .scene-illustration .scene-sub {
+      color: #c7d2fe;
+      font-size: 0.85rem;
+    }
+
+    .role-cards {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .role-card {
+      flex: 1;
+      min-width: 180px;
+      padding: 24px 16px;
+      border-radius: 18px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      cursor: pointer;
+      transition: 0.25s ease;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .role-card:hover {
+      border-color: #e94560;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(233,69,96,0.15);
+    }
+
+    .role-card .emoji {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .role-card h2 {
+      color: #1a1a2e;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .role-card p {
+      color: #6b7280;
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    /* GAME SCREEN */
+    .game-screen {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .story-header {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .story-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .back-btn {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: 0.2s;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .role-badge {
+      background: #e94560;
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: white;
+    }
+
+    .step-counter {
+      color: #c7d2fe;
+      font-size: 0.82rem;
+    }
+
+    .scene-strip {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 16px;
+    }
+
+    .scene-strip .strip-emoji {
+      font-size: 2.8rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .scene-strip .strip-text h3 {
+      color: white;
+      font-size: 1rem;
+      margin-bottom: 2px;
+    }
+
+    .scene-strip .strip-text p {
+      color: #c7d2fe;
+      font-size: 0.82rem;
+    }
+
+    .progress-wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #e94560, #f97316);
+      width: 0%;
+      transition: width 0.4s ease;
+      border-radius: 999px;
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    .progress-steps span {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .progress-steps span.active {
+      color: #fca5a5;
+      font-weight: 700;
+    }
+
+    .story-body {
+      flex: 1;
+      padding: 24px 20px 40px;
+      max-width: 700px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* DIALOGUE CARD */
+    .dialogue-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    .dialogue-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .dialogue-header .char-emoji {
+      font-size: 2rem;
+    }
+
+    .dialogue-header .char-info h4 {
+      font-size: 0.9rem;
+      color: #1a1a2e;
+      margin-bottom: 2px;
+    }
+
+    .dialogue-header .char-info p {
+      font-size: 0.78rem;
+      color: #6b7280;
+    }
+
+    .dialogue-bubble {
+      padding: 20px;
+      background: #f9fafb;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #1a1a2e;
+      line-height: 1.6;
+      border-left: 4px solid #e94560;
+      margin: 0 20px 20px;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .tip-strip {
+      background: #f0fdf4;
+      border-top: 1px solid #dcfce7;
+      padding: 14px 20px;
+      font-size: 0.85rem;
+      color: #16a34a;
+      line-height: 1.5;
+    }
+
+    /* WAITING CARD */
+    .waiting-card {
+      background: white;
+      border-radius: 20px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      margin-bottom: 20px;
+    }
+
+    .waiting-card .wait-emoji {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      display: block;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .waiting-card p {
+      color: #6b7280;
+      font-size: 0.95rem;
+    }
+
+    /* SITUATION CARD */
+    .situation-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    .situation-top {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .situation-top .sit-emoji {
+      font-size: 2.5rem;
+    }
+
+    .situation-top .sit-text p {
+      color: #c7d2fe;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    /* SUGGESTION */
+    .suggestion-reveal {
+      margin-bottom: 20px;
+    }
+
+    .suggestion-hidden {
+      background: #f9fafb;
+      border: 2px dashed #e5e7eb;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .suggestion-hidden:hover {
+      border-color: #e94560;
+      background: #fff5f6;
+    }
+
+    .hint-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .hint-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .tap-label {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 8px;
+    }
+
+    .suggestion-shown {
+      display: none;
+      background: #f0fdf4;
+      border: 2px solid #bbf7d0;
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .suggestion-shown h4 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #16a34a;
+      margin-bottom: 10px;
+    }
+
+    .suggestion-shown .sug-text {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .suggestion-shown .sug-note {
+      font-size: 0.83rem;
+      color: #6b7280;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    /* NEXT BUTTON */
+    .next-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #e94560, #f97316);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 4px 14px rgba(233,69,96,0.35);
+    }
+
+    .next-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    /* COMPLETE SCREEN */
+    .complete-screen {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
+      background: #f0f4f8;
+    }
+
+    .complete-illustration {
+      width: 100%;
+      max-width: 400px;
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      border-radius: 24px;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+    }
+
+    .complete-illustration .big-emoji {
+      font-size: 5rem;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .complete-illustration p {
+      color: #c7d2fe;
+      font-size: 0.9rem;
+    }
+
+    .complete-screen h2 {
+      font-size: 2rem;
+      color: #1a1a2e;
+      margin-bottom: 10px;
+    }
+
+    .complete-screen .complete-msg {
+      color: #6b7280;
+      margin-bottom: 30px;
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 400px;
+    }
+
+    .complete-btn-row {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-home {
+      background: white;
+      color: #1a1a2e;
+      border: 2px solid #e5e7eb;
+      padding: 14px 24px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .btn-home:hover {
+      border-color: #e94560;
+      color: #e94560;
+    }
+
+    .btn-again {
+      background: linear-gradient(135deg, #e94560, #f97316);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    .btn-again:hover {
+      opacity: 0.9;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HOME SCREEN -->
+  <div class="home-screen" id="homeScreen">
+    <a href="../index.html" class="back-link">← All Scenarios</a>
+    <div class="scenario-badge">Scenario 1 — Getting Around</div>
+    <h1>🚕 Finding a Taxi</h1>
+    <p class="subtitle">You just landed in Sydney! You need to find a taxi to get to your accommodation. Ask airport staff for help!</p>
+
+    <div class="scene-illustration">
+      <div class="scene-emoji-row">
+        <span>✈️</span>
+        <span>🧳</span>
+        <span>👷</span>
+        <span>🚕</span>
+      </div>
+      <div class="scene-title">Sydney International Airport</div>
+      <div class="scene-sub">Arrivals Hall — Your journey begins here!</div>
+      <div class="scene-bg"></div>
+    </div>
+
+   <div class="role-cards">
+  <div class="role-card" onclick="startGame('staff')">
+    <div class="emoji">👷</div>
+    <h2>Staff</h2>
+    <p>Ask the questions</p>
+  </div>
+  <div class="role-card" onclick="startGame('hint')">
+    <div class="emoji">💡</div>
+    <h2>Hint Mode</h2>
+    <p>See keyword hints before the answer</p>
+  </div>
+  <div class="role-card" onclick="startGame('challenge')">
+    <div class="emoji">🔥</div>
+    <h2>Challenge</h2>
+    <p>No hints — say it yourself first!</p>
+  </div>
+</div>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div class="game-screen" id="gameScreen">
+    <div class="story-header">
+      <div class="story-header-top">
+        <button class="back-btn" onclick="goHome()">← Back</button>
+        <div class="role-badge" id="roleBadge"></div>
+        <div class="step-counter" id="stepCounter"></div>
+      </div>
+
+      <div class="scene-strip">
+        <div class="strip-emoji" id="sceneEmoji">🚕</div>
+        <div class="strip-text">
+          <h3>Finding a Taxi</h3>
+          <p>Sydney Airport — Arrivals Hall</p>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-steps" id="progressSteps"></div>
+      </div>
+    </div>
+
+    <div class="story-body">
+
+      <!-- STAFF VIEW -->
+      <div id="staffView">
+        <div class="dialogue-card">
+          <div class="dialogue-header">
+            <div class="char-emoji">👷</div>
+            <div class="char-info">
+              <h4>Airport Staff</h4>
+              <p>Sydney International Airport</p>
+            </div>
+          </div>
+          <div class="dialogue-bubble" id="staffLine"></div>
+          <div class="tip-strip" id="staffTip"></div>
+        </div>
+
+        <div class="waiting-card">
+          <span class="wait-emoji">🧳</span>
+          <p>Waiting for the passenger to respond...</p>
+        </div>
+
+        <button class="next-btn" onclick="nextStep()">
+          Passenger responded → Continue ➜
+        </button>
+      </div>
+
+      <!-- PASSENGER VIEW -->
+<!-- PASSENGER VIEW -->
+<div id="passengerView" class="hidden">
+
+  <div class="situation-card">
+    <div class="situation-top">
+      <div class="sit-text">
+        <p id="passengerSituation"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HINT MODE -->
+  <div id="hintMode">
+    <div class="suggestion-reveal">
+      <div class="suggestion-hidden" id="suggestionHidden" onclick="showSuggestion()">
+        <div class="hint-label">💡 Hint</div>
+        <div class="hint-text" id="hintText"></div>
+        <div class="tap-label">Tap to see the full answer</div>
+      </div>
+      <div class="suggestion-shown" id="suggestionShown">
+        <h4>✅ Suggested Answer</h4>
+        <div class="sug-text" id="suggestedAnswer"></div>
+        <div class="sug-note" id="answerNote"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHALLENGE MODE -->
+  <div id="challengeMode" class="hidden">
+    <div class="suggestion-reveal">
+    <div class="suggestion-hidden" id="challengeHidden" onclick="showChallengeSuggestion()">
+  <div class="hint-label">🔥 Strategy</div>
+  <div class="hint-text" id="challengeStrategy"></div>
+  <div class="tap-label">Tap to see how to say it</div>
+</div>
+      <div class="suggestion-shown" id="challengeShown">
+        <h4>✅ Suggested Answer</h4>
+        <div class="sug-text" id="challengeAnswer"></div>
+        <div class="sug-note" id="challengeNote"></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="next-btn" onclick="nextStep()">
+    Next ➜
+  </button>
+
+</div>
+    </div>
+  </div>
+
+  <!-- COMPLETE SCREEN -->
+  <div class="complete-screen" id="completeScreen">
+    <div class="complete-illustration">
+      <span class="big-emoji">🚕</span>
+      <p>Sydney Airport → Your Accommodation</p>
+    </div>
+    <h2>Great Job! 🎉</h2>
+    <p class="complete-msg">
+      You found your taxi and you are on your way!<br>
+      Well done on your first conversation in Australia 🇦🇺
+    </p>
+    <div class="complete-btn-row">
+      <a href="../index.html" class="btn-home">← All Scenarios</a>
+      <button class="btn-again" onclick="goHome()">🔄 Play Again</button>
+    </div>
+  </div>
+<script>
+const conversation = [
+  {
+    staffLine: "Hi there! Welcome to Sydney. Can I help you?",
+    staffTip: "💡 Greet the passenger warmly. She just arrived and may look a little lost.",
+    situation: "An airport staff member notices you and offers to help.",
+    hint: "Yes please... looking for... taxi... where?",
+    challenge: "Greet them back and tell them what you need.",
+    answer: "Yes please! I'm looking for a taxi. Where can I find one?",
+    note: "You can also say: 'Excuse me, can you help me? I need a taxi.'",
+    sceneEmoji: "✈️"
+  },
+  {
+    staffLine: "Of course! The taxi rank is just outside Exit 5. Follow the signs that say Ground Transport.",
+    staffTip: "💡 Point toward the exit and speak slowly and clearly.",
+    situation: "The staff member tells you where to go. You are not sure which exit.",
+    hint: "Sorry... which exit... Exit 5?",
+    challenge: "You did not catch the exit number. Ask them to repeat it.",
+    answer: "Sorry, which exit did you say? Exit 5?",
+    note: "It is okay to ask them to repeat! Say: 'Could you say that again please?'",
+    sceneEmoji: "🗺️"
+  },
+  {
+    staffLine: "Yes, Exit 5! Walk straight ahead and turn left. You will see the yellow taxis.",
+    staffTip: "💡 Give clear directions. Use your hands to point if possible.",
+    situation: "The staff member repeats the directions. You want to confirm you understood.",
+    hint: "Okay... walk straight... turn left... thank you!",
+    challenge: "Repeat the directions back to them to confirm you understood correctly.",
+    answer: "Okay! So I walk straight and then turn left. Thank you so much!",
+    note: "Repeating back the directions shows you understood. Very natural in English! 😊",
+    sceneEmoji: "🗺️"
+  },
+  {
+    staffLine: "That's right! Also, you can use the Uber app if you prefer. It is usually cheaper.",
+    staffTip: "💡 Give a helpful tip about Uber as an alternative to a taxi.",
+    situation: "The staff member gives you some extra advice about getting around.",
+    hint: "Oh really... thank you... keep that in mind",
+    challenge: "Show that you are surprised and thank them for the useful tip.",
+    answer: "Oh really? Thank you for the tip! I will keep that in mind.",
+    note: "You can also say: 'That's good to know! Thank you so much.' 😊",
+    sceneEmoji: "💡"
+  },
+  {
+    staffLine: "No problem at all! Enjoy your stay in Australia and good luck!",
+    staffTip: "💡 Say goodbye warmly. She is about to start her new life in Australia!",
+    situation: "The staff member wishes you well. Say goodbye politely.",
+    hint: "Thank you... help... have a wonderful day!",
+    challenge: "Thank them warmly and wish them a good day.",
+    answer: "Thank you so much for your help! Have a wonderful day!",
+    note: "Always say thank you when someone helps you. It makes a great impression! 🌟",
+    sceneEmoji: "🚕"
+  }
+];
+
+let currentRole = "";
+let currentStep = 0;
+
+function startGame(role) {
+  currentRole = role;
+  currentStep = 0;
+
+  document.getElementById("homeScreen").style.display = "none";
+  document.getElementById("gameScreen").style.display = "flex";
+  document.getElementById("completeScreen").style.display = "none";
+
+  let dots = "";
+  conversation.forEach((_, i) => {
+    dots += `<span id="dot-${i}">${i + 1}</span>`;
+  });
+  document.getElementById("progressSteps").innerHTML = dots;
+
+  loadStep();
+}
+
+function loadStep() {
+  const data = conversation[currentStep];
+  const total = conversation.length;
+
+  document.getElementById("stepCounter").textContent = `Step ${currentStep + 1} of ${total}`;
+  document.getElementById("progressFill").style.width = `${((currentStep + 1) / total) * 100}%`;
+  document.getElementById("sceneEmoji").textContent = data.sceneEmoji;
+
+  for (let i = 0; i < total; i++) {
+    const dot = document.getElementById(`dot-${i}`);
+    if (dot) dot.className = i <= currentStep ? "active" : "";
+  }
+
+  if (currentRole === "staff") {
+    document.getElementById("roleBadge").textContent = "👷 Airport Staff";
+    document.getElementById("staffView").classList.remove("hidden");
+    document.getElementById("passengerView").classList.add("hidden");
+    document.getElementById("staffLine").textContent = data.staffLine;
+    document.getElementById("staffTip").textContent = data.staffTip;
+
+  } else {
+    // show passenger view
+    document.getElementById("staffView").classList.add("hidden");
+    document.getElementById("passengerView").classList.remove("hidden");
+    document.getElementById("passengerSituation").textContent = data.situation;
+
+    if (currentRole === "hint") {
+      document.getElementById("roleBadge").textContent = "💡 Hint Mode";
+      document.getElementById("hintMode").classList.remove("hidden");
+      document.getElementById("challengeMode").classList.add("hidden");
+
+      document.getElementById("hintText").textContent = data.hint;
+      document.getElementById("suggestedAnswer").textContent = data.answer;
+      document.getElementById("answerNote").textContent = data.note;
+      document.getElementById("suggestionHidden").style.display = "block";
+      document.getElementById("suggestionShown").style.display = "none";
+
+    } else if (currentRole === "challenge") {
+      document.getElementById("roleBadge").textContent = "🔥 Challenge";
+      document.getElementById("hintMode").classList.add("hidden");
+      document.getElementById("challengeMode").classList.remove("hidden");
+
+        document.getElementById("challengeStrategy").textContent = data.challenge;  // ← this line
+      document.getElementById("challengeAnswer").textContent = data.answer;
+      document.getElementById("challengeNote").textContent = data.note;
+      document.getElementById("challengeHidden").style.display = "block";
+      document.getElementById("challengeShown").style.display = "none";
+    }
+  }
+}
+
+function showSuggestion() {
+  document.getElementById("suggestionHidden").style.display = "none";
+  document.getElementById("suggestionShown").style.display = "block";
+}
+
+function showChallengeSuggestion() {
+  document.getElementById("challengeHidden").style.display = "none";
+  document.getElementById("challengeShown").style.display = "block";
+}
+
+function nextStep() {
+  currentStep++;
+  if (currentStep >= conversation.length) {
+    localStorage.setItem("scenario1-taxi-done", "true");
+    document.getElementById("gameScreen").style.display = "none";
+    document.getElementById("completeScreen").style.display = "flex";
+  } else {
+    loadStep();
+  }
+}
+
+function goHome() {
+  currentStep = 0;
+  currentRole = "";
+  document.getElementById("homeScreen").style.display = "flex";
+  document.getElementById("gameScreen").style.display = "none";
+  document.getElementById("completeScreen").style.display = "none";
+  document.getElementById("progressFill").style.width = "0%";
+  document.getElementById("progressSteps").innerHTML = "";
+}</script>
+</body>
+</html>

@@ -42,6 +42,50 @@
         <!-- Instructions -->
         <div class="instructions-box">
             <h3>🗣️ Conversation Tasks</h3>
+            <!-- ──────────── PLAN-COMPARISON – the student writes answers here ──────────── -->
+<h3 class="section-title" style="margin-top:40px">📝 Compare the Plans You Hear</h3>
+
+<p style="text-align:center; margin-bottom:20px">
+    Write the information the shopkeeper tells you. Use these four cards to
+    help you choose the best plan.
+</p>
+
+<div class="cards-row cards-row-4">
+
+    <!-- Card 1 -->
+    <div class="card write-card">
+        <input class="plan-input" placeholder="Brand (e.g. Optus)">
+        <input class="plan-input" placeholder="Price (AUD)">
+        <input class="plan-input" placeholder="Data (GB)">
+        <input class="plan-input" placeholder="Notes (coverage / extras)">
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card write-card">
+        <input class="plan-input" placeholder="Brand">
+        <input class="plan-input" placeholder="Price">
+        <input class="plan-input" placeholder="Data">
+        <input class="plan-input" placeholder="Notes">
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card write-card">
+        <input class="plan-input" placeholder="Brand">
+        <input class="plan-input" placeholder="Price">
+        <input class="plan-input" placeholder="Data">
+        <input class="plan-input" placeholder="Notes">
+    </div>
+
+    <!-- Card 4 -->
+    <div class="card write-card">
+        <input class="plan-input" placeholder="Brand">
+        <input class="plan-input" placeholder="Price">
+        <input class="plan-input" placeholder="Data">
+        <input class="plan-input" placeholder="Notes">
+    </div>
+
+</div>
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
 
             <div class="step"><div class="step-number">1</div><div class="step-text">
                 Greet the shopkeeper and say you’ve just flown in from Ho Chi Minh City.
@@ -63,6 +107,99 @@
                 Decide and confirm: “I’ll take the _____ plan, thank you.”
             </div></div>
         </div>
+                 
+           <!-- ──────────── REAL COVERAGE MAPS ──────────── -->
+<div class="instructions-box">
+    <h3>🗺️ Check Real Coverage Maps</h3>
+    <p style="margin-bottom:20px; color:#718096;">
+        Before you choose a plan, check if the network works in Tamworth! 
+        Click each link below and type <strong>"Tamworth NSW"</strong> to see the coverage.
+    </p>
+
+    <div class="cards-row cards-row-3">
+
+        <a href="https://www.telstra.com.au/coverage-networks/our-coverage" 
+           target="_blank" class="card map-card">
+            <div class="card-icon">📡</div>
+            <h3>Telstra</h3>
+            <p class="card-highlight" style="color:#0d47a1;">⭐⭐⭐⭐⭐</p>
+            <p>Best regional coverage</p>
+            <div class="play-btn play-btn-blue">Check Map →</div>
+        </a>
+
+        <a href="https://www.optus.com.au/about/network/coverage" 
+           target="_blank" class="card map-card">
+            <div class="card-icon">🟢</div>
+            <h3>Optus</h3>
+            <p class="card-highlight" style="color:#2e7d32;">⭐⭐⭐⭐</p>
+            <p>Good in towns</p>
+            <div class="play-btn play-btn-blue">Check Map →</div>
+        </a>
+
+        <a href="https://www.vodafone.com.au/network/coverage-checker" 
+           target="_blank" class="card map-card">
+            <div class="card-icon">🔴</div>
+            <h3>Vodafone</h3>
+            <p class="card-highlight" s
+            <p class="card-highlight" style="color:#c62828;">⭐⭐⭐</p>
+            <p>Best in cities only</p>
+            <div class="play-btn play-btn-blue">Check Map →</div>
+        </a>
+
+    </div>
+</div>
+  
+
+           <!-- ──────────── PREPAID vs UPFRONT EXPLAINER ──────────── -->
+<div class="instructions-box">
+    <h3>💳 What Type of Plan Can You Get?</h3>
+    <p style="margin-bottom:20px; color:#718096;">
+        In Australia, there are two main types of phone plans. 
+        As a new arrival, you can only get <strong>one</strong> of them. 
+        Read below to understand the difference.
+    </p>
+
+    <div class="cards-row cards-row-2">
+
+        <!-- Prepaid Card -->
+        <div class="card plan-type-card prepaid-card">
+            <div class="card-icon">✅</div>
+            <h3>Prepaid</h3>
+            <p class="card-highlight" style="color:#2e7d32;">This Is For You!</p>
+            <div class="plan-type-details">
+                <div class="plan-type-item">💵 You pay first, then use the service</div>
+                <div class="plan-type-item">📅 Usually 28 or 30 days</div>
+                <div class="plan-type-item">🪪 No Australian ID needed</div>
+                <div class="plan-type-item">📝 No contract — cancel anytime</div>
+                <div class="plan-type-item">🛒 Buy at any shop or supermarket</div>
+                <div class="plan-type-item">🔄 "Recharge" means top up when it runs out</div>
+            </div>
+            <div class="plan-type-example">
+                <strong>Example:</strong> You pay \$20 today → you get 15 GB for 28 days → 
+                after 28 days you recharge again or choose a different plan.
+            </div>
+        </div>
+
+        <!-- Upfront / Postpaid Card -->
+        <div class="card plan-type-card upfront-card">
+            <div class="card-icon">❌</div>
+            <h3>Upfront (Postpaid)</h3>
+            <p class="card-highlight" style="color:#c62828;">You Cannot Get This Yet</p>
+            <div class="plan-type-details">
+                <div class="plan-type-item">💳 You use first, pay the bill later each month</div>
+                <div class="plan-type-item">📋 12 or 24 month contract</div>
+                <div class="plan-type-item">🪪 Needs Australian ID + credit check</div>
+                <div class="plan-type-item">🏦 Needs an Australian bank account</div>
+                <div class="plan-type-item">📱 Sometimes includes a free phone</div>
+                <div class="plan-type-item">⚠️ Early exit fee if you cancel</div>
+            </div>
+            <div class="plan-type-example">
+                <strong>Example:</strong> You sign a 24-month contract → you get a new iPhone + 
+                100 GB per month → you pay \$65/month bill → if you leave early you pay a penalty.
+            </div>
+        </div>
+
+    </div>
 
         <!-- Useful Phrases -->
         <div class="phrases-box">
@@ -72,6 +209,16 @@
             <div class="phrase">“My friend arrives next week – any combo deal for two SIMs?”</div>
             <div class="phrase">“That’s a bit expensive. Can you do it for thirty-five?”</div>
             <div class="phrase">“Great, I’ll take that one. Can you activate it now?”</div>
+           </div>
+    <!-- What to say -->
+    <div class="plan-type-tip">
+        <h4>🗣️ What should you say at the shop?</h4>
+        <div class="phrase">"I just arrived from Việt Nam. I need a prepaid SIM, please."</div>
+        <div class="phrase">"I don't have Australian ID yet — do I need one for prepaid?"</div>
+        <div class="phrase">"How do I recharge when my 28 days are up?"</div>
+        <div class="phrase">"Can I keep the same number if I switch to a different plan later?"</div>
+    </div>
+</div>
         </div>
 
         <div class="tip-box">

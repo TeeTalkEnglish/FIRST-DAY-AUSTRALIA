@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student - In the Taxi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="top-bar">
+        <a href="index.html" class="back-link">←</a>
+        🚖 SCENARIO 3 - IN THE TAXI
+    </div>
+
+    <div class="scenario-container">
+
+        <div class="role-badge student-badge">🎓 YOU ARE: Kim Huynh</div>
+        <h1>🚖 In the Taxi</h1>
+        <p class="subtitle">Read the situation, then respond out loud!</p>
+
+        <!-- SITUATION BOX -->
+        <div class="situation-box">
+            <h2>📍 Your Situation</h2>
+            <p>You have just arrived at <strong>Sydney Airport</strong>. 
+            You are getting into a taxi. Your destination is:</p>
+            <div class="address-box">
+                📍 <strong>42 George Street, Parramatta, NSW 2150</strong>
+            </div>
+            <p>You have <strong>Australian cash and a card</strong> to pay.</p>
+        </div>
+
+        <!-- PROGRESS BAR -->
+        <div class="progress-bar-container">
+            <span class="progress-label">Progress</span>
+            <div class="progress-bar">
+                <div class="progress-fill" 
+                     id="progress-fill" 
+                     style="width: 20%">
+                </div>
+            </div>
+            <span class="progress-text" id="progress-text">
+                1 of 8
+            </span>
+        </div>
+
+        <!-- QUESTION CARDS -->
+        <div class="questions-wrapper">
+
+           <!-- QUESTION 1 -->
+<div class="question-card active" id="q1">
+    <div class="step-number">🎯 Challenge 1 of 8</div>
+    <div class="challenge-task">
+        You get into the taxi. 
+        The driver looks at you in the mirror.
+    </div>
+<div class="button-row">
+    <button class="hint-btn" 
+        onclick="toggleHint('hint1')">
+        💡 Show Hint
+    </button>
+    <button class="check-btn" 
+        onclick="toggleAnswer('answer1')">
+        ✅ Show Answer
+    </button>
+</div>
+<div id="hint1" class="hint-box hidden">
+    <ul>
+        <li>Greet the driver back</li>
+        <li>Give your <strong>full address</strong></li>
+        <li>Include the <strong>suburb name</strong></li>
+        <li>Use "Could you take me to..."</li>
+    </ul>
+    <div class="aussie-words">
+        <strong>🇦🇺 Aussie Words:</strong><br>
+        <span class="aussie-tag">"G'day"</span> 
+        = "Good day" = Hello!<br>
+        <span class="aussie-tag">"Mate"</span> 
+        = friendly word for anyone - 
+        man, woman, anyone!<br>
+        <span class="aussie-tag">"Heading"</span> 
+        = going to / travelling to
+    </div>
+</div>
+<div id="answer1" class="answer-box hidden">
+    <strong>💬 Sample Answer:</strong><br><br>
+    "G'day! Could you take me to 
+    42 George Street, Parramatta please?"
+</div>
+</div>
+
+<!-- QUESTION 2 -->
+<div class="question-card" id="q2">
+    <div class="step-number">🎯 Challenge 2 of 8</div>
+    <div class="challenge-task">
+        The driver starts chatting. 
+        He seems friendly and curious.
+    </div>
+    <div class="button-row">
+    <button class="hint-btn" 
+        onclick="toggleHint('hint2')">
+        💡 Show Hint
+    </button>
+    <button class="check-btn" 
+        onclick="toggleAnswer('answer2')">
+        ✅ Show Answer
+    </button>
+</div>
+<div id="hint2" class="hint-box hidden">
+    <ul>
+        <li>Where did you fly from?</li>
+        <li>Is this your first time in Sydney?</li>
+        <li>Keep it light and friendly!</li>
+    </ul>
+    <div class="aussie-words">
+        <strong>🇦🇺 Aussie Words:</strong><br>
+        <span class="aussie-tag">"No worries"</span> 
+        = no problem / that's fine<br>
+        <span class="aussie-tag">"Yeah"</span> 
+        = yes - very natural in Australia!<br>
+        <span class="aussie-tag">"Just landed"</span> 
+        = just arrived by plane
+    </div>
+</div>
+<div id="answer2" class="answer-box hidden">
+    <strong>💬 Sample Answer:</strong><br><br>
+    "Yeah, just landed from Vietnam! 
+    First time in Sydney actually. 
+    Feels amazing to be here!"
+    <br><br>
+    <strong>🇦🇺 Aussie note:</strong> 
+    "Yeah" is very natural in 
+    Australian casual speech!
+</div>
+</div>
+
+<!-- QUESTION 3 -->
+<div class="question-card" id="q3">
+    <div class="step-number">🎯 Challenge 3 of 8</div>
+    <div class="challenge-task">
+        The driver wants to know 
+        why you moved to Australia.
+    </div>
+    <div class="button-row">
+    <button class="hint-btn" 
+        onclick="toggleHint('hint3')">
+        💡 Show Hint
+    </button>
+    <button class="check-btn" 
+        onclick="toggleAnswer('answer3')">
+        ✅ Show Answer
+    </button>
+</div>
+<div id="hint3" class="hint-box hidden">
+    <ul>
+        <li>What is your job here?</li>
+        <li>Sound excited and positive!</li>
+        <li>Keep it short and natural</li>
+    </ul>
+    <div class="aussie-words">
+        <strong>🇦🇺 Aussie Words:</strong><br>
+        <span class="aussie-tag">"Stoked"</span> 
+        = very excited!<br>
+        <span class="aussie-tag">"Keen"</span> 
+        = eager / looking forward to it<br>
+        <span class="aussie-tag">"Reckon"</span> 
+        = think / believe<br>
+        Example: "I reckon it'll be great!"
+    </div>
+</div>
+<div id="answer3" class="answer-box hidden">
+    <strong>💬 Sample Answer:</strong><br><br>
+    "I'm here to work as a meat butcher! 
+    Got a job lined up in Parramatta. 
+    Pretty stoked about it!"
+    <br><br>
+    <strong>🇦🇺 Aussie note:</strong> 
+    <strong>"Stoked"</strong> = 
+    very excited!
+</div>
+</div>
+
+<!-- QUESTION 4 - NEW SCENE NOTICE -->
+<div class="question-card" id="q4">
+    <div class="step-number">🎯 Challenge 4 of 8</div>
+
+    <!-- ADD THIS SCENE NOTICE -->
+    <div class="scene-notice">
+        🚦 You are now on the highway. 
+        The meter is running.
+    </div>
+
+    <div class="challenge-task">
+        You are not sure if the driver 
+        is going the right way.
+    </div>
+    <div class="button-row">
+        <button class="hint-btn" 
+            onclick="toggleHint('hint4')">
+            💡 Show Hint
+        </button>
+        <button class="check-btn" 
+            onclick="toggleAnswer('answer4')">
+            ✅ Show Answer
+        </button>
+    </div>
+  <div id="hint4" class="hint-box hidden">
+    <ul>
+        <li>Be polite but confident</li>
+        <li>Ask to confirm the route</li>
+        <li>Mention your destination again</li>
+    </ul>
+    <div class="aussie-words">
+        <strong>🇦🇺 Aussie Words:</strong><br>
+        <span class="aussie-tag">"Smooth sailing"</span> 
+        = no problems / easy journey<br>
+        <span class="aussie-tag">"M4"</span> 
+        = name of the motorway 
+        between Sydney and Parramatta<br>
+        <span class="aussie-tag">"Double check"</span> 
+        = confirm / make sure
+    </div>
+</div>
+    <div id="answer4" class="answer-box hidden">
+        <strong>💬 Sample Answer:</strong><br><br>
+        "Sorry to bother you, but are we 
+        heading to Parramatta? 
+        Just want to double check!"
+    </div>
+</div>
+
+<!-- QUESTION 5 -->
+<div class="question-card" id="q5">
+    <div class="step-number">🎯 Challenge 5 of 8</div>
+    <div class="challenge-task">
+        You want to know how much 
+        the trip will cost.
+    </div>
+    <div class="button-row">
+        <button class="hint-btn" 
+            onclick="toggleHint('hint5')">
+            💡 Show Hint
+        </button>
+        <button class="check-btn" 
+            onclick="toggleAnswer('answer5')">
+            ✅ Show Answer
+        </button>
+    </div>
+  <div id="hint5" class="hint-box hidden">
+    <ul>
+        <li>Use <strong>"roughly"</strong> 
+        to ask politely</li>
+        <li>Ask if the toll is included</li>
+        <li>Don't be shy - it's normal to ask!</li>
+    </ul>
+    <div class="aussie-words">
+        <strong>🇦🇺 Aussie Words:</strong><br>
+        <span class="aussie-tag">"Toll"</span> 
+        = money you pay to use 
+        the motorway/highway<br>
+        <span class="aussie-tag">"Fare"</span> 
+        = the price of the taxi ride<br>
+        <span class="aussie-tag">"Roughly"</span> 
+        = approximately / about
+    </div>
+</div>
+    <div id="answer5" class="answer-box hidden">
+        <strong>💬 Sample Answer:</strong><br><br>
+        "Excuse me, roughly how much 
+        will the fare be? 
+        Does that include the toll?"
+    </div>
+</div>
+
+<!-- QUESTION 6 -->
+<div class="question-card" id="q6">
+    <div class="step-number">🎯 Challenge 6 of 8</div>
+    <div class="challenge-task">
+        The driver asks how you 
+        want to pay.
+    </div>
+    <div class="button-row">
+        <button class="hint-btn" 
+            onclick="toggleHint('hint6')">
+            💡 Show Hint
+        </button>
+        <button class="check-btn" 
+            onclick="toggleAnswer('answer6')">
+            ✅ Show Answer
+        </button>
+    </div>
+<div id="hint6" class="hint-box hidden">
+    <ul>
+        <li>Which do you prefer - 
+        cash or card?</li>
+        <li>Check if the machine works!</li>
+    </ul>
+    <div class="aussie-words">
+        <strong>🇦🇺 Aussie Words:</strong><br>
+        <span class="aussie-tag">"EFTPOS"</span> 
+        = Electronic Funds Transfer - 
+        this is what Australians call 
+        the card payment machine!<br>
+        <span class="aussie-tag">"Love"</span> 
+        = friendly term, like "mate" - 
+        don't be surprised to hear this!<br>
+        <span class="aussie-tag">"Card"</span> 
+        = credit or debit card
+    </div>
+</div>
+    <div id="answer6" class="answer-box hidden">
+        <strong>💬 Sample Answer:</strong><br><br>
+        "Card thanks. Does your 
+        EFTPOS machine take Visa?"
+        <br><br>
+        <strong>🇦🇺 Aussie note:</strong> 
+        Australians say 
+        <strong>"EFTPOS"</strong> 
+        not "card machine"!
+    </div>
+</div>
+
+<!-- QUESTION 7 - ARRIVAL NOTICE -->
+<div class="question-card" id="q7">
+    <div class="step-number">🎯 Challenge 7 of 8</div>
+
+    <!-- ARRIVAL SCENE NOTICE -->
+    <div class="scene-notice arrival">
+        🏠 You have arrived at 
+        42 George Street, Parramatta!
+    </div>
+
+    <div class="challenge-task">
+        The driver tells you 
+        the total amount. 
+        You need to pay.
+    </div>
+    <div class="button-row">
+        <button class="hint-btn" 
+            onclick="toggleHint('hint7')">
+            💡 Show Hint
+        </button>
+        <button class="check-btn" 
+            onclick="toggleAnswer('answer7')">
+            ✅ Show Answer
+        </button>
+    </div>
+ <div id="hint7" class="hint-box hidden">
+    <ul>
+        <li>What document do you need 
+        after every payment?</li>
+        <li>Be grateful and friendly!</li>
+    </ul>
+    <div class="aussie-words">
+        <strong>🇦🇺 Aussie Words:</strong><br>
+        <span class="aussie-tag">"Receipt"</span> 
+        = printed proof of payment - 
+        always ask for this!<br>
+        <span class="aussie-tag">"Here you go"</span> 
+        = natural way to hand 
+        something to someone<br>
+        <span class="aussie-tag">"Cheers"</span> 
+        = thank you / goodbye 
+        in Australian English!
+    </div>
+</div>
+    <div id="answer7" class="answer-box hidden">
+        <strong>💬 Sample Answer:</strong><br><br>
+        "Here you go. 
+        Could I get a receipt please?"
+    </div>
+</div>
+
+<!-- QUESTION 8 -->
+<div class="question-card" id="q8">
+    <div class="step-number">🎯 Challenge 8 of 8</div>
+    <div class="challenge-task">
+        The driver wishes you 
+        good luck in Australia. 
+        Say goodbye properly!
+    </div>
+    <div class="button-row">
+        <button class="hint-btn" 
+            onclick="toggleHint('hint8')">
+            💡 Show Hint
+        </button>
+        <button class="check-btn" 
+            onclick="toggleAnswer('answer8')">
+            ✅ Show Answer
+        </button>
+    </div>
+<div id="hint8" class="hint-box hidden">
+    <ul>
+        <li>Thank him warmly</li>
+        <li>Wish him something nice</li>
+        <li>Try using an Aussie expression!</li>
+    </ul>
+    <div class="aussie-words">
+        <strong>🇦🇺 Aussie Words:</strong><br>
+        <span class="aussie-tag">"Ripper"</span> 
+        = excellent / fantastic!<br>
+        <span class="aussie-tag">"Arvo"</span> 
+        = afternoon<br>
+        <span class="aussie-tag">"Cheers mate"</span> 
+        = thanks friend - 
+        very common goodbye!<br>
+        <span class="aussie-tag">"Have a good one"</span> 
+        = have a good day - 
+        very Australian!
+    </div>
+</div>
+    <div id="answer8" class="answer-box hidden">
+        <strong>💬 Sample Answer:</strong><br><br>
+        "Thank you so much, 
+        really appreciate it! 
+        You have a ripper day, mate!"
+        <br><br>
+        <strong>🇦🇺 Aussie note:</strong> 
+        <strong>"Ripper"</strong> = 
+        excellent / fantastic!
+    </div>
+</div>
+            </div>
+
+            <!-- COMPLETED -->
+            <div class="question-card" id="q-complete">
+                <div class="complete-banner">
+                    🎉 Well Done, Kim!
+                </div>
+                <p class="complete-msg">
+                    You completed all 5 taxi challenges!
+                    <br>Unlock your vocabulary below 👇
+                </p>
+                <div class="vocab-unlock">
+                    <button class="unlock-btn" 
+                        onclick="toggleVocab()">
+                        🔓 Unlock Vocabulary
+                    </button>
+                    <div id="vocab-list" class="hidden">
+                        <table class="vocab-table" 
+                               style="margin-top:16px;">
+                            <tr>
+                                <th>Expression</th>
+                                <th>Meaning</th>
+                            </tr>
+                            <tr>
+                                <td><strong>"G'day"</strong></td>
+                                <td>Australian = "Hello"</td>
+                            </tr>
+                            <tr>
+                                <td><strong>"No worries"</strong></td>
+                                <td>No problem / That's fine</td>
+                            </tr>
+                            <tr>
+                                <td><strong>"Mate"</strong></td>
+                                <td>Friendly word for anyone</td>
+                            </tr>
+                            <tr>
+                                <td><strong>"The toll"</strong></td>
+                                <td>Fee for the motorway</td>
+                            </tr>
+                            <tr>
+                                <td><strong>"Fare"</strong></td>
+                                <td>Price of the taxi ride</td>
+                            </tr>
+                            <tr>
+                                <td><strong>"Receipt"</strong></td>
+                                <td>Printed proof of payment</td>
+                            </tr>
+                            <tr>
+                                <td><strong>"Heading"</strong></td>
+                                <td>Going / travelling to</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <a href="../index.html" 
+                   class="btn btn-next" 
+                   style="margin-top:20px; 
+                          display:block; 
+                          text-align:center;">
+                    🏠 Back to Main Menu
+                </a>
+            </div>
+
+        </div>
+
+        <!-- NAV BUTTONS -->
+        <div class="nav-buttons" id="nav-buttons">
+            <button class="btn btn-back" 
+                id="prev-btn" 
+                onclick="changeQuestion(-1)" 
+                style="display:none;">
+                ← Previous
+            </button>
+            <button class="btn btn-next" 
+                id="next-btn" 
+                onclick="changeQuestion(1)">
+                Next →
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        let current = 1;
+        const total = 8;
+
+        function changeQuestion(direction) {
+            const currentCard = document.getElementById(
+                current <= total ? 'q' + current : 'q-complete'
+            );
+            currentCard.classList.remove('active');
+
+            current += direction;
+
+            const nextCard = document.getElementById(
+                current <= total ? 'q' + current : 'q-complete'
+            );
+            nextCard.classList.add('active');
+
+            // Update progress
+            const pct = (current / total) * 100;
+            document.getElementById('progress-fill')
+                .style.width = Math.min(pct, 100) + '%';
+            document.getElementById('progress-text')
+                .textContent = current <= total
+                    ? current + ' of ' + total
+                    : 'Complete! 🎉';
+
+            // Prev button
+            document.getElementById('prev-btn')
+                .style.display = current > 1 
+                    ? 'inline-block' : 'none';
+
+            // Next button
+            document.getElementById('next-btn')
+                .style.display = current > total 
+                    ? 'none' : 'inline-block';
+
+            // Hide nav on complete
+            if (current > total) {
+                document.getElementById('nav-buttons')
+                    .style.display = 'none';
+            }
+
+            window.scrollTo({ top: 300, behavior: 'smooth' });
+        }
+
+        function toggleHint(id) {
+            const el = document.getElementById(id);
+            const btn = el.previousElementSibling
+                          .querySelector('.hint-btn');
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                btn.textContent = '💡 Hide Hint';
+            } else {
+                el.classList.add('hidden');
+                btn.textContent = '💡 Show Hint';
+            }
+        }
+
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            const btn = el.previousElementSibling
+                          .querySelector('.check-btn');
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                btn.textContent = '✅ Hide Answer';
+            } else {
+                el.classList.add('hidden');
+                btn.textContent = '✅ Show Answer';
+            }
+        }
+
+        function toggleVocab() {
+            const el = document.getElementById('vocab-list');
+            const btn = el.previousElementSibling;
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                btn.textContent = '🔒 Hide Vocabulary';
+            } else {
+                el.classList.add('hidden');
+                btn.textContent = '🔓 Unlock Vocabulary';
+            }
+        }
+    </script>
+
+</body>
+</html>

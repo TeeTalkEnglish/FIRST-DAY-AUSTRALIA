@@ -1,0 +1,875 @@
+/* ============================================
+   SCENARIO 3 - IN THE TAXI
+   Style matching teetalkenglish.github.io
+   Created for Kim Huynh
+   ============================================ */
+
+/* --- GOOGLE FONTS --- */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+/* --- RESET & BASE --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #f8f0f0;
+    color: #333;
+    min-height: 100vh;
+}
+
+/* --- TOP HEADER BAR --- */
+.top-bar {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+.top-bar .back-link {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+/* --- MAIN CONTAINER --- */
+.scenario-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px 16px 60px 16px;
+}
+
+/* --- ROLE BADGE --- */
+.role-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.student-badge {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 2px solid #ffc107;
+}
+
+.teacher-badge {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 2px solid #17a2b8;
+}
+
+/* --- PAGE TITLE --- */
+h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #2d2d2d;
+    margin-bottom: 6px;
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: 15px;
+    color: #777;
+    margin-bottom: 24px;
+}
+
+/* --- SECTION HEADINGS --- */
+h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #2d2d2d;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --- CARDS / BOXES --- */
+.situation-box,
+.scenario-goals,
+.vocab-section,
+.challenge-box,
+.teacher-setup,
+.variations-section,
+.assessment-section {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    border-left: 5px solid #ff6b6b;
+}
+
+.teacher-setup {
+    border-left-color: #17a2b8;
+}
+
+.variations-section {
+    border-left-color: #6f42c1;
+}
+
+.assessment-section {
+    border-left-color: #28a745;
+}
+
+/* --- ADDRESS BOX --- */
+.address-box {
+    background: #fff3cd;
+    border: 2px dashed #ffc107;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 12px 0;
+    color: #856404;
+}
+
+/* --- SCENARIO GOALS LIST --- */
+.scenario-goals ul,
+.teacher-setup ul {
+    list-style: none;
+    padding: 0;
+}
+
+.scenario-goals ul li,
+.teacher-setup ul li {
+    padding: 8px 0;
+    font-size: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #444;
+}
+
+.scenario-goals ul li:last-child,
+.teacher-setup ul li:last-child {
+    border-bottom: none;
+}
+
+/* --- DIALOGUE SECTION --- */
+.dialogue-section {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+/* --- EXCHANGE BLOCK --- */
+.exchange {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 2px dashed #f0e0e0;
+}
+
+.exchange:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* --- SPEECH BUBBLES --- */
+.speaker {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    position: relative;
+}
+
+.speaker-name {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    opacity: 0.7;
+}
+
+.speech {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #2d2d2d;
+}
+
+/* Teacher/Driver speech - blue left */
+.teacher-line {
+    background: #e8f4fd;
+    border-left: 4px solid #17a2b8;
+    margin-right: 40px;
+}
+
+.teacher-line .speaker-name {
+    color: #0c5460;
+}
+
+/* Student/Kim speech - coral right */
+.student-line {
+    background: #fff0f0;
+    border-left: 4px solid #ff6b6b;
+    margin-left: 40px;
+}
+
+.student-line .speaker-name {
+    color: #c0392b;
+}
+
+/* --- TIP BOX --- */
+.tip-box {
+    background: #f0f9e8;
+    border: 1px solid #c3e6cb;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #155724;
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+/* --- TEACHER NOTE --- */
+.teacher-note {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #5d4037;
+    margin-top: 10px;
+    line-height: 1.8;
+}
+
+/* --- VOCABULARY TABLE --- */
+.vocab-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.vocab-table th {
+    background: #ff6b6b;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+}
+
+.vocab-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0e0e0;
+    color: #444;
+}
+
+.vocab-table tr:nth-child(even) td {
+    background: #fff5f5;
+}
+
+.vocab-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* --- CHALLENGE BOX --- */
+.challenge-box {
+    border-left-color: #ffc107;
+    background: #fffdf0;
+}
+
+.challenge-box ol {
+    padding-left: 20px;
+    line-height: 2;
+    color: #444;
+    font-size: 15px;
+}
+
+/* --- VARIATION CARDS --- */
+.variation-card {
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.variation-card h3 {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.variation-card.easy {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+}
+
+.variation-card.medium {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    color: #856404;
+}
+
+.variation-card.hard {
+    background: #f8d7da;
+    border-left: 4px solid #dc3545;
+    color: #721c24;
+}
+
+.variation-card ul {
+    padding-left: 18px;
+    margin-top: 6px;
+}
+
+/* --- ASSESSMENT TABLE --- */
+.assessment-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.assessment-table th {
+    background: #28a745;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+}
+
+.assessment-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #e0f0e0;
+    color: #444;
+    vertical-align: middle;
+}
+
+.assessment-table tr:nth-child(even) td {
+    background: #f0fff4;
+}
+
+.assessment-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* --- INDEX PAGE SPECIFIC --- */
+.scenario-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.scenario-number {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    color: white;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 800;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+.scenario-description,
+.scenario-goals {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+.scenario-description p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #444;
+}
+
+/* --- BUTTONS --- */
+.button-group {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    flex: 1;
+    min-width: 200px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.btn-student {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.35);
+}
+
+.btn-teacher {
+    background: linear-gradient(135deg, #17a2b8, #20c9e0);
+    color: white;
+    box-shadow: 0 4px 12px rgba(23, 162, 184, 0.35);
+}
+
+.btn-back {
+    background: #f0f0f0;
+    color: #555;
+}
+
+.btn-next {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.35);
+}
+
+/* --- NAV BUTTONS --- */
+.nav-buttons {
+    display: flex;
+    gap: 14px;
+    margin-top: 5px;
+    flex-wrap: wrap;
+}
+
+/* --- PROGRESS BAR (for index) --- */
+.progress-bar-container {
+    background: white;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 10px;
+    background: #f0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: #888;
+    white-space: nowrap;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    .student-line {
+        margin-left: 10px;
+    }
+
+    .teacher-line {
+        margin-right: 10px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn {
+        min-width: unset;
+    }
+
+    .nav-buttons {
+        flex-direction: column;
+    }
+
+    /* --- CHALLENGE RULES BOX --- */
+.challenge-rules {
+    background: #fff0f0;
+    border: 2px solid #ff6b6b;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+}
+
+.challenge-rules ul {
+    list-style: none;
+    padding: 0;
+}
+
+.challenge-rules ul li {
+    padding: 8px 0;
+    font-size: 15px;
+    border-bottom: 1px solid #ffe0e0;
+    color: #444;
+}
+
+.challenge-rules ul li:last-child {
+    border-bottom: none;
+}
+
+/* --- STEP NUMBER --- */
+.step-number {
+    font-size: 12px;
+    font-weight: 800;
+    color: #ff6b6b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+/* --- CHALLENGE TASK --- */
+.challenge-task {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #856404;
+    margin-bottom: 12px;
+}
+
+/* --- YOUR TURN BOX --- */
+.your-turn {
+    margin: 14px 0;
+}
+
+.your-turn-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    color: #c0392b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.response-box {
+    width: 100%;
+    border: 2px solid #ffb3b3;
+    border-radius: 10px;
+    padding: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    color: #333;
+    resize: vertical;
+    background: #fff8f8;
+    transition: border-color 0.2s;
+}
+
+.response-box:focus {
+    outline: none;
+    border-color: #ff6b6b;
+    background: white;
+}
+
+/* --- HINT BUTTON & BOX --- */
+.hint-container {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.hint-btn {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    color: #856404;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.2s;
+}
+
+.hint-btn:hover {
+    background: #ffc107;
+    color: white;
+}
+
+.hint-box {
+    background: #fffdf0;
+    border: 1px solid #ffe082;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #5d4037;
+    margin-top: 8px;
+    line-height: 1.8;
+}
+
+.hint-box ul {
+    padding-left: 18px;
+    margin-top: 6px;
+}
+
+/* --- CHECK ANSWER BUTTON & BOX --- */
+.check-container {
+    margin-top: 8px;
+}
+
+.check-btn {
+    background: #d4edda;
+    border: 2px solid #28a745;
+    color: #155724;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.2s;
+}
+
+.check-btn:hover {
+    background: #28a745;
+    color: white;
+}
+
+.answer-box {
+    background: #f0fff4;
+    border: 1px solid #c3e6cb;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #155724;
+    margin-top: 8px;
+    line-height: 1.8;
+}
+
+/* --- VOCAB UNLOCK --- */
+.vocab-unlock {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    border-left: 5px solid #6f42c1;
+}
+
+.unlock-btn {
+    background: linear-gradient(135deg, #6f42c1, #9b6dff);
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.2s;
+    margin-top: 8px;
+}
+
+.unlock-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(111, 66, 193, 0.4);
+}
+
+/* --- HIDDEN CLASS --- */
+.hidden {
+    display: none !important;
+}
+/* --- BUTTON ROW --- */
+.button-row {
+    display: flex;
+    gap: 10px;
+    margin: 14px 0;
+    flex-wrap: wrap;
+}
+
+/* --- BONUS TASK --- */
+.bonus-task {
+    display: inline-block;
+    background: #fff3cd;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #856404;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+/* --- CHALLENGE EXCHANGE --- */
+.challenge-exchange {
+    background: #fafafa;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 2px solid #f0e0e0;
+}
+
+.challenge-exchange:hover {
+    border-color: #ff6b6b;
+    transition: border-color 0.2s;
+}
+/* --- QUESTIONS WRAPPER --- */
+.questions-wrapper {
+    position: relative;
+    min-height: 300px;
+    margin-bottom: 10px;
+}
+
+/* --- QUESTION CARD --- */
+.question-card {
+    display: none;
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    border-left: 5px solid #ff6b6b;
+    animation: fadeIn 0.3s ease;
+}
+
+.question-card.active {
+    display: block;
+}
+
+.question-card.exit {
+    animation: fadeOut 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(-20px); }
+}
+
+/* --- COMPLETE BANNER --- */
+.complete-banner {
+    font-size: 28px;
+    font-weight: 800;
+    color: #ff6b6b;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.complete-msg {
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.8;
+}
+
+/* --- PROGRESS BAR --- */
+.progress-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.progress-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #999;
+    white-space: nowrap;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 10px;
+    background: #f0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+
+.progress-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: #888;
+    white-space: nowrap;
+}
+
+/* --- SCENE NOTICE --- */
+.scene-notice {
+    background: #e8f4fd;
+    border-left: 4px solid #17a2b8;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0c5460;
+    margin-bottom: 14px;
+}
+
+.scene-notice.arrival {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+}
+/* --- AUSSIE WORDS BOX --- */
+.aussie-words {
+    background: #fff0f0;
+    border: 1px solid #ffb3b3;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 2;
+    color: #444;
+}
+
+.aussie-tag {
+    display: inline-block;
+    background: #ff6b6b;
+    color: white;
+    padding: 1px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 12px;
+    margin-right: 4px;
+}
+}

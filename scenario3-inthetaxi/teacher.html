@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher - In the Taxi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="top-bar">
+        <a href="index.html" class="back-link">←</a>
+        🚖 SCENARIO 3 - IN THE TAXI
+    </div>
+
+    <div class="scenario-container">
+
+        <div class="role-badge teacher-badge">
+            👩‍🏫 TEACHER / TAXI DRIVER SCRIPT
+        </div>
+        <h1>🚖 In the Taxi</h1>
+        <p class="subtitle">
+            Teacher guide with notes and variations
+        </p>
+
+        <!-- SETUP BOX -->
+        <div class="teacher-setup">
+            <h2>⚙️ Setup Instructions</h2>
+            <ul>
+                <li>👩‍🏫 <strong>Teacher plays:</strong> 
+                The taxi driver</li>
+                <li>🎓 <strong>Student plays:</strong> 
+                Kim Huynh</li>
+                <li>⏱️ <strong>Duration:</strong> 
+                10-15 minutes</li>
+                <li>📍 <strong>Setting:</strong> 
+                Sydney Airport → Parramatta</li>
+            </ul>
+        </div>
+
+        <!-- PROGRESS BAR -->
+        <div class="progress-bar-container">
+            <span class="progress-label">Progress</span>
+            <div class="progress-bar">
+                <div class="progress-fill"
+                     id="progress-fill"
+                     style="width: 12.5%">
+                </div>
+            </div>
+            <span class="progress-text" id="progress-text">
+                1 of 8
+            </span>
+        </div>
+
+        <!-- TEACHER CARDS -->
+        <div class="questions-wrapper">
+
+            <!-- CARD 1 -->
+            <div class="question-card active" id="q1">
+                <div class="step-number">
+                    📋 Exchange 1 of 8
+                </div>
+                <div class="speaker teacher-line">
+                    <span class="speaker-name">
+                        🚖 YOU (Driver):
+                    </span>
+                    <span class="speech">
+                        "G'day! Where are you 
+                        heading, mate?"
+                    </span>
+                </div>
+                <div class="teacher-note">
+                    📝 <strong>Note:</strong> 
+                    Use a friendly Australian accent. 
+                    If Kim doesn't understand "G'day", 
+                    that's a good teaching moment!
+                    <br><br>
+                    ✅ <strong>Good response:</strong> 
+                    Gives full address with suburb name
+                    <br>
+                    ❌ <strong>Watch for:</strong> 
+                    Kim only says street number 
+                    with no suburb
+                </div>
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="question-card" id="q2">
+                <div class="step-number">
+                    📋 Exchange 2 of 8
+                </div>
+                <div class="speaker teacher-line">
+                    <span class="speaker-name">
+                        🚖 YOU (Driver):
+                    </span>
+                    <span class="speech">
+                        "No worries! That'll be about 
+                        45 minutes from here. 
+                        Just arrived?"
+                    </span>
+                </div>
+                <div class="teacher-note">
+                    📝 <strong>Note:</strong> 
+                    This opens small talk. 
+                    See if Kim responds naturally 
+                    and volunteers information.
+                    <br><br>
+                    ✅ <strong>Good response:</strong> 
+                    Mentions where she flew from 
+                    and shows excitement
+                    <br><br>
+                    🌟 <strong>Advanced prompt:</strong> 
+                    If Kim goes quiet, ask 
+                    "First time in Australia?"
+                </div>
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="question-card" id="q3">
+                <div class="step-number">
+                    📋 Exchange 3 of 8
+                </div>
+                <div class="speaker teacher-line">
+                    <span class="speaker-name">
+                        🚖 YOU (Driver):
+                    </span>
+                    <span class="speech">
+                        "Welcome to Australia! 
+                        What brings you here?"
+                    </span>
+                </div>
+                <div class="teacher-note">
+                    📝 <strong>Note:</strong> 
+                    Check if Kim can talk about 
+                    her work naturally.
+                    <br><br>
+                    ✅ <strong>Good response:</strong> 
+                    Mentions "meat butcher" and 
+                    sounds excited
+                    <br><br>
+                    🌟 <strong>Listen for:</strong> 
+                    Natural Aussie words like 
+                    "stoked", "keen", "reckon"
+                </div>
+            </div>
+
+            <!-- CARD 4 -->
+            <div class="question-card" id="q4">
+                <div class="step-number">
+                    📋 Exchange 4 of 8
+                </div>
+                <div class="scene-notice">
+                    🚦 You are now on the highway. 
+                    The meter is running.
+                </div>
+                <div class="speaker teacher-line">
+                    <span class="speaker-name">
+                        🚖 YOU (Driver):
+                    </span>
+                    <span class="speech">
+                        "We'll take the M4 motorway, 
+                        should be smooth sailing!"
+                    </span>
+                </div>
+                <div class="teacher-note">
+                    📝 <strong>Note:</strong> 
+                    See if Kim asks to confirm 
+                    the route politely.
+                    <br><br>
+                    ✅ <strong>Good response:</strong> 
+                    "Sorry, are we heading to 
+                    Parramatta? Just want to 
+                    double check!"
+                    <br><br>
+                    ❌ <strong>Watch for:</strong> 
+                    Kim stays silent and says nothing
+                </div>
+            </div>
+
+            <!-- CARD 5 -->
+            <div class="question-card" id="q5">
+                <div class="step-number">
+                    📋 Exchange 5 of 8
+                </div>
+                <div class="speaker teacher-line">
+                    <span class="speaker-name">
+                        🚖 YOU (Driver):
+                    </span>
+                    <span class="speech">
+                        "So what part of Vietnam 
+                        are you from?"
+                    </span>
+                </div>
+                <div class="teacher-note">
+                    📝 <strong>Note:</strong> 
+                    See if Kim can hold a natural 
+                    conversation about herself.
+                    <br><br>
+                    ✅ <strong>Good response:</strong> 
+                    Answers confidently and asks 
+                    the driver something back
+                    <br><br>
+                    🌟 <strong>Tip:</strong> 
+                    Australians love it when 
+                    you ask them questions too!
+                </div>
+            </div>
+
+            <!-- CARD 6 -->
+            <div class="question-card" id="q6">
+                <div class="step-number">
+                    📋 Exchange 6 of 8
+                </div>
+                <div class="speaker teacher-line">
+                    <span class="speaker-name">
+                        🚖 YOU (Driver):
+                    </span>
+                    <span class="speech">
+                        "Should be around \$55 to \$65 
+                        with the toll. 
+                        Cash or card, love?"
+                    </span>
+                </div>
+                <div class="teacher-note">
+                    📝 <strong>Note:</strong> 
+                    Does Kim know the word "EFTPOS"?
+                    Does she ask about the toll?
+                    <br><br>
+                    ✅ <strong>Good response:</strong> 
+                    "Card thanks! Does your 
+                    EFTPOS machine take Visa?"
+                    <br><br>
+                    🌟 <strong>Variation:</strong> 
+                    Try saying "Sorry, card machine's 
+                    broken - cash only!" and see 
+                    how Kim handles it!
+                </div>
+            </div>
+
+            <!-- CARD 7 -->
+            <div class="question-card" id="q7">
+                <div class="step-number">
+                    📋 Exchange 7 of 8
+                </div>
+                <div class="scene-notice arrival">
+                    🏠 You have arrived at 
+                    42 George Street, Parramatta!
+                </div>
+                <div class="speaker teacher-line">
+                    <span class="speaker-name">
+                        🚖 YOU (Driver):
+                    </span>
+                    <span class="speech">
+                        "Here we are, 42 George Street! 
+                        That'll be \$58.50 thanks."
+                    </span>
+                </div>
+                <div class="teacher-note">
+                    📝 <strong>Note:</strong> 
+                    Does Kim ask for a receipt?
+                    <br><br>
+                    ✅ <strong>Good response:</strong> 
+                    "Here you go! Could I get 
+                    a receipt please?"
+                    <br><br>
+                    ❌ <strong>Watch for:</strong> 
+                    Kim pays without asking 
+                    for a receipt
+                </div>
+            </div>
+
+            <!-- CARD 8 -->
+            <div class="question-card" id="q8">
+                <div class="step-number">
+                    📋 Exchange 8 of 8
+                </div>
+                <div class="speaker teacher-line">
+                    <span class="speaker-name">
+                        🚖 YOU (Driver):
+                    </span>
+                    <span class="speech">
+                        "Good luck with the new job! 
+                        Hope you settle in well!"
+                    </span>
+                </div>
+                <div class="teacher-note">
+                    📝 <strong>Note:</strong> 
+                    Does Kim say a warm goodbye?
+                    Does she use any Aussie expressions?
+                    <br><br>
+                    ✅ <strong>Good response:</strong> 
+                    "Thanks so much mate! 
+                    Have a ripper day!"
+                    <br><br>
+                    🌟 <strong>Listen for:</strong>
+                    <ul>
+                        <li>"Mate"</li>
+                        <li>"Cheers"</li>
+                        <li>"Ripper"</li>
+                        <li>"No worries"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- COMPLETED CARD -->
+            <div class="question-card" id="q-complete">
+                <div class="complete-banner">
+                    ✅ Scenario Complete!
+                </div>
+                <p class="complete-msg">
+                    Great work! Use the checklist 
+                    below to assess Kim's performance.
+                </p>
+
+                <!-- ASSESSMENT TABLE -->
+                <div class="assessment-section">
+                    <h2>✅ Assessment Checklist</h2>
+                    <table class="assessment-table">
+                        <tr>
+                            <th>Skill</th>
+                            <th>Result</th>
+                        </tr>
+                        <tr>
+                            <td>Gave full address 
+                            with suburb</td>
+                            <td>⬜ Yes &nbsp; 
+                                ⬜ No &nbsp; 
+                                ⬜ Needs work</td>
+                        </tr>
+                        <tr>
+                            <td>Used polite language 
+                            "Could you..."</td>
+                            <td>⬜ Yes &nbsp; 
+                                ⬜ No &nbsp; 
+                                ⬜ Needs work</td>
+                        </tr>
+                        <tr>
+                            <td>Made natural small talk</td>
+                            <td>⬜ Yes &nbsp; 
+                                ⬜ No &nbsp; 
+                                ⬜ Needs work</td>
+                        </tr>
+                        <tr>
+                            <td>Talked about her job 
+                            naturally</td>
+                            <td>⬜ Yes &nbsp; 
+                                ⬜ No &nbsp; 
+                                ⬜ Needs work</td>
+                        </tr>
+                        <tr>
+                            <td>Confirmed the route 
+                            politely</td>
+                            <td>⬜ Yes &nbsp; 
+                                ⬜ No &nbsp; 
+                                ⬜ Needs work</td>
+                        </tr>
+                        <tr>
+                            <td>Asked about the fare</td>
+                            <td>⬜ Yes &nbsp; 
+                                ⬜ No &nbsp; 
+                                ⬜ Needs work</td>
+                        </tr>
+                        <tr>
+                            <td>Used the word "EFTPOS"</td>
+                            <td>⬜ Yes &nbsp; 
+                                ⬜ No &nbsp; 
+                                ⬜ Needs work</td>
+                        </tr>
+                        <tr>
+                            <td>Asked for a receipt</td>
+                            <td>⬜ Yes &nbsp; 
+                                ⬜ No &nbsp; 
+                                ⬜ Needs work</td>
+                        </tr>
+                        <tr>
+                            <td>Used Aussie expressions</td>
+                            <td>⬜ Yes &nbsp; 
+                                ⬜ No &nbsp; 
+                                ⬜ Needs work</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <a href="../index.html"
+                   class="btn btn-next"
+                   style="margin-top:20px;
+                          display:block;
+                          text-align:center;">
+                    🏠 Back to Main Menu
+                </a>
+            </div>
+
+        </div>
+
+        <!-- NAV BUTTONS -->
+        <div class="nav-buttons" id="nav-buttons">
+            <button class="btn btn-back"
+                id="prev-btn"
+                onclick="changeQuestion(-1)"
+                style="display:none;">
+                ← Previous
+            </button>
+            <button class="btn btn-next"
+                id="next-btn"
+                onclick="changeQuestion(1)">
+                Next →
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        let current = 1;
+        const total = 8;
+
+        function changeQuestion(direction) {
+            const currentCard = document.getElementById(
+                current <= total ? 'q' + current : 'q-complete'
+            );
+            currentCard.classList.remove('active');
+
+            current += direction;
+
+            const nextCard = document.getElementById(
+                current <= total ? 'q' + current : 'q-complete'
+            );
+            nextCard.classList.add('active');
+
+            // Update progress
+            const pct = (current / total) * 100;
+            document.getElementById('progress-fill')
+                .style.width = Math.min(pct, 100) + '%';
+            document.getElementById('progress-text')
+                .textContent = current <= total
+                    ? current + ' of ' + total
+                    : 'Complete! 🎉';
+
+            // Prev button
+            document.getElementById('prev-btn')
+                .style.display = current > 1
+                    ? 'inline-block' : 'none';
+
+            // Next button
+            document.getElementById('next-btn')
+                .style.display = current > total
+                    ? 'none' : 'inline-block';
+
+            // Hide nav on complete
+            if (current > total) {
+                document.getElementById('nav-buttons')
+                    .style.display = 'none';
+            }
+
+            window.scrollTo({ top: 300, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Form — Game 2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+    <div class="game-badge">🎮 Game 2 · Teacher</div>
+    <div class="scenario-tag">👩‍🏫 Landlord Form — Fill This In As Student Speaks</div>
+    <h1>Dave's Check-In Form</h1>
+    <p>Ask the questions. Type what Mai says. Make 3 deliberate mistakes!</p>
+</div>
+
+<nav class="nav-tabs">
+    <a href="index.html">📋 Index</a>
+    <a href="student.html">👩 Student</a>
+    <a href="teacher.html" class="active">👩‍🏫 Teacher</a>
+    <a href="results.html">✅ Results</a>
+</nav>
+
+<div class="container">
+
+    <!-- TEACHER SECRET NOTES -->
+    <div class="instruction-box teacher-box">
+        <h3>🎓 Teacher Secret Instructions</h3>
+        <ol>
+            <li>Ask Mai each question below <strong>in order</strong></li>
+            <li>Type her answers into the blank fields</li>
+            <li>Make <strong>3 deliberate mistakes</strong> — choose from the list below</li>
+            <li>Read back what you "wrote" — see if Mai corrects you!</li>
+            <li>After finishing — click <strong>Check Results</strong> to score the game</li>
+        </ol>
+    </div>
+
+    <!-- DELIBERATE MISTAKES -->
+    <div class="card card-orange">
+        <h2>😈 Your 3 Deliberate Mistakes — Choose Any 3!</h2>
+        <ul style="list-style:none; padding:0;">
+            <li style="padding:8px 0; border-bottom:1px solid #ffe; font-size:14px;">
+                😈 Say her passport is <strong>"B7724983"</strong> instead of B7742983
+            </li>
+            <li style="padding:8px 0; border-bottom:1px solid #ffe; font-size:14px;">
+                😈 Say her date of birth is <strong>"14 May"</strong> instead of 14 March
+            </li>
+            <li style="padding:8px 0; border-bottom:1px solid #ffe; font-size:14px;">
+                😈 Say her phone number is <strong>"0412 783 565"</strong> instead of 0412 783 556
+            </li>
+            <li style="padding:8px 0; border-bottom:1px solid #ffe; font-size:14px;">
+                😈 Say her weekly rent is <strong>"\$220"</strong> instead of \$210
+            </li>
+            <li style="padding:8px 0; border-bottom:1px solid #ffe; font-size:14px;">
+                😈 Say her visa number is <strong>"VN482-66130"</strong> instead of VN482-66103
+            </li>
+            <li style="padding:8px 0; font-size:14px;">
+                😈 Say her father's phone is <strong>"+84 909 334 271"</strong> instead of +84 909 334 217
+            </li>
+        </ul>
+    </div>
+
+    <!-- QUESTION SCRIPT -->
+    <div class="section-header">
+        <div class="bar"></div>
+        <h2>Question Script — Ask These In Order</h2>
+    </div>
+
+    <div class="card card-blue" style="margin-bottom:10px;">
+        <p style="font-size:14px; line-height:1.8; color:#555;">
+            💬 <em>"G'day! Welcome to Riverside Workers Accommodation. 
+            I just need to take down some details for our records. Is that alright?"</em><br><br>
+            💬 <em>"Great! Let's start with your name. What's your full name, love?"</em><br>
+            💬 <em>"Can you spell your family name for me?"</em><br>
+            💬 <em>"And your date of birth?"</em><br>
+            💬 <em>"What country were you born in?"</em><br>
+            💬 <em>"Now, can I get your passport number please?"</em><br>
+            💬 <em>"When does your passport expire?"</em><br>
+            💬 <em>"What visa are you on? Do you have the visa number?"</em><br>
+            💬 <em>"Where are you working? And what do you do there?"</em><br>
+            💬 <em>"When do you start work?"</em><br>
+            💬 <em>"What shift do you work — early, day, or afternoon?"</em><br>
+            💬 <em>"What's your Australian mobile number?"</em><br>
+            💬 <em>"And your email address?"</em><br>
+            💬 <em>"I need an emergency contact back in Vietnam — who should I call?"</em><br>
+            💬 <em>"What is their phone number?"</em><br>
+            💬 <em>"And their address in Vietnam?"</em><br>
+            💬 <em>"Okay, just to confirm — your rent is \$210 per week with a \$420 bond. Is that right?"</em><br>
+            💬 <em>"How would you like to pay — bank transfer, cash or card?"</em>
+        </p>
+    </div>
+
+    <!-- ===== BLANK FORM ===== -->
+    <div class="teacher-form">
+
+        <div class="form-header">
+            <div class="form-logo">🏠</div>
+            <h2>Riverside Workers Accommodation</h2>
+            <p>CHECK-IN REGISTRATION FORM · LANDLORD COPY</p>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="form-section-title">SECTION 1 — PERSONAL DETAILS</div>
+
+        <div class="form-row-2col">
+            <div class="form-row">
+                <label>Given Name</label>
+                <input class="teacher-input" type="text" placeholder="First name...">
+            </div>
+            <div class="form-row">
+                <label>Family Name ⚠️ Check Spelling!</label>
+                <input class="teacher-input" type="text" placeholder="Family name...">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label>Spelling of Family Name (letter by letter)</label>
+            <input class="teacher-input" type="text" placeholder="E.g. N-G-U-Y-E-N">
+        </div>
+
+        <div class="form-row-3col">
+            <div class="form-row">
+                <label>Day of Birth</label>
+                <input class="teacher-input" type="text" placeholder="Day...">
+            </div>
+            <div class="form-row">
+                <label>Month ⚠️</label>
+                <input class="teacher-input" type="text" placeholder="Month...">
+            </div>
+            <div class="form-row">
+                <label>Year</label>
+                <input class="teacher-input" type="text" placeholder="Year...">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label>Country of Birth</label>
+            <input class="teacher-input" type="text" placeholder="Country...">
+        </div>
+
+        <div class="form-row">
+            <label>Gender</label>
+            <input class="teacher-input" type="text" placeholder="Female / Male / Other">
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="form-section-title">SECTION 2 — PASSPORT & VISA DETAILS</div>
+
+        <div class="form-row-2col">
+            <div class="form-row">
+                <label>Passport Number ⚠️ Very Tricky!</label>
+                <input class="teacher-input" type="text" placeholder="Passport number...">
+            </div>
+            <div class="form-row">
+                <label>Passport Expiry</label>
+                <input class="teacher-input" type="text" placeholder="DD / MM / YYYY">
+            </div>
+        </div>
+
+        <div class="form-row-3col">
+            <div class="form-row">
+                <label>Visa Type ⚠️</label>
+                <input class="teacher-input" type="text" placeholder="Visa type...">
+            </div>
+            <div class="form-row">
+                <label>Visa Number ⚠️ Tricky!</label>
+                <input class="teacher-input" type="text" placeholder="Visa number...">
+            </div>
+            <div class="form-row">
+                <label>Visa Expiry</label>
+                <input class="teacher-input" type="text" placeholder="DD / MM / YYYY">
+            </div>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="form-section-title">SECTION 3 — WORK DETAILS</div>
+
+        <div class="form-row">
+            <label>Employer / Workplace</label>
+            <input class="teacher-input" type="text" placeholder="Company name...">
+        </div>
+
+        <div class="form-row-2col">
+            <div class="form-row">
+                <label>Job Title</label>
+                <input class="teacher-input" type="text" placeholder="Job title...">
+            </div>
+            <div class="form-row">
+                <label>Start Date at Work</label>
+                <input class="teacher-input" type="text" placeholder="Start date...">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label>Shift</label>
+            <input class="teacher-input" type="text" placeholder="Early / Day / Afternoon">
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="form-section-title">SECTION 4 — CONTACT DETAILS</div>
+
+        <div class="form-row">
+            <label>Australian Mobile Number ⚠️ Tricky!</label>
+            <input class="teacher-input" type="text" placeholder="0412 ...">
+        </div>
+
+        <div class="form-row">
+            <label>Email Address</label>
+            <input class="teacher-input" type="text" placeholder="Email...">
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="form-section-title">SECTION 5 — EMERGENCY CONTACT (VIETNAM)</div>
+
+        <div class="form-row-2col">
+            <div class="form-row">
+                <label>Contact Name ⚠️ Check Order!</label>
+                <input class="teacher-input" type="text" placeholder="Full name...">
+            </div>
+            <div class="form-row">
+                <label>Relationship</label>
+                <input class="teacher-input" type="text" placeholder="Father / Mother / etc.">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label>Vietnam Phone Number ⚠️ Very Tricky!</label>
+            <input class="teacher-input" type="text" placeholder="+84 ...">
+        </div>
+
+        <div class="form-row">
+            <label>Address in Vietnam</label>
+            <input class="teacher-input" type="text" placeholder="Full address...">
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="form-section-title">SECTION 6 — ACCOMMODATION AGREEMENT</div>
+
+        <div class="form-row-2col">
+            <div class="form-row">
+                <label>Check-In Date</label>
+                <input class="teacher-input" type="text" placeholder="Date...">
+            </div>
+            <div class="form-row">
+                <label>Room Number</label>
+                <input class="teacher-input" type="text" placeholder="Room...">
+            </div>
+        </div>
+
+        <div class="form-row-2col">
+            <div class="form-row">
+                <label>Weekly Rent ⚠️</label>
+                <input class="teacher-input" type="text" placeholder="$...">
+            </div>
+            <div class="form-row">
+                <label>Bond Amount</label>
+                <input class="teacher-input" type="text" placeholder="$...">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label>Payment Method</label>
+            <input class="teacher-input" type="text" placeholder="Bank Transfer / Cash / Card">
+        </div>
+
+        <div class="form-signature" style="margin-top:24px;">
+            <div>
+                <input class="teacher-input" type="text" placeholder="Tenant signature...">
+                <div class="sig-label">Tenant Signature</div>
+            </div>
+            <div>
+                <input class="teacher-input" type="text" placeholder="Date...">
+                <div class="sig-label">Date</div>
+            </div>
+        </div>
+
+    </div><!-- end teacher-form -->
+
+    <a href="results.html" class="btn-next">✅ Finished! → Go to Results & Score</a>
+
+</div>
+
+<div class="footer">Made with <span>♥</span> by TeeTalk English · Game 2</div>
+</body>
+</html>

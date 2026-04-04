@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game 2 — Check-In Form Challenge</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+    <div class="game-badge">🎮 Game 2</div>
+    <div class="scenario-tag">🏠 Settling In · Scenario 3</div>
+    <h1>Check-In Form Challenge</h1>
+    <p>Can you give all your information to the landlord correctly?</p>
+</div>
+
+<nav class="nav-tabs">
+    <a href="index.html" class="active">📋 Index</a>
+    <a href="student.html">👩 Student</a>
+    <a href="teacher.html">👩‍🏫 Teacher</a>
+    <a href="results.html">✅ Results</a>
+</nav>
+
+<div class="container">
+
+    <!-- GAME INTRO -->
+    <div class="card card-red">
+        <h2>🎮 What is this game?</h2>
+        <p style="font-size:15px; line-height:1.8; color:#555;">
+            This is <strong>Game 2 — Check-In Form Challenge</strong>.<br><br>
+            The <strong style="color:#e8524a;">student (Mai)</strong> has a paper form with all her 
+            accommodation information. She must <strong>SPEAK</strong> this information 
+            to the landlord — she cannot show the form!<br><br>
+            The <strong style="color:#3498db;">teacher (Dave the Landlord)</strong> has a blank form 
+            and must type or write what Mai says. At the end, compare both forms to find mistakes!
+        </p>
+    </div>
+
+    <!-- DIFFICULTY -->
+    <div class="card card-orange">
+        <h2>⚡ Difficulty Level</h2>
+        <div class="difficulty">
+            <span>Hard</span>
+            <div class="diff-dot fill-red"></div>
+            <div class="diff-dot fill-red"></div>
+            <div class="diff-dot fill-red"></div>
+            <div class="diff-dot fill-orange"></div>
+            <div class="diff-dot fill-orange"></div>
+        </div>
+        <p style="font-size:14px; color:#555; line-height:1.7;">
+            This game is <strong>challenging</strong> because:<br>
+            ✴️ The form has <strong>tricky numbers and dates</strong><br>
+            ✴️ Mai must spell her Vietnamese name, address and emergency contact<br>
+            ✴️ The student cannot show the form — <strong>speaking only!</strong><br>
+            ✴️ Some information requires the student to <strong>ask questions back</strong><br>
+            ✴️ The teacher will make deliberate mistakes to test listening!
+        </p>
+    </div>
+
+    <!-- HOW TO PLAY -->
+    <div class="section-header">
+        <div class="bar"></div>
+        <h2>How to Play</h2>
+    </div>
+
+    <div class="instruction-box student-box">
+        <h3>👩 Student (Mai) — Your Rules</h3>
+        <ol>
+            <li>Open the <strong>Student Page</strong> — this is your paper form</li>
+            <li><strong>Do NOT show</strong> your form to the teacher!</li>
+            <li>The teacher (Dave) will ask you questions</li>
+            <li>Answer <strong>out loud in English</strong> using your form</li>
+            <li>Spell difficult words when asked: <em>"That's N-G-U-Y-E-N"</em></li>
+            <li>If you don't understand a question, say: <em>"Sorry, can you repeat that?"</em></li>
+            <li>You have <strong>15 minutes</strong> to complete the form!</li>
+        </ol>
+    </div>
+
+    <div class="instruction-box teacher-box">
+        <h3>👩‍🏫 Teacher (Dave the Landlord) — Your Rules</h3>
+        <ol>
+            <li>Open the <strong>Teacher Page</strong> — this is your blank form to fill</li>
+            <li>Ask each question from the script</li>
+            <li><strong>Make 3 deliberate mistakes</strong> — repeat information back incorrectly to test the student!</li>
+            <li>Type what the student says into the form fields</li>
+            <li>At the end, go to <strong>Results Page</strong> to check the score</li>
+            <li>Award points based on the scoring guide</li>
+        </ol>
+    </div>
+
+    <!-- SCORING -->
+    <div class="card card-green">
+        <h2>🏆 Scoring System</h2>
+        <ul class="checklist">
+            <li>
+                <div class="check-circle">✓</div>
+                <span>Full name (first + family name)</span>
+                <span class="points">2 pts</span>
+            </li>
+            <li>
+                <div class="check-circle">✓</div>
+                <span>Correct spelling of surname (N-G-U-Y-E-N)</span>
+                <span class="points">3 pts <span class="challenge-tag">HARD</span></span>
+            </li>
+            <li>
+                <div class="check-circle">✓</div>
+                <span>Date of birth — day, month, year</span>
+                <span class="points">2 pts</span>
+            </li>
+            <li>
+                <div class="check-circle">✓</div>
+                <span>Passport number (exact)</span>
+                <span class="points">3 pts <span class="challenge-tag">HARD</span></span>
+            </li>
+            <li>
+                <div class="check-circle">✓</div>
+                <span>Visa type and number</span>
+                <span class="points">3 pts <span class="challenge-tag">HARD</span></span>
+            </li>
+            <li>
+                <div class="check-circle">✓</div>
+                <span>Start date at meatworks</span>
+                <span class="points">1 pt</span>
+            </li>
+            <li>
+                <div class="check-circle">✓</div>
+                <span>Australian phone number</span>
+                <span class="points">2 pts</span>
+            </li>
+            <li>
+                <div class="check-circle">✓</div>
+                <span>Emergency contact name</span>
+                <span class="points">2 pts</span>
+            </li>
+            <li>
+                <div class="check-circle">✓</div>
+                <span>Emergency contact phone (Vietnam number!)</span>
+                <span class="points">3 pts <span class="challenge-tag">HARD</span></span>
+            </li>
+            <li>
+                <div class="check-circle">✓</div>
+                <span>Weekly rent amount agreed</span>
+                <span class="points">1 pt</span>
+            </li>
+            <li>
+                <div class="check-circle">✓</div>
+                <span>Caught teacher's deliberate mistakes</span>
+                <span class="points">3 pts <span class="challenge-tag">BONUS</span></span>
+            </li>
+        </ul>
+        <p style="margin-top:14px; font-size:13px; color:#888; text-align:right;">
+            <strong>Total: 25 points</strong>
+        </p>
+    </div>
+
+    <a href="student.html" class="btn-next">▶ Start Game — Open Student Form</a>
+
+</div>
+
+<div class="footer">Made with <span>♥</span> by TeeTalk English · Game 2</div>
+</body>
+</html>

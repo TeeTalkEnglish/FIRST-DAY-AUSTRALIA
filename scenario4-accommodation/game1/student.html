@@ -4,15 +4,541 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Page — Checking Into Accommodation</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+
+/* ===== RESET ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fdf0f0;
+    color: #333;
+    min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+.header {
+    background: linear-gradient(135deg, #e8524a, #c0392b);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.header .scenario-tag {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.header p { font-size: 14px; opacity: 0.85; }
+
+/* ===== NAV ===== */
+.nav-tabs {
+    display: flex;
+    background: white;
+    border-bottom: 3px solid #e8524a;
+    overflow-x: auto;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.nav-tabs a {
+    padding: 14px 20px;
+    text-decoration: none;
+    color: #666;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    transition: all 0.2s;
+}
+
+.nav-tabs a:hover { color: #e8524a; background: #fff5f5; }
+.nav-tabs a.active {
+    color: #e8524a;
+    border-bottom: 3px solid #e8524a;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px 20px 80px;
+}
+
+/* ===== STICKY PROGRESS ===== */
+.progress-bar-area {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.progress-top span {
+    font-size: 12px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.progress-top .step-count {
+    color: #e8524a;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.progress-track {
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #e8524a, #c0392b);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+
+/* ===== SCENE LABEL ===== */
+.scene-label {
+    background: #333;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ===== DIALOG CARD ===== */
+.dialog-card {
+    background: white;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+    display: none;
+    margin-bottom: 20px;
+}
+
+.dialog-card.active { display: block; }
+
+/* ===== STEP BADGE ===== */
+.step-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #fdf0f0;
+}
+
+.step-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e8524a, #c0392b);
+    color: white;
+    font-size: 15px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.step-badge .step-info h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+}
+
+.step-badge .step-info p {
+    font-size: 12px;
+    color: #aaa;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* ===== LISTENING BOX ===== */
+.listening-box {
+    background: #f8f8f8;
+    border: 2px dashed #ddd;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.listening-icon {
+    font-size: 30px;
+    flex-shrink: 0;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.15); opacity: 0.7; }
+}
+
+.listen-text h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 3px;
+}
+
+.listen-text p { font-size: 13px; color: #aaa; }
+
+/* ===== DIVIDER ===== */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.divider .line { flex: 1; height: 1px; background: #f0f0f0; }
+.divider span {
+    font-size: 11px;
+    color: #ccc;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ===== FADE IN ===== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== HINT 1 BUTTON ===== */
+.btn-hint1 {
+    width: 100%;
+    padding: 13px;
+    background: #fff8e1;
+    border: 2px dashed #f39c12;
+    border-radius: 12px;
+    color: #e67e22;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.btn-hint1:hover {
+    background: #fdebd0;
+    border-color: #e67e22;
+    transform: translateY(-1px);
+}
+
+/* ===== HINT 1 BOX ===== */
+.hint1-box {
+    display: none;
+    background: #fff8e1;
+    border: 2px solid #f39c12;
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    animation: fadeIn 0.3s ease;
+}
+
+.hint1-box.show { display: block; }
+
+/* ===== HINT 2 BUTTON ===== */
+.btn-hint2 {
+    width: 100%;
+    padding: 11px;
+    background: #fef9f0;
+    border: 2px dashed #e67e22;
+    border-radius: 12px;
+    color: #ca6f1e;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.btn-hint2.show { display: flex; }
+
+.btn-hint2:hover {
+    background: #fdebd0;
+    border-color: #ca6f1e;
+    transform: translateY(-1px);
+}
+
+/* ===== HINT 2 BOX ===== */
+.hint2-box {
+    display: none;
+    background: #fef5e7;
+    border: 2px solid #e67e22;
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    animation: fadeIn 0.3s ease;
+}
+
+.hint2-box.show { display: block; }
+
+/* ===== HINT LABELS ===== */
+.hint-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.hint1-box .hint-label { color: #f39c12; }
+.hint2-box .hint-label { color: #e67e22; }
+
+.hint-text {
+    font-size: 14px;
+    color: #777;
+    line-height: 1.8;
+}
+
+.hint-text strong { color: #e8524a; font-weight: 700; }
+
+/* ===== SHOW ANSWER BUTTON ===== */
+.btn-reveal {
+    display: none;
+    width: 100%;
+    padding: 12px;
+    background: none;
+    border: 2px solid #e8524a;
+    border-radius: 12px;
+    color: #e8524a;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.btn-reveal.show { display: flex; }
+.btn-reveal:hover { background: #e8524a; color: white; }
+
+/* ===== ANSWER AREA ===== */
+.answer-area {
+    display: none;
+    animation: fadeIn 0.3s ease;
+    margin-bottom: 14px;
+}
+
+.answer-area.show { display: block; }
+
+.answer-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #e8524a;
+    margin-bottom: 8px;
+    text-align: right;
+}
+
+.answer-bubble {
+    background: linear-gradient(135deg, #e8524a, #c0392b);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 18px;
+    border-bottom-right-radius: 4px;
+    font-size: 15px;
+    line-height: 1.7;
+    float: right;
+    max-width: 90%;
+}
+
+.clear { clear: both; }
+
+/* ===== NEXT BUTTON ===== */
+.btn-next {
+    display: none;
+    width: 100%;
+    padding: 14px;
+    background: #27ae60;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.btn-next.show { display: flex; }
+
+.btn-next:hover {
+    background: #219a52;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(39,174,96,0.35);
+}
+
+/* ===== COMPLETION CARD ===== */
+.completion-card {
+    display: none;
+    background: linear-gradient(135deg, #27ae60, #1e8449);
+    color: white;
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(39,174,96,0.3);
+    animation: fadeIn 0.4s ease;
+}
+
+.completion-card.show { display: block; }
+
+.star-icon {
+    font-size: 60px;
+    display: block;
+    margin-bottom: 14px;
+}
+
+.completion-card h2 { font-size: 26px; margin-bottom: 10px; }
+
+.completion-card p {
+    font-size: 15px;
+    opacity: 0.9;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.completion-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.btn-comp {
+    display: block;
+    padding: 13px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.btn-comp:hover { transform: translateY(-2px); }
+.btn-comp.white { background: white; color: #27ae60; }
+.btn-comp.outline {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.5);
+}
+
+/* ===== VOCAB TABLE ===== */
+.vocab-card {
+    background: white;
+    border-radius: 14px;
+    margin-top: 24px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+}
+
+.vocab-card table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.vocab-card th {
+    background: #e8524a;
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.vocab-card td {
+    padding: 11px 16px;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.vocab-card tr:last-child td { border-bottom: none; }
+.vocab-card tr:nth-child(even) td { background: #fdf5f5; }
+
+/* ===== FOOTER ===== */
+.footer {
+    text-align: center;
+    padding: 30px;
+    font-size: 13px;
+    color: #aaa;
+}
+
+.footer span { color: #e8524a; }
+
+@media (max-width: 500px) {
+    .header h1 { font-size: 20px; }
+    .completion-buttons { grid-template-columns: 1fr; }
+    .answer-bubble { font-size: 14px; }
+}
+
+    </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <div class="header">
-    <div class="scenario-tag">👩 Student Page</div>
+    <div class="scenario-tag">👩 Student Page · Game 1</div>
     <h1>Checking Into Accommodation</h1>
-    <p>You are Mai — read your lines and speak out loud!</p>
+    <p>🎧 Listen → 💡 Hint → 🗣️ Speak → ✅ Next</p>
 </div>
 
 <!-- NAV -->
@@ -23,123 +549,1185 @@
     <a href="vocabulary.html">📝 Vocabulary</a>
 </nav>
 
-<!-- CONTENT -->
 <div class="container">
 
-    <!-- INSTRUCTIONS -->
-    <div class="card">
-        <h2>📌 Instructions</h2>
+    <!-- STICKY PROGRESS -->
+    <div class="progress-bar-area">
+        <div class="progress-top">
+            <span>🎯 Progress</span>
+            <span class="step-count" id="stepCount">
+                Step 1 of 12
+            </span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 1 — Arrive at the door -->
+    <!-- ======================================== -->
+    <div class="dialog-card active" id="step1">
+
+        <div class="step-badge">
+            <div class="step-circle">1</div>
+            <div class="step-info">
+                <h3>You arrive at the house</h3>
+                <p>Step 1 of 12</p>
+            </div>
+        </div>
+
+        <div class="listening-box">
+            <div class="listening-icon">🎧</div>
+            <div class="listen-text">
+                <h3>Dave opens the door...</h3>
+                <p>Listen carefully to your teacher!</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="line"></div>
+            <span>Now it's your turn!</span>
+            <div class="line"></div>
+        </div>
+
+        <button class="btn-hint1" id="h1btn1"
+            onclick="showHint1('h1box1','h2btn1','h1btn1')">
+            💡 Need a Hint?
+        </button>
+
+        <div class="hint1-box" id="h1box1">
+            <div class="hint-label">💡 Hint</div>
+            <div class="hint-text">
+                Greet Dave and tell him 
+                <strong>who you are</strong>.<br>
+                Tell him you have a 
+                <strong>booking for a room</strong>.
+            </div>
+        </div>
+
+        <button class="btn-hint2" id="h2btn1"
+            onclick="showHint2('h2box1','rev1','h2btn1')">
+            💡 Need more help?
+        </button>
+
+        <div class="hint2-box" id="h2box1">
+            <div class="hint-label">💡 Starter</div>
+            <div class="hint-text">
+                Start with: 
+                <strong>"Hello? Excuse me... 
+                I am..."</strong>
+            </div>
+        </div>
+
+        <button class="btn-reveal" id="rev1"
+            onclick="showAnswer('ans1','next1',this)">
+            👁 Show Answer
+        </button>
+
+        <div class="answer-area" id="ans1">
+            <div class="answer-label">👩 Kim — Your Answer</div>
+            <div class="answer-bubble">
+                "Hello? Excuse me...<br>
+                I am Kim. I book a room here?"
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button class="btn-next" id="next1"
+            onclick="goNext('step1','step2',1)">
+            ✅ Next →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 2 — Give full name -->
+    <!-- ======================================== -->
+    <div class="dialog-card" id="step2">
+
+        <div class="step-badge">
+            <div class="step-circle">2</div>
+            <div class="step-info">
+                <h3>Dave asks your full name</h3>
+                <p>Step 2 of 12</p>
+            </div>
+        </div>
+
+        <div class="listening-box">
+            <div class="listening-icon">🎧</div>
+            <div class="listen-text">
+                <h3>Dave is speaking...</h3>
+                <p>Listen carefully to your teacher!</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="line"></div>
+            <span>Now it's your turn!</span>
+            <div class="line"></div>
+        </div>
+
+        <button class="btn-hint1" id="h1btn2"
+            onclick="showHint1('h1box2','h2btn2','h1btn2')">
+            💡 Need a Hint?
+        </button>
+
+        <div class="hint1-box" id="h1box2">
+            <div class="hint-label">💡 Hint</div>
+            <div class="hint-text">
+                Say your <strong>full name</strong> 
+                clearly.<br>
+                <strong>Spell</strong> your family name 
+                letter by letter — it is difficult 
+                for Australians!<br>
+                Also tell Dave when you 
+                <strong>start work</strong>.
+            </div>
+        </div>
+
+        <button class="btn-hint2" id="h2btn2"
+            onclick="showHint2('h2box2','rev2','h2btn2')">
+            💡 Need more help?
+        </button>
+
+        <div class="hint2-box" id="h2box2">
+            <div class="hint-label">💡 Starter</div>
+            <div class="hint-text">
+                Start with: 
+                <strong>"Yes, my name is..."</strong>
+            </div>
+        </div>
+
+        <button class="btn-reveal" id="rev2"
+            onclick="showAnswer('ans2','next2',this)">
+            👁 Show Answer
+        </button>
+
+        <div class="answer-area" id="ans2">
+            <div class="answer-label">👩 Kim — Your Answer</div>
+            <div class="answer-bubble">
+                "Yes, my name is Kim Huynh.<br>
+                H — U — Y — N — H.<br>
+                I start work at the meatworks 
+                on Monday."
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button class="btn-next" id="next2"
+            onclick="goNext('step2','step3',2)">
+            ✅ Next →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 3 — Ask to see the room -->
+    <!-- ======================================== -->
+    <div class="dialog-card" id="step3">
+
+        <div class="step-badge">
+            <div class="step-circle">3</div>
+            <div class="step-info">
+                <h3>Dave welcomes you inside</h3>
+                <p>Step 3 of 12</p>
+            </div>
+        </div>
+
+        <div class="listening-box">
+            <div class="listening-icon">🎧</div>
+            <div class="listen-text">
+                <h3>Dave is speaking...</h3>
+                <p>Listen carefully to your teacher!</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="line"></div>
+            <span>Now it's your turn!</span>
+            <div class="line"></div>
+        </div>
+
+        <button class="btn-hint1" id="h1btn3"
+            onclick="showHint1('h1box3','h2btn3','h1btn3')">
+            💡 Need a Hint?
+        </button>
+
+        <div class="hint1-box" id="h1box3">
+            <div class="hint-label">💡 Hint</div>
+            <div class="hint-text">
+                Say <strong>thank you</strong> to Dave.<br>
+                Ask if you can 
+                <strong>see your room</strong> — 
+                use polite English!
+            </div>
+        </div>
+
+        <button class="btn-hint2" id="h2btn3"
+            onclick="showHint2('h2box3','rev3','h2btn3')">
+            💡 Need more help?
+        </button>
+
+        <div class="hint2-box" id="h2box3">
+            <div class="hint-label">💡 Starter</div>
+            <div class="hint-text">
+                Use polite language: 
+                <strong>"Can I please...?"</strong>
+            </div>
+        </div>
+
+        <button class="btn-reveal" id="rev3"
+            onclick="showAnswer('ans3','next3',this)">
+            👁 Show Answer
+        </button>
+
+        <div class="answer-area" id="ans3">
+            <div class="answer-label">👩 Kim — Your Answer</div>
+            <div class="answer-bubble">
+                "Thank you, Dave.<br>
+                Can I please see my room?"
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button class="btn-next" id="next3"
+            onclick="goNext('step3','step4',3)">
+            ✅ Next →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 4 — Ask about the bathroom -->
+    <!-- ======================================== -->
+    <div class="dialog-card" id="step4">
+
+        <div class="step-badge">
+            <div class="step-circle">4</div>
+            <div class="step-info">
+                <h3>Dave shows you the room & bathroom</h3>
+                <p>Step 4 of 12</p>
+            </div>
+        </div>
+
+        <div class="listening-box">
+            <div class="listening-icon">🎧</div>
+            <div class="listen-text">
+                <h3>Dave is speaking...</h3>
+                <p>Listen carefully to your teacher!</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="line"></div>
+            <span>Now it's your turn!</span>
+            <div class="line"></div>
+        </div>
+
+        <button class="btn-hint1" id="h1btn4"
+            onclick="showHint1('h1box4','h2btn4','h1btn4')">
+            💡 Need a Hint?
+        </button>
+
+        <div class="hint1-box" id="h1box4">
+            <div class="hint-label">💡 Hint</div>
+            <div class="hint-text">
+                Dave told you the bathroom is 
+                <strong>shared</strong>.<br>
+                Ask him <strong>how many people</strong> 
+                share the bathroom.<br>
+                Also ask what 
+                <strong>time</strong> you can use it 
+                in the morning.
+            </div>
+        </div>
+
+        <button class="btn-hint2" id="h2btn4"
+            onclick="showHint2('h2box4','rev4','h2btn4')">
+            💡 Need more help?
+        </button>
+
+        <div class="hint2-box" id="h2box4">
+            <div class="hint-label">💡 Starter</div>
+            <div class="hint-text">
+                Try: 
+                <strong>"How many people...?"</strong> 
+                and 
+                <strong>"What time can I...?"</strong>
+            </div>
+        </div>
+
+        <button class="btn-reveal" id="rev4"
+            onclick="showAnswer('ans4','next4',this)">
+            👁 Show Answer
+        </button>
+
+        <div class="answer-area" id="ans4">
+            <div class="answer-label">👩 Kim — Your Answer</div>
+            <div class="answer-bubble">
+                "How many people share the bathroom?<br>
+                And what time can I use it 
+                in the morning?<br>
+                I start work very early."
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button class="btn-next" id="next4"
+            onclick="goNext('step4','step5',4)">
+            ✅ Next →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 5 — Ask about the washing machine -->
+    <!-- ======================================== -->
+    <div class="dialog-card" id="step5">
+
+        <div class="step-badge">
+            <div class="step-circle">5</div>
+            <div class="step-info">
+                <h3>Dave explains the bathroom rules</h3>
+                <p>Step 5 of 12</p>
+            </div>
+        </div>
+
+        <div class="listening-box">
+            <div class="listening-icon">🎧</div>
+            <div class="listen-text">
+                <h3>Dave is speaking...</h3>
+                <p>Listen carefully to your teacher!</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="line"></div>
+            <span>Now it's your turn!</span>
+            <div class="line"></div>
+        </div>
+
+        <button class="btn-hint1" id="h1btn5"
+            onclick="showHint1('h1box5','h2btn5','h1btn5')">
+            💡 Need a Hint?
+        </button>
+
+        <div class="hint1-box" id="h1box5">
+            <div class="hint-label">💡 Hint</div>
+            <div class="hint-text">
+                Ask Dave about the 
+                <strong>washing machine</strong>.<br>
+                Is there one you can use?<br>
+                Where is it? How much does it cost?
+            </div>
+        </div>
+
+        <button class="btn-hint2" id="h2btn5"
+            onclick="showHint2('h2box5','rev5','h2btn5')">
+            💡 Need more help?
+        </button>
+
+        <div class="hint2-box" id="h2box5">
+            <div class="hint-label">💡 Starter</div>
+            <div class="hint-text">
+                Try: 
+                <strong>"Is there a washing 
+                machine...?"</strong>
+            </div>
+        </div>
+
+        <button class="btn-reveal" id="rev5"
+            onclick="showAnswer('ans5','next5',this)">
+            👁 Show Answer
+        </button>
+
+        <div class="answer-area" id="ans5">
+            <div class="answer-label">👩 Kim — Your Answer</div>
+            <div class="answer-bubble">
+                "Is there a washing machine 
+                I can use?<br>
+                Where is it? And is it free?"
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button class="btn-next" id="next5"
+            onclick="goNext('step5','step6',5)">
+            ✅ Next →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 6 — Ask about the kitchen -->
+    <!-- ======================================== -->
+    <div class="dialog-card" id="step6">
+
+        <div class="step-badge">
+            <div class="step-circle">6</div>
+            <div class="step-info">
+                <h3>Dave explains the laundry</h3>
+                <p>Step 6 of 12</p>
+            </div>
+        </div>
+
+        <div class="listening-box">
+            <div class="listening-icon">🎧</div>
+            <div class="listen-text">
+                <h3>Dave is speaking...</h3>
+                <p>Listen carefully to your teacher!</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="line"></div>
+            <span>Now it's your turn!</span>
+            <div class="line"></div>
+        </div>
+
+        <button class="btn-hint1" id="h1btn6"
+            onclick="showHint1('h1box6','h2btn6','h1btn6')">
+            💡 Need a Hint?
+        </button>
+
+        <div class="hint1-box" id="h1box6">
+            <div class="hint-label">💡 Hint</div>
+            <div class="hint-text">
+                Ask Dave about the 
+                <strong>kitchen</strong>.<br>
+                Can you cook your own food?<br>
+                Can you keep food in the 
+                <strong>fridge</strong>?<br>
+                Is the kitchen 
+                <strong>shared</strong>?
+            </div>
+        </div>
+
+        <button class="btn-hint2" id="h2btn6"
+            onclick="showHint2('h2box6','rev6','h2btn6')">
+            💡 Need more help?
+        </button>
+
+        <div class="hint2-box" id="h2box6">
+            <div class="hint-label">💡 Starter</div>
+            <div class="hint-text">
+                Try: 
+                <strong>"Can I use the kitchen...?"</strong> 
+                and 
+                <strong>"Is there a fridge...?"</strong>
+            </div>
+        </div>
+
+        <button class="btn-reveal" id="rev6"
+            onclick="showAnswer('ans6','next6',this)">
+            👁 Show Answer
+        </button>
+
+        <div class="answer-area" id="ans6">
+            <div class="answer-label">👩 Kim — Your Answer</div>
+            <div class="answer-bubble">
+                "Can I use the kitchen to cook?<br>
+                Is there a fridge I can use?<br>
+                I like to cook Vietnamese food."
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button class="btn-next" id="next6"
+            onclick="goNext('step6','step7',6)">
+            ✅ Next →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 7 — Ask about Wi-Fi -->
+    <!-- ======================================== -->
+    <div class="dialog-card" id="step7">
+
+        <div class="step-badge">
+            <div class="step-circle">7</div>
+            <div class="step-info">
+                <h3>Dave explains the kitchen rules</h3>
+                <p>Step 7 of 12</p>
+            </div>
+        </div>
+
+        <div class="listening-box">
+            <div class="listening-icon">🎧</div>
+            <div class="listen-text">
+                <h3>Dave is speaking...</h3>
+                <p>Listen carefully to your teacher!</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="line"></div>
+            <span>Now it's your turn!</span>
+            <div class="line"></div>
+        </div>
+
+        <button class="btn-hint1" id="h1btn7"
+            onclick="showHint1('h1box7','h2btn7','h1btn7')">
+            💡 Need a Hint?
+        </button>
+
+        <div class="hint1-box" id="h1box7">
+            <div class="hint-label">💡 Hint</div>
+            <div class="hint-text">
+                Ask Dave about the 
+                <strong>Wi-Fi internet</strong>.<br>
+                Is there Wi-Fi in the house?<br>
+                What is the 
+                <strong>password</strong>?<br>
+                You need to call your 
+                family in Vietnam!
+            </div>
+        </div>
+
+        <button class="btn-hint2" id="h2btn7"
+            onclick="showHint2('h2box7','rev7','h2btn7')">
+            💡 Need more help?
+        </button>
+
+        <div class="hint2-box" id="h2box7">
+            <div class="hint-label">💡 Starter</div>
+            <div class="hint-text">
+                Try: 
+                <strong>"Is there Wi-Fi...?"</strong> 
+                and 
+                <strong>"What is the password...?"</strong>
+            </div>
+        </div>
+
+        <button class="btn-reveal" id="rev7"
+            onclick="showAnswer('ans7','next7',this)">
+            👁 Show Answer
+        </button>
+
+        <div class="answer-area" id="ans7">
+            <div class="answer-label">👩 Kim — Your Answer</div>
+            <div class="answer-bubble">
+                "Is there Wi-Fi in the house?<br>
+                What is the password please?<br>
+                I need to call my family 
+                in Vietnam."
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button class="btn-next" id="next7"
+            onclick="goNext('step7','step8',7)">
+            ✅ Next →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 8 — Ask about rubbish and cleaning -->
+    <!-- ======================================== -->
+    <div class="dialog-card" id="step8">
+
+        <div class="step-badge">
+            <div class="step-circle">8</div>
+            <div class="step-info">
+                <h3>Dave gives you the Wi-Fi password</h3>
+                <p>Step 8 of 12</p>
+            </div>
+        </div>
+
+        <div class="listening-box">
+            <div class="listening-icon">🎧</div>
+            <div class="listen-text">
+                <h3>Dave is speaking...</h3>
+                <p>Listen carefully to your teacher!</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="line"></div>
+            <span>Now it's your turn!</span>
+            <div class="line"></div>
+        </div>
+
+        <button class="btn-hint1" id="h1btn8"
+            onclick="showHint1('h1box8','h2btn8','h1btn8')">
+            💡 Need a Hint?
+        </button>
+
+        <div class="hint1-box" id="h1box8">
+            <div class="hint-label">💡 Hint</div>
+            <div class="hint-text">
+                Ask Dave about 
+                <strong>rubbish</strong> — 
+                where do you put it?<br>
+                Ask about 
+                <strong>cleaning</strong> — 
+                who cleans the 
+                shared areas?<br>
+                Is there a 
+                <strong>cleaning schedule</strong>?
+            </div>
+        </div>
+
+        <button class="btn-hint2" id="h2btn8"
+            onclick="showHint2('h2box8','rev8','h2btn8')">
+            💡 Need more help?
+        </button>
+
+        <div class="hint2-box" id="h2box8">
+            <div class="hint-label">💡 Starter</div>
+            <div class="hint-text">
+                Try: 
+                <strong>"Where do I put 
+                the rubbish?"</strong> 
+                and 
+                <strong>"Who cleans...?"</strong>
+            </div>
+        </div>
+
+        <button class="btn-reveal" id="rev8"
+            onclick="showAnswer('ans8','next8',this)">
+            👁 Show Answer
+        </button>
+
+        <div class="answer-area" id="ans8">
+            <div class="answer-label">👩 Kim — Your Answer</div>
+            <div class="answer-bubble">
+                "Where do I put the rubbish?<br>
+                And who cleans the kitchen 
+                and bathroom?<br>
+                Is there a cleaning schedule?"
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button class="btn-next" id="next8"
+            onclick="goNext('step8','step9',8)">
+            ✅ Next →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 9 — Ask about quiet time -->
+    <!-- ======================================== -->
+    <div class="dialog-card" id="step9">
+
+        <div class="step-badge">
+            <div class="step-circle">9</div>
+            <div class="step-info">
+                <h3>Dave explains the cleaning roster</h3>
+                <p>Step 9 of 12</p>
+            </div>
+        </div>
+
+        <div class="listening-box">
+            <div class="listening-icon">🎧</div>
+            <div class="listen-text">
+                <h3>Dave is speaking...</h3>
+                <p>Listen carefully to your teacher!</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="line"></div>
+            <span>Now it's your turn!</span>
+            <div class="line"></div>
+        </div>
+
+        <button class="btn-hint1" id="h1btn9"
+            onclick="showHint1('h1box9','h2btn9','h1btn9')">
+            💡 Need a Hint?
+        </button>
+
+        <div class="hint1-box" id="h1box9">
+            <div class="hint-label">💡 Hint</div>
+            <div class="hint-text">
+                Ask what time you must be 
+                <strong>quiet at night</strong>.<br>
+                Tell him you start work 
+                <strong>very early in the morning</strong> 
+                — 5am!<br>
+                Ask if it is okay to 
+                <strong>leave early</strong> 
+                without making noise.
+            </div>
+        </div>
+
+        <button class="btn-hint2" id="h2btn9"
+            onclick="showHint2('h2box9','rev9','h2btn9')">
+            💡 Need more help?
+        </button>
+
+        <div class="hint2-box" id="h2box9">
+            <div class="hint-label">💡 Starter</div>
+            <div class="hint-text">
+                Try: 
+                <strong>"What time must I 
+                be quiet...?"</strong>
+            </div>
+        </div>
+
+        <button class="btn-reveal" id="rev9"
+            onclick="showAnswer('ans9','next9',this)">
+            👁 Show Answer
+        </button>
+
+        <div class="answer-area" id="ans9">
+            <div class="answer-label">👩 Kim — Your Answer</div>
+            <div class="answer-bubble">
+                "What time must I be quiet at night?<br>
+                My work starts at 5am every morning.<br>
+                Is it okay if I leave early 
+                and try not to make noise?"
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button class="btn-next" id="next9"
+            onclick="goNext('step9','step10',9)">
+            ✅ Next →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 10 — Ask about paying rent -->
+    <!-- ======================================== -->
+    <div class="dialog-card" id="step10">
+
+        <div class="step-badge">
+            <div class="step-circle">10</div>
+            <div class="step-info">
+                <h3>Dave explains quiet time rules</h3>
+                <p>Step 10 of 12</p>
+            </div>
+        </div>
+
+        <div class="listening-box">
+            <div class="listening-icon">🎧</div>
+            <div class="listen-text">
+                <h3>Dave is speaking...</h3>
+                <p>Listen carefully to your teacher!</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="line"></div>
+            <span>Now it's your turn!</span>
+            <div class="line"></div>
+        </div>
+
+        <button class="btn-hint1" id="h1btn10"
+            onclick="showHint1('h1box10','h2btn10','h1btn10')">
+            💡 Need a Hint?
+        </button>
+
+        <div class="hint1-box" id="h1box10">
+            <div class="hint-label">💡 Hint</div>
+            <div class="hint-text">
+                Ask Dave about paying 
+                <strong>rent</strong>.<br>
+                How much is it 
+                <strong>per week</strong>?<br>
+                <strong>When</strong> do you pay — 
+                every week or every fortnight?<br>
+                <strong>How</strong> do you pay — 
+                cash or bank transfer?
+            </div>
+        </div>
+
+        <button class="btn-hint2" id="h2btn10"
+            onclick="showHint2('h2box10','rev10','h2btn10')">
+            💡 Need more help?
+        </button>
+
+        <div class="hint2-box" id="h2box10">
+            <div class="hint-label">💡 Starter</div>
+            <div class="hint-text">
+                Try: 
+                <strong>"How much is the 
+                rent...?"</strong> 
+                and 
+                <strong>"How do I pay...?"</strong>
+            </div>
+        </div>
+
+        <button class="btn-reveal" id="rev10"
+            onclick="showAnswer('ans10','next10',this)">
+            👁 Show Answer
+        </button>
+
+        <div class="answer-area" id="ans10">
+            <div class="answer-label">👩 Kim — Your Answer</div>
+            <div class="answer-bubble">
+                "How much is the rent per week?<br>
+                When do I pay — every week 
+                or every two weeks?<br>
+                And how do I pay — 
+                cash or bank transfer?"
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button class="btn-next" id="next10"
+            onclick="goNext('step10','step11',10)">
+            ✅ Next →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 11 — Ask about emergency contact -->
+    <!-- ======================================== -->
+    <div class="dialog-card" id="step11">
+
+        <div class="step-badge">
+            <div class="step-circle">11</div>
+            <div class="step-info">
+                <h3>Dave explains the rent and payment</h3>
+                <p>Step 11 of 12</p>
+            </div>
+        </div>
+
+        <div class="listening-box">
+            <div class="listening-icon">🎧</div>
+            <div class="listen-text">
+                <h3>Dave is speaking...</h3>
+                <p>Listen carefully to your teacher!</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="line"></div>
+            <span>Now it's your turn!</span>
+            <div class="line"></div>
+        </div>
+
+        <button class="btn-hint1" id="h1btn11"
+            onclick="showHint1('h1box11','h2btn11','h1btn11')">
+            💡 Need a Hint?
+        </button>
+
+        <div class="hint1-box" id="h1box11">
+            <div class="hint-label">💡 Hint</div>
+            <div class="hint-text">
+                Ask Dave — what if something 
+                <strong>breaks</strong> in your room?<br>
+                Who do you call if there is a 
+                <strong>problem</strong> 
+                at night or on weekends?<br>
+                Ask for his 
+                <strong>phone number</strong>.
+            </div>
+        </div>
+
+        <button class="btn-hint2" id="h2btn11"
+            onclick="showHint2('h2box11','rev11','h2btn11')">
+            💡 Need more help?
+        </button>
+
+        <div class="hint2-box" id="h2box11">
+            <div class="hint-label">💡 Starter</div>
+            <div class="hint-text">
+                Try: 
+                <strong>"What do I do 
+                if there is a problem...?"</strong> 
+                and 
+                <strong>"Can I have your 
+                phone number?"</strong>
+            </div>
+        </div>
+
+        <button class="btn-reveal" id="rev11"
+            onclick="showAnswer('ans11','next11',this)">
+            👁 Show Answer
+        </button>
+
+        <div class="answer-area" id="ans11">
+            <div class="answer-label">👩 Kim — Your Answer</div>
+            <div class="answer-bubble">
+                "What do I do if something 
+                breaks in my room?<br>
+                Who do I call if there is 
+                a problem at night?<br>
+                Can I please have 
+                your phone number?"
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button class="btn-next" id="next11"
+            onclick="goNext('step11','step12',11)">
+            ✅ Next →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 12 — Say goodbye and thank you -->
+    <!-- ======================================== -->
+    <div class="dialog-card" id="step12">
+
+        <div class="step-badge">
+            <div class="step-circle">12</div>
+            <div class="step-info">
+                <h3>Dave gives you his number 🎉</h3>
+                <p>Step 12 of 12 — Final Step!</p>
+            </div>
+        </div>
+
+        <div class="listening-box">
+            <div class="listening-icon">🎧</div>
+            <div class="listen-text">
+                <h3>Dave is speaking...</h3>
+                <p>Last one! Listen carefully!</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="line"></div>
+            <span>Your final answer!</span>
+            <div class="line"></div>
+        </div>
+
+        <button class="btn-hint1" id="h1btn12"
+            onclick="showHint1('h1box12','h2btn12','h1btn12')">
+            💡 Need a Hint?
+        </button>
+
+        <div class="hint1-box" id="h1box12">
+            <div class="hint-label">💡 Hint</div>
+            <div class="hint-text">
+                This is your 
+                <strong>last thing to say</strong>!<br>
+                Tell Dave you 
+                <strong>understand everything</strong>.<br>
+                Say <strong>thank you</strong> for 
+                showing you around.<br>
+                Tell him you are 
+                <strong>happy to live here</strong>.<br>
+                Say you are looking forward to 
+                <strong>starting work</strong>!
+            </div>
+        </div>
+
+        <button class="btn-hint2" id="h2btn12"
+            onclick="showHint2('h2box12','rev12','h2btn12')">
+            💡 Need more help?
+        </button>
+
+        <div class="hint2-box" id="h2box12">
+            <div class="hint-label">💡 Starter</div>
+            <div class="hint-text">
+                Start with: 
+                <strong>"I understand everything. 
+                Thank you so much..."</strong>
+            </div>
+        </div>
+
+        <button class="btn-reveal" id="rev12"
+            onclick="showAnswer('ans12','next12',this)">
+            👁 Show Answer
+        </button>
+
+        <div class="answer-area" id="ans12">
+            <div class="answer-label">👩 Kim — Your Answer</div>
+            <div class="answer-bubble">
+                "I understand everything. 
+                Thank you so much, Dave.<br>
+                You are very kind. 
+                I am very happy to live here.<br>
+                I am excited to start work 
+                on Monday.<br>
+                I will be a good tenant — 
+                I promise!"
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <button class="btn-next" id="next12"
+            onclick="finishGame()">
+            🎉 Finish!
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- COMPLETION CARD -->
+    <!-- ======================================== -->
+    <div class="completion-card" id="completionCard">
+        <span class="star-icon">🌟</span>
+        <h2>Outstanding, Kim!</h2>
         <p>
-            You are <strong>Mai</strong>. Read the 🔴 <strong style="color:#e8524a">red bubbles</strong> out loud.<br><br>
-            The landlord's lines are <strong>hidden</strong> — listen to your teacher or partner.<br><br>
-            Try to speak naturally. Don't worry about mistakes! 💪
+            You completed all <strong>12 steps</strong>!<br>
+            You had a full conversation with 
+            your Australian landlord.<br>
+            You asked about the room, bathroom, 
+            kitchen, Wi-Fi, rent and more!<br><br>
+            <strong>Excellent English! 💪🇦🇺</strong>
         </p>
-    </div>
-
-    <!-- SCENE -->
-    <div class="section-header">
-        <div class="bar"></div>
-        <h2>Scene — Arriving at the House</h2>
-    </div>
-
-    <!-- CONVERSATION -->
-    <div class="chat-bubble mai">
-        <div class="bubble-name">👩 Mai (YOU)</div>
-        <div class="bubble-text">
-            *(knocks on door)*<br>
-            "Hello? Excuse me... I am Mai. I book a room here?"
+        <div style="background:rgba(255,255,255,0.15);
+                    border-radius:12px; padding:14px;
+                    margin-bottom:20px;">
+            <p style="font-size:13px; margin-bottom:6px;">
+                🔥 <strong>Challenge:</strong>
+            </p>
+            <p style="font-size:13px;">
+                Try again using 
+                <strong>zero hints</strong>! 
+                Can you remember all 12 answers?
+            </p>
+        </div>
+        <div class="completion-buttons">
+            <a href="student.html" class="btn-comp white">
+                🔄 Try Again
+            </a>
+            <a href="vocabulary.html" class="btn-comp outline">
+                📝 Vocabulary
+            </a>
         </div>
     </div>
 
-    <div class="chat-bubble dave">
-        <div class="bubble-name">👨 Dave (Landlord)</div>
-        <div class="hidden-line">🎧 Listen to your teacher or partner...</div>
-    </div>
-
-    <div class="chat-bubble mai">
-        <div class="bubble-name">👩 Mai (YOU)</div>
-        <div class="bubble-text">
-            "Yes, my name is Mai Nguyen. N-G-U-Y-E-N.<br>
-            I start work at the meatworks on Monday."
-        </div>
-    </div>
-
-    <div class="chat-bubble dave">
-        <div class="bubble-name">👨 Dave (Landlord)</div>
-        <div class="hidden-line">🎧 Listen to your teacher or partner...</div>
-    </div>
-
-    <div class="chat-bubble mai">
-        <div class="bubble-name">👩 Mai (YOU)</div>
-        <div class="bubble-text">
-            "Thank you. Can I please see my room?"
-        </div>
-    </div>
-
-    <div class="chat-bubble dave">
-        <div class="bubble-name">👨 Dave (Landlord)</div>
-        <div class="hidden-line">🎧 Listen to your teacher or partner...</div>
-    </div>
-
-    <div class="chat-bubble mai">
-        <div class="bubble-name">👩 Mai (YOU)</div>
-        <div class="bubble-text">
-            "Is there a washing machine I can use?"
-        </div>
-    </div>
-
-    <div class="chat-bubble dave">
-        <div class="bubble-name">👨 Dave (Landlord)</div>
-        <div class="hidden-line">🎧 Listen to your teacher or partner...</div>
-    </div>
-
-    <div class="chat-bubble mai">
-        <div class="bubble-name">👩 Mai (YOU)</div>
-        <div class="bubble-text">
-            "What time must I be quiet at night?<br>
-            My work starts very early."
-        </div>
-    </div>
-
-    <div class="chat-bubble dave">
-        <div class="bubble-name">👨 Dave (Landlord)</div>
-        <div class="hidden-line">🎧 Listen to your teacher or partner...</div>
-    </div>
-
-    <div class="chat-bubble mai">
-        <div class="bubble-name">👩 Mai (YOU)</div>
-        <div class="bubble-text">
-            "I understand. Thank you very much, Dave.<br>
-            I am happy to stay here."
-        </div>
-    </div>
-
-    <!-- PHRASE REFERENCE -->
-    <div class="section-header">
-        <div class="bar"></div>
-        <h2>Quick Reference — Vietnamese & English</h2>
-    </div>
-
-    <div class="card">
-        <table class="vocab-table">
+    <!-- VOCAB TABLE -->
+    <div class="vocab-card">
+        <table>
             <tr>
                 <th>🇻🇳 Tiếng Việt</th>
                 <th>🇦🇺 English</th>
             </tr>
-            <tr><td>Tôi đã đặt phòng</td><td>I booked a room</td></tr>
-            <tr><td>Tôi có thể xem phòng không?</td><td>Can I see my room?</td></tr>
-            <tr><td>Máy giặt ở đâu?</td><td>Where is the washing machine?</td></tr>
-            <tr><td>Giờ giới nghiêm là mấy giờ?</td><td>What time is quiet time?</td></tr>
-            <tr><td>Cảm ơn rất nhiều</td><td>Thank you very much</td></tr>
-            <tr><td>Tôi hiểu rồi</td><td>I understand</td></tr>
+            <tr>
+                <td>Tôi đã đặt phòng</td>
+                <td>I booked a room</td>
+            </tr>
+            <tr>
+                <td>Tôi có thể xem phòng không?</td>
+                <td>Can I see my room?</td>
+            </tr>
+            <tr>
+                <td>Phòng tắm dùng chung</td>
+                <td>Shared bathroom</td>
+            </tr>
+            <tr>
+                <td>Máy giặt ở đâu?</td>
+                <td>Where is the washing machine?</td>
+            </tr>
+            <tr>
+                <td>Tôi có thể dùng bếp không?</td>
+                <td>Can I use the kitchen?</td>
+            </tr>
+            <tr>
+                <td>Có Wi-Fi không?</td>
+                <td>Is there Wi-Fi?</td>
+            </tr>
+            <tr>
+                <td>Mật khẩu Wi-Fi là gì?</td>
+                <td>What is the Wi-Fi password?</td>
+            </tr>
+            <tr>
+                <td>Tiền thuê nhà là bao nhiêu?</td>
+                <td>How much is the rent?</td>
+            </tr>
+            <tr>
+                <td>Tôi trả tiền bằng cách nào?</td>
+                <td>How do I pay?</td>
+            </tr>
+            <tr>
+                <td>Giờ giới nghiêm là mấy giờ?</td>
+                <td>What time is quiet time?</td>
+            </tr>
+            <tr>
+                <td>Rác để ở đâu?</td>
+                <td>Where do I put the rubbish?</td>
+            </tr>
+            <tr>
+                <td>Nếu có sự cố thì sao?</td>
+                <td>What if there is a problem?</td>
+            </tr>
+            <tr>
+                <td>Cảm ơn rất nhiều</td>
+                <td>Thank you very much</td>
+            </tr>
+            <tr>
+                <td>Tôi rất vui khi ở đây</td>
+                <td>I am very happy to stay here</td>
+            </tr>
         </table>
     </div>
 
-    <!-- NEXT PAGE -->
-    <a href="teacher.html" class="btn-next">Next → Teacher Page (Full Script)</a>
-
 </div>
 
-<div class="footer">Made with <span>♥</span> by TeeTalk English</div>
+<div class="footer">
+    Made with <span>♥</span> by TeeTalk English
+</div>
+
+<script>
+    const TOTAL = 12;
+
+    function showHint1(box1Id, btn2Id, btn1Id) {
+        document.getElementById(box1Id)
+            .classList.add('show');
+        document.getElementById(btn2Id)
+            .classList.add('show');
+        document.getElementById(btn1Id)
+            .style.display = 'none';
+    }
+
+    function showHint2(box2Id, revealId, btn2Id) {
+        document.getElementById(box2Id)
+            .classList.add('show');
+        document.getElementById(revealId)
+            .classList.add('show');
+        document.getElementById(btn2Id)
+            .style.display = 'none';
+    }
+
+    function showAnswer(answerId, nextId, btn) {
+        document.getElementById(answerId)
+            .classList.add('show');
+        document.getElementById(nextId)
+            .classList.add('show');
+        btn.style.display = 'none';
+    }
+
+    function goNext(currentId, nextId, stepNum) {
+        document.getElementById(currentId)
+            .classList.remove('active');
+        const next = document.getElementById(nextId);
+        next.classList.add('active');
+        updateProgress(stepNum + 1);
+        setTimeout(() => {
+            next.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 100);
+    }
+
+    function finishGame() {
+        document.getElementById('step12')
+            .classList.remove('active');
+        const card = document.getElementById('completionCard');
+        card.classList.add('show');
+        updateProgress(12);
+        setTimeout(() => {
+            card.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 100);
+    }
+
+    function updateProgress(step) {
+        const pct = Math.min((step / TOTAL) * 100, 100);
+        document.getElementById('progressFill')
+            .style.width = pct + '%';
+        document.getElementById('stepCount')
+            .textContent = 'Step ' + step + ' of ' + TOTAL;
+    }
+</script>
+
 </body>
 </html>

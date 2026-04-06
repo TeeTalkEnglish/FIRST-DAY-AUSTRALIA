@@ -4,15 +4,477 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Page — Checking Into Accommodation</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+
+/* ===== RESET ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f7ff;
+    color: #333;
+    min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+.header {
+    background: linear-gradient(135deg, #2980b9, #1a5276);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.header .scenario-tag {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.header p { font-size: 14px; opacity: 0.85; }
+
+/* ===== NAV ===== */
+.nav-tabs {
+    display: flex;
+    background: white;
+    border-bottom: 3px solid #3498db;
+    overflow-x: auto;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.nav-tabs a {
+    padding: 14px 20px;
+    text-decoration: none;
+    color: #666;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    transition: all 0.2s;
+}
+
+.nav-tabs a:hover {
+    color: #3498db;
+    background: #f0f7ff;
+}
+
+.nav-tabs a.active {
+    color: #3498db;
+    border-bottom: 3px solid #3498db;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px 20px 80px;
+}
+
+/* ===== STICKY PROGRESS ===== */
+.progress-bar-area {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.progress-top span {
+    font-size: 12px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.progress-top .step-count {
+    color: #3498db;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.progress-track {
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+
+/* ===== QUICK NOTES CARD ===== */
+.notes-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border-left: 5px solid #3498db;
+}
+
+.notes-card h2 {
+    font-size: 15px;
+    color: #3498db;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notes-card ul { list-style: none; padding: 0; }
+
+.notes-card ul li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f7ff;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.notes-card ul li:last-child { border-bottom: none; }
+
+/* ===== STEP CARD ===== */
+.step-card {
+    background: white;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+    display: none;
+    margin-bottom: 20px;
+}
+
+.step-card.active { display: block; }
+
+/* ===== STEP BADGE ===== */
+.step-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #f0f7ff;
+}
+
+.step-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    font-size: 15px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.step-badge .step-info h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+}
+
+.step-badge .step-info p {
+    font-size: 12px;
+    color: #aaa;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* ===== YOUR LINE BOX ===== */
+.your-line-box {
+    background: linear-gradient(135deg, #ebf5fb, #d6eaf8);
+    border: 2px solid #3498db;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.your-line-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #3498db;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.your-line-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a5276;
+    line-height: 1.7;
+}
+
+.your-line-text .action {
+    font-size: 13px;
+    color: #888;
+    font-weight: 400;
+    font-style: italic;
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* ===== SPEAKING TIP ===== */
+.speaking-tip {
+    background: #fffbf0;
+    border: 1px solid #f9e79f;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: #7d6608;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    line-height: 1.6;
+}
+
+.tip-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ===== KIM EXPECTS ===== */
+.kim-expects {
+    background: #fdf5f5;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+}
+
+.kim-expects-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #e8524a;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.kim-expects p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.7;
+}
+
+.kim-expects strong { color: #e8524a; }
+
+/* ===== TEACHING MOMENT ===== */
+.teach-note {
+    background: #f0fff4;
+    border-left: 4px solid #27ae60;
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #1e8449;
+    line-height: 1.7;
+}
+
+.teach-note strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+/* ===== NEXT BUTTON ===== */
+.btn-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+}
+
+.btn-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52,152,219,0.4);
+}
+
+/* ===== FADE IN ===== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== COMPLETION CARD ===== */
+.completion-card {
+    display: none;
+    background: linear-gradient(135deg, #2980b9, #1a5276);
+    color: white;
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(41,128,185,0.3);
+    animation: fadeIn 0.4s ease;
+}
+
+.completion-card.show { display: block; }
+
+.comp-icon {
+    font-size: 56px;
+    display: block;
+    margin-bottom: 14px;
+}
+
+.completion-card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.completion-card p {
+    font-size: 15px;
+    opacity: 0.9;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+/* ===== FEEDBACK CHECKLIST ===== */
+.feedback-box {
+    background: rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.feedback-box p {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.85;
+    font-size: 13px;
+}
+
+.feedback-box label {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    line-height: 1.5;
+}
+
+.feedback-box label:last-child {
+    border-bottom: none;
+}
+
+.feedback-box input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.comp-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.btn-comp {
+    display: block;
+    padding: 13px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-comp:hover { transform: translateY(-2px); }
+.btn-comp.white { background: white; color: #2980b9; }
+.btn-comp.outline {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.5);
+    text-decoration: none;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    text-align: center;
+    padding: 30px;
+    font-size: 13px;
+    color: #aaa;
+}
+
+.footer span { color: #3498db; }
+
+@media (max-width: 500px) {
+    .header h1 { font-size: 20px; }
+    .your-line-text { font-size: 16px; }
+    .comp-buttons { grid-template-columns: 1fr; }
+}
+
+    </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <div class="header">
-    <div class="scenario-tag">👩‍🏫 Teacher Page</div>
+    <div class="scenario-tag">👩‍🏫 Teacher Page · Game 1</div>
     <h1>Checking Into Accommodation</h1>
-    <p>Full script with teaching notes</p>
+    <p>Read Dave's lines out loud. Wait for Kim to respond!</p>
 </div>
 
 <!-- NAV -->
@@ -23,181 +485,1178 @@
     <a href="vocabulary.html">📝 Vocabulary</a>
 </nav>
 
-<!-- CONTENT -->
 <div class="container">
 
-    <!-- TEACHER NOTES -->
-    <div class="note-box">
-        <h3>🎓 Before You Start — Teacher Notes</h3>
+    <!-- QUICK NOTES -->
+    <div class="notes-card">
+        <h2>🎓 Quick Teacher Notes</h2>
         <ul>
-            <li>📌 <strong>Level:</strong> Beginner to Pre-Intermediate</li>
-            <li>📌 <strong>Context:</strong> Vietnamese woman, new meat worker, checking into share house</li>
-            <li>📌 <strong>Grammar Focus:</strong> Polite questions with "Can I...?"</li>
-            <li>📌 <strong>Common Error:</strong> "I book a room" → Correct to "I booked a room" (past tense)</li>
-            <li>📌 <strong>Cultural Note:</strong> Explain Australian slang — G'day, No worries, Mate</li>
-            <li>📌 <strong>Role Play Tip:</strong> Teacher reads Dave's lines, student reads Mai's lines</li>
+            <li>📌 <strong>Level:</strong>&nbsp;
+                Beginner to Pre-Intermediate
+            </li>
+            <li>🎯 <strong>Grammar Focus:</strong>&nbsp;
+                Polite questions — 
+                "Can I please...?" / 
+                "Is there a...?" / 
+                "How much is...?"
+            </li>
+            <li>⚠️ <strong>Common Error:</strong>&nbsp;
+                "I book" → correct to 
+                "I booked" (past tense)
+            </li>
+            <li>🦘 <strong>Slang to explain:</strong>&nbsp;
+                G'day · No worries · Mate · 
+                Sure thing · Out the back · 
+                Fortnight
+            </li>
+            <li>💡 <strong>Tip:</strong>&nbsp;
+                Speak slowly and naturally. 
+                Pause after each question 
+                so Kim has time to think.
+            </li>
+            <li>🎭 <strong>Acting tip:</strong>&nbsp;
+                Be friendly and welcoming 
+                like a real Australian landlord! 
+                Smile and use gestures.
+            </li>
         </ul>
     </div>
 
-    <!-- FULL SCRIPT -->
-    <div class="section-header">
-        <div class="bar"></div>
-        <h2>Full Conversation Script</h2>
-    </div>
-
-    <div class="chat-bubble dave">
-        <div class="bubble-name">👨 Dave (Landlord)</div>
-        <div class="bubble-text">
-            *(opens door)*<br>
-            "G'day! Can I help you, love?"
+    <!-- STICKY PROGRESS -->
+    <div class="progress-bar-area">
+        <div class="progress-top">
+            <span>🎯 Progress</span>
+            <span class="step-count" id="stepCount">
+                Step 1 of 12
+            </span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
         </div>
     </div>
 
-    <div class="chat-bubble mai">
-        <div class="bubble-name">👩 Mai</div>
-        <div class="bubble-text">
-            *(knocks on door)*<br>
-            "Hello? Excuse me... I am Mai. I book a room here?"
+    <!-- ======================================== -->
+    <!-- STEP 1 — Open the door -->
+    <!-- ======================================== -->
+    <div class="step-card active" id="step1">
+
+        <div class="step-badge">
+            <div class="step-circle">1</div>
+            <div class="step-info">
+                <h3>Open the door</h3>
+                <p>Step 1 of 12</p>
+            </div>
         </div>
-    </div>
 
-    <div class="chat-bubble dave">
-        <div class="bubble-name">👨 Dave (Landlord)</div>
-        <div class="bubble-text">
-            "Oh yes! You must be from the agency.<br>
-            What's your full name, mate?"
+        <div class="your-line-box">
+            <div class="your-line-label">
+                🎭 Your Line — Read this out loud!
+            </div>
+            <div class="your-line-text">
+                <span class="action">
+                    *(opens door and smiles)*
+                </span>
+                "G'day! Can I help you, love?"
+            </div>
         </div>
-    </div>
 
-    <div class="chat-bubble mai">
-        <div class="bubble-name">👩 Mai</div>
-        <div class="bubble-text">
-            "Yes, my name is Mai Nguyen. N-G-U-Y-E-N.<br>
-            I start work at the meatworks on Monday."
+        <div class="speaking-tip">
+            <span class="tip-icon">💬</span>
+            <span>
+                Say <strong>"G'day"</strong> 
+                like a friendly Australian! 
+                <strong>"Love"</strong> is 
+                a friendly word — not romantic. 
+                Open the door wide and smile 😊
+            </span>
         </div>
-    </div>
 
-    <div class="chat-bubble dave">
-        <div class="bubble-name">👨 Dave (Landlord)</div>
-        <div class="bubble-text">
-            "Lovely! Welcome, Mai. Come on in —<br>
-            I'll show you around."
+        <div class="kim-expects">
+            <div class="kim-expects-label">
+                👩 Kim should say...
+            </div>
+            <p>
+                She should greet you, say 
+                <strong>her name (Kim)</strong> 
+                and tell you she has a 
+                <strong>booking for a room</strong>.<br>
+                Listen for: 
+                <strong>"Hello... I am Kim... 
+                I book a room here?"</strong>
+            </p>
         </div>
-    </div>
 
-    <div class="chat-bubble mai">
-        <div class="bubble-name">👩 Mai</div>
-        <div class="bubble-text">
-            "Thank you. Can I please see my room?"
+        <div class="teach-note">
+            <strong>📝 Teaching Moment</strong>
+            If Kim says <em>"I book a room"</em> — 
+            that is okay for now. After the game, 
+            teach her: <em>"I <strong>booked</strong> 
+            a room"</em> — past tense is correct!
         </div>
+
+        <button class="btn-next"
+                onclick="goNext('step1','step2',1)">
+            ✅ Kim responded — Next Step →
+        </button>
+
     </div>
 
-    <div class="chat-bubble dave">
-        <div class="bubble-name">👨 Dave (Landlord)</div>
-        <div class="bubble-text">
-            "Sure thing! Your room is down the hall, second door on the left.<br>
-            The bathroom is shared — two other workers use it too.<br>
-            Here's your key."
+    <!-- ======================================== -->
+    <!-- STEP 2 — Ask for full name -->
+    <!-- ======================================== -->
+    <div class="step-card" id="step2">
+
+        <div class="step-badge">
+            <div class="step-circle">2</div>
+            <div class="step-info">
+                <h3>Ask for her full name</h3>
+                <p>Step 2 of 12</p>
+            </div>
         </div>
-    </div>
 
-    <div class="chat-bubble mai">
-        <div class="bubble-name">👩 Mai</div>
-        <div class="bubble-text">
-            "Is there a washing machine I can use?"
+        <div class="your-line-box">
+            <div class="your-line-label">
+                🎭 Your Line — Read this out loud!
+            </div>
+            <div class="your-line-text">
+                "Oh yes! You must be from 
+                the agency. Welcome!<br>
+                What's your full name, mate?"
+            </div>
         </div>
-    </div>
 
-    <div class="chat-bubble dave">
-        <div class="bubble-name">👨 Dave (Landlord)</div>
-        <div class="bubble-text">
-            "Yep! It's out the back, near the laundry.<br>
-            You can use it any time before 9pm.<br>
-            Don't use it after that — the neighbours complain."
+        <div class="speaking-tip">
+            <span class="tip-icon">💬</span>
+            <span>
+                Say <strong>"mate"</strong> naturally 
+                — it just means friend. 
+                Sound warm and welcoming! 
+                Pause clearly after 
+                <em>"What's your full name?"</em> 
+                so Kim knows to answer.
+            </span>
         </div>
-    </div>
 
-    <div class="chat-bubble mai">
-        <div class="bubble-name">👩 Mai</div>
-        <div class="bubble-text">
-            "What time must I be quiet at night?<br>
-            My work starts very early."
+        <div class="kim-expects">
+            <div class="kim-expects-label">
+                👩 Kim should say...
+            </div>
+            <p>
+                She should say her 
+                <strong>full name — Kim Huynh</strong>.<br>
+                She should <strong>spell</strong> her 
+                family name: 
+                <strong>H — U — Y — N — H</strong>.<br>
+                She should say when she 
+                <strong>starts work</strong> 
+                — Monday at the meatworks.<br>
+                Listen for all three parts!
+            </p>
         </div>
-    </div>
 
-    <div class="chat-bubble dave">
-        <div class="bubble-name">👨 Dave (Landlord)</div>
-        <div class="bubble-text">
-            "Quiet time is 10pm. Most workers here start early too,<br>
-            so everyone goes to bed early. You'll fit right in!"
+        <div class="teach-note">
+            <strong>📝 Teaching Moment</strong>
+            If Kim's spelling is unclear — ask her 
+            to repeat: <em>"Sorry, can you spell 
+            that again slowly?"</em> 
+            Spelling your name is 
+            very important in Australia!
         </div>
+
+        <button class="btn-next"
+                onclick="goNext('step2','step3',2)">
+            ✅ Kim responded — Next Step →
+        </button>
+
     </div>
 
-    <div class="chat-bubble mai">
-        <div class="bubble-name">👩 Mai</div>
-        <div class="bubble-text">
-            "I understand. Thank you very much, Dave.<br>
-            I am happy to stay here."
+    <!-- ======================================== -->
+    <!-- STEP 3 — Welcome inside -->
+    <!-- ======================================== -->
+    <div class="step-card" id="step3">
+
+        <div class="step-badge">
+            <div class="step-circle">3</div>
+            <div class="step-info">
+                <h3>Welcome her inside</h3>
+                <p>Step 3 of 12</p>
+            </div>
         </div>
-    </div>
 
-    <div class="chat-bubble dave">
-        <div class="bubble-name">👨 Dave (Landlord)</div>
-        <div class="bubble-text">
-            "No worries, Mai! If you need anything,<br>
-            just knock on my door. Make yourself at home!"
+        <div class="your-line-box">
+            <div class="your-line-label">
+                🎭 Your Line — Read this out loud!
+            </div>
+            <div class="your-line-text">
+                <span class="action">
+                    *(gestures inside)*
+                </span>
+                "Lovely! Welcome, Kim. 
+                Come on in —<br>
+                I'll show you around the house."
+            </div>
         </div>
+
+        <div class="speaking-tip">
+            <span class="tip-icon">💬</span>
+            <span>
+                Wave your hand to invite 
+                Kim inside. 
+                <strong>"Lovely!"</strong> 
+                = That's great! 
+                <strong>"Come on in"</strong> 
+                = Please come inside. 
+                Say it warmly and 
+                step back to let her in.
+            </span>
+        </div>
+
+        <div class="kim-expects">
+            <div class="kim-expects-label">
+                👩 Kim should say...
+            </div>
+            <p>
+                She should say 
+                <strong>thank you</strong> and 
+                politely ask to 
+                <strong>see her room</strong>.<br>
+                She should use polite language: 
+                <strong>"Can I please...?"</strong><br>
+                Listen for: 
+                <strong>"Thank you... 
+                Can I please see my room?"</strong>
+            </p>
+        </div>
+
+        <div class="teach-note">
+            <strong>📝 Teaching Moment</strong>
+            <em>"Can I please...?"</em> is 
+            very polite English. 
+            If she says <em>"Can I see room?"</em> — 
+            help her add 
+            <em>"please"</em> and <em>"my"</em>. 
+            Articles and politeness 
+            are very important!
+        </div>
+
+        <button class="btn-next"
+                onclick="goNext('step3','step4',3)">
+            ✅ Kim responded — Next Step →
+        </button>
+
     </div>
 
-    <!-- TEACHING NOTES TABLE -->
-    <div class="section-header">
-        <div class="bar"></div>
-        <h2>Teaching Focus Points</h2>
+    <!-- ======================================== -->
+    <!-- STEP 4 — Show room and bathroom -->
+    <!-- ======================================== -->
+    <div class="step-card" id="step4">
+
+        <div class="step-badge">
+            <div class="step-circle">4</div>
+            <div class="step-info">
+                <h3>Show the room and bathroom</h3>
+                <p>Step 4 of 12</p>
+            </div>
+        </div>
+
+        <div class="your-line-box">
+            <div class="your-line-label">
+                🎭 Your Line — Read this out loud!
+            </div>
+            <div class="your-line-text">
+                <span class="action">
+                    *(walking down the hall)*
+                </span>
+                "Sure thing! Your room is 
+                down the hall here —<br>
+                second door on the left. 
+                Here's your key!<br>
+                The bathroom is just next door — 
+                it's shared with two 
+                other workers.<br>
+                You can use it any time 
+                from 5am onwards."
+            </div>
+        </div>
+
+        <div class="speaking-tip">
+            <span class="tip-icon">💬</span>
+            <span>
+                Point and gesture as you speak! 
+                <strong>"Sure thing"</strong> 
+                = Yes of course. 
+                <strong>"Down the hall"</strong> 
+                = further along the corridor. 
+                Hand Kim an imaginary key 😄 
+                Speak slowly — 
+                there is a lot of information!
+            </span>
+        </div>
+
+        <div class="kim-expects">
+            <div class="kim-expects-label">
+                👩 Kim should say...
+            </div>
+            <p>
+                She should ask about the 
+                <strong>shared bathroom</strong> — 
+                how many people use it and 
+                what time she can use it 
+                in the morning.<br>
+                She should mention she starts 
+                work <strong>very early</strong>.<br>
+                Listen for: 
+                <strong>"How many people...?" 
+                "What time can I...?"</strong>
+            </p>
+        </div>
+
+        <div class="teach-note">
+            <strong>📝 Teaching Moment</strong>
+            Teach Kim: 
+            <em>"How many people share 
+            the bathroom?"</em> — 
+            this is a very natural question. 
+            Also: <em>"Is it okay if I use it 
+            at 4:30am?"</em> — 
+            teach her to be specific 
+            with times!
+        </div>
+
+        <button class="btn-next"
+                onclick="goNext('step4','step5',4)">
+            ✅ Kim responded — Next Step →
+        </button>
+
     </div>
 
-    <div class="note-box">
-        <h3>📚 Grammar & Pronunciation</h3>
-        <ul>
-            <li>🔤 <strong>"I booked"</strong> — Past tense of book. Students often say "I book" — correct this.</li>
-            <li>🔤 <strong>"Can I please...?"</strong> — Very polite. Teach the stress: "Can I PLEase..."</li>
-            <li>🔤 <strong>"Must I...?"</strong> — Formal question. Also teach "Do I have to...?"</li>
-            <li>🔤 <strong>Spelling names:</strong> Practice spelling out loud. "N-G-U-Y-E-N"</li>
-        </ul>
+    <!-- ======================================== -->
+    <!-- STEP 5 — Explain bathroom rules -->
+    <!-- ======================================== -->
+    <div class="step-card" id="step5">
+
+        <div class="step-badge">
+            <div class="step-circle">5</div>
+            <div class="step-info">
+                <h3>Explain bathroom details</h3>
+                <p>Step 5 of 12</p>
+            </div>
+        </div>
+
+        <div class="your-line-box">
+            <div class="your-line-label">
+                🎭 Your Line — Read this out loud!
+            </div>
+            <div class="your-line-text">
+                "Just two other workers — 
+                Tom and Sarah.<br>
+                They both start at 7am so 
+                you'll have the bathroom 
+                to yourself in the early morning!<br>
+                Just make sure you leave it 
+                clean after you use it, yeah?"
+            </div>
+        </div>
+
+        <div class="speaking-tip">
+            <span class="tip-icon">💬</span>
+            <span>
+                <strong>"Yeah?"</strong> 
+                at the end = Do you understand? 
+                It is very casual Australian 
+                English. 
+                Say it with a friendly nod. 
+                This is reassuring 
+                good news for Kim!
+            </span>
+        </div>
+
+        <div class="kim-expects">
+            <div class="kim-expects-label">
+                👩 Kim should say...
+            </div>
+            <p>
+                She should ask about the 
+                <strong>washing machine</strong>.<br>
+                Is there one? 
+                Where is it? Is it free to use?<br>
+                Listen for: 
+                <strong>"Is there a washing 
+                machine...?" "Is it free?"</strong>
+            </p>
+        </div>
+
+        <div class="teach-note">
+            <strong>📝 Teaching Moment</strong>
+            Teach the difference: 
+            <em>"Is there a...?"</em> = 
+            asking if something exists. 
+            <em>"Where is the...?"</em> = 
+            asking location. 
+            Kim should try to use both!
+        </div>
+
+        <button class="btn-next"
+                onclick="goNext('step5','step6',5)">
+            ✅ Kim responded — Next Step →
+        </button>
+
     </div>
 
-    <div class="slang-box">
-        <h3>🦘 Australian Slang in This Lesson</h3>
-        <table class="vocab-table">
-            <tr>
-                <th>Dave Says</th>
-                <th>Standard English</th>
-                <th>Notes</th>
-            </tr>
-            <tr><td>"G'day!"</td><td>"Hello!"</td><td>Most common Australian greeting</td></tr>
-            <tr><td>"Love" / "Mate"</td><td>"Friend"</td><td>Friendly, not romantic</td></tr>
-            <tr><td>"Sure thing!"</td><td>"Yes, of course!"</td><td>Very common</td></tr>
-            <tr><td>"Out the back"</td><td>"Behind the house"</td><td>Directional phrase</td></tr>
-            <tr><td>"No worries!"</td><td>"You're welcome / It's OK"</td><td>Most common Australian phrase</td></tr>
-            <tr><td>"Make yourself at home"</td><td>"Feel comfortable here"</td><td>Welcoming phrase</td></tr>
-            <tr><td>"You'll fit right in!"</td><td>"You will belong here easily"</td><td>Encouragement</td></tr>
-        </table>
+    <!-- ======================================== -->
+    <!-- STEP 6 — Explain laundry -->
+    <!-- ======================================== -->
+    <div class="step-card" id="step6">
+
+        <div class="step-badge">
+            <div class="step-circle">6</div>
+            <div class="step-info">
+                <h3>Explain the washing machine</h3>
+                <p>Step 6 of 12</p>
+            </div>
+        </div>
+
+        <div class="your-line-box">
+            <div class="your-line-label">
+                🎭 Your Line — Read this out loud!
+            </div>
+            <div class="your-line-text">
+                <span class="action">
+                    *(walking to the back of the house)*
+                </span>
+                "Yep! It's out the back — 
+                just through that door there.<br>
+                It's free to use — 
+                but only before 9pm please.<br>
+                The neighbours next door 
+                complain if it runs late at night.<br>
+                There's also a clothesline 
+                outside to hang your washing."
+            </div>
+        </div>
+
+        <div class="speaking-tip">
+            <span class="tip-icon">💬</span>
+            <span>
+                <strong>"Out the back"</strong> 
+                = behind the house. 
+                Point towards the back door. 
+                Say <strong>"the neighbours 
+                complain"</strong> with a 
+                serious but funny face! 😄 
+                Pause so Kim understands 
+                the 9pm rule.
+            </span>
+        </div>
+
+        <div class="kim-expects">
+            <div class="kim-expects-label">
+                👩 Kim should say...
+            </div>
+            <p>
+                She should ask about 
+                the <strong>kitchen</strong> 
+                — can she cook? 
+                Is there a fridge? 
+                Can she store her food?<br>
+                She might mention she cooks 
+                <strong>Vietnamese food</strong>.<br>
+                Listen for: 
+                <strong>"Can I use the kitchen?" 
+                "Is there a fridge?"</strong>
+            </p>
+        </div>
+
+        <div class="teach-note">
+            <strong>📝 Teaching Moment</strong>
+            Teach Kim: 
+            <em>"Can I keep my food 
+            in the fridge?"</em> — 
+            this is very useful. 
+            Also: 
+            <em>"Is it okay if I cook 
+            fish and strong-smelling food?"</em> 
+            — very important to ask 
+            in a share house!
+        </div>
+
+        <button class="btn-next"
+                onclick="goNext('step6','step7',6)">
+            ✅ Kim responded — Next Step →
+        </button>
+
     </div>
 
-    <!-- EXTENSION ACTIVITY -->
-    <div class="note-box">
-        <h3>⭐ Extension Activity</h3>
-        <ul>
-            <li>Ask students to role play again — swap roles (student plays Dave!)</li>
-            <li>Ask: "What other questions would you ask your landlord?"</li>
-            <li>Practice: "Can I cook fish in the kitchen?" / "Where do I put my rubbish?"</li>
-            <li>Write a text message from Mai to her family back home in Vietnam about her new room</li>
-        </ul>
+    <!-- ======================================== -->
+    <!-- STEP 7 — Explain kitchen rules -->
+    <!-- ======================================== -->
+    <div class="step-card" id="step7">
+
+        <div class="step-badge">
+            <div class="step-circle">7</div>
+            <div class="step-info">
+                <h3>Explain the kitchen</h3>
+                <p>Step 7 of 12</p>
+            </div>
+        </div>
+
+        <div class="your-line-box">
+            <div class="your-line-label">
+                🎭 Your Line — Read this out loud!
+            </div>
+            <div class="your-line-text">
+                <span class="action">
+                    *(showing the kitchen)*
+                </span>
+                "Of course! The kitchen is 
+                shared by everyone.<br>
+                You have your own shelf 
+                in the fridge — 
+                the bottom one is yours.<br>
+                Please label your food 
+                with your name, yeah?<br>
+                And make sure you clean up 
+                after yourself — 
+                leave the kitchen tidy 
+                for the next person!"
+            </div>
+        </div>
+
+        <div class="speaking-tip">
+            <span class="tip-icon">💬</span>
+            <span>
+                Point to the fridge and 
+                show her the bottom shelf. 
+                <strong>"Label your food"</strong> 
+                = write your name on it. 
+                Say <strong>"clean up 
+                after yourself"</strong> 
+                clearly — 
+                this is a very important 
+                Australian phrase!
+            </span>
+        </div>
+
+        <div class="kim-expects">
+            <div class="kim-expects-label">
+                👩 Kim should say...
+            </div>
+            <p>
+                She should ask about 
+                <strong>Wi-Fi internet</strong>.<br>
+                Is there Wi-Fi? 
+                What is the password?<br>
+                She might explain she needs 
+                to call her <strong>family 
+                in Vietnam</strong>.<br>
+                Listen for: 
+                <strong>"Is there Wi-Fi?" 
+                "What is the password?"</strong>
+            </p>
+        </div>
+
+        <div class="teach-note">
+            <strong>📝 Teaching Moment</strong>
+            Teach Kim the pronunciation: 
+            <em>"Why-Fy"</em> — 
+            many students say it differently. 
+            Also teach: 
+            <em>"Is the Wi-Fi included 
+            in the rent?"</em> — 
+            a very practical question!
+        </div>
+
+        <button class="btn-next"
+                onclick="goNext('step7','step8',7)">
+            ✅ Kim responded — Next Step →
+        </button>
+
     </div>
 
-    <a href="vocabulary.html" class="btn-next">Next → Vocabulary & Tips Page</a>
+    <!-- ======================================== -->
+    <!-- STEP 8 — Give Wi-Fi password -->
+    <!-- ======================================== -->
+    <div class="step-card" id="step8">
+
+        <div class="step-badge">
+            <div class="step-circle">8</div>
+            <div class="step-info">
+                <h3>Give her the Wi-Fi details</h3>
+                <p>Step 8 of 12</p>
+            </div>
+        </div>
+
+        <div class="your-line-box">
+            <div class="your-line-label">
+                🎭 Your Line — Read this out loud!
+            </div>
+            <div class="your-line-text">
+                "No worries! Yes, 
+                Wi-Fi is included in the rent.<br>
+                The network name is 
+                RiversideHouse and the 
+                password is...<br>
+                Sunshine2024 — 
+                capital S, all one word.<br>
+                I'll write it down for you — 
+                it can be a bit tricky!"
+            </div>
+        </div>
+
+        <div class="speaking-tip">
+            <span class="tip-icon">💬</span>
+            <span>
+                <strong>"No worries"</strong> 
+                = You're welcome / That's fine. 
+                Spell out the password slowly: 
+                <em>"S-U-N-S-H-I-N-E 
+                two-zero-two-four"</em>. 
+                Pretend to write it 
+                on a piece of paper 
+                and hand it to Kim!
+            </span>
+        </div>
+
+        <div class="kim-expects">
+            <div class="kim-expects-label">
+                👩 Kim should say...
+            </div>
+            <p>
+                She should ask about 
+                the <strong>rubbish bins</strong> 
+                — where do they go?<br>
+                And ask about 
+                <strong>cleaning</strong> 
+                the shared areas — 
+                who is responsible?<br>
+                Is there a 
+                <strong>cleaning roster</strong>?<br>
+                Listen for: 
+                <strong>"Where do I put 
+                the rubbish?" 
+                "Who cleans...?"</strong>
+            </p>
+        </div>
+
+        <div class="teach-note">
+            <strong>📝 Teaching Moment</strong>
+            Teach the word 
+            <em>"roster"</em> = a schedule 
+            showing whose turn it is. 
+            Also teach: 
+            <em>"rubbish bin"</em> 
+            (Australian English) 
+            vs <em>"trash can"</em> 
+            (American English). 
+            Use Australian words!
+        </div>
+
+        <button class="btn-next"
+                onclick="goNext('step8','step9',8)">
+            ✅ Kim responded — Next Step →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 9 — Explain cleaning roster -->
+    <!-- ======================================== -->
+    <div class="step-card" id="step9">
+
+        <div class="step-badge">
+            <div class="step-circle">9</div>
+            <div class="step-info">
+                <h3>Explain rubbish and cleaning</h3>
+                <p>Step 9 of 12</p>
+            </div>
+        </div>
+
+        <div class="your-line-box">
+            <div class="your-line-label">
+                🎭 Your Line — Read this out loud!
+            </div>
+            <div class="your-line-text">
+                <span class="action">
+                    *(showing the cleaning roster 
+                    on the fridge)*
+                </span>
+                "Good question! The rubbish bins 
+                are outside near the back gate.<br>
+                Bin day is every Tuesday morning — 
+                you need to put the bins 
+                out the night before.<br>
+                And here's the cleaning roster 
+                on the fridge — everyone takes 
+                turns cleaning the kitchen 
+                and bathroom.<br>
+                You're on cleaning duty 
+                every second Saturday!"
+            </div>
+        </div>
+
+        <div class="speaking-tip">
+            <span class="tip-icon">💬</span>
+            <span>
+                Point to an imaginary roster 
+                on the fridge. 
+                <strong>"Bin day"</strong> 
+                = the day rubbish is collected. 
+                <strong>"Every second Saturday"</strong> 
+                = one Saturday on, 
+                one Saturday off. 
+                Say <em>"You're on 
+                cleaning duty!"</em> 
+                with a smile 😄
+            </span>
+        </div>
+
+        <div class="kim-expects">
+            <div class="kim-expects-label">
+                👩 Kim should say...
+            </div>
+            <p>
+                She should ask about 
+                <strong>quiet time</strong> 
+                at night.<br>
+                She should explain her 
+                work starts at 
+                <strong>5am</strong> 
+                and she leaves very early.<br>
+                She should ask if it's okay 
+                to move around 
+                <strong>quietly in the morning</strong>.<br>
+                Listen for: 
+                <strong>"What time must I 
+                be quiet?" "I start at 5am..."</strong>
+            </p>
+        </div>
+
+        <div class="teach-note">
+            <strong>📝 Teaching Moment</strong>
+            Teach Kim: 
+            <em>"I will try not to 
+            disturb anyone."</em> 
+            This shows respect for 
+            housemates — very important 
+            in Australian share houses! 
+            Also teach: 
+            <em>"Is it okay if I...?"</em> 
+            for asking permission politely.
+        </div>
+
+        <button class="btn-next"
+                onclick="goNext('step9','step10',9)">
+            ✅ Kim responded — Next Step →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 10 — Explain quiet time -->
+    <!-- ======================================== -->
+    <div class="step-card" id="step10">
+
+        <div class="step-badge">
+            <div class="step-circle">10</div>
+            <div class="step-info">
+                <h3>Explain quiet time rules</h3>
+                <p>Step 10 of 12</p>
+            </div>
+        </div>
+
+        <div class="your-line-box">
+            <div class="your-line-label">
+                🎭 Your Line — Read this out loud!
+            </div>
+            <div class="your-line-text">
+                "No problems at all! 
+                Quiet time is from 10pm 
+                to 7am.<br>
+                Most workers here start early 
+                so everyone understands.<br>
+                Just try to be quiet when 
+                you leave — 
+                close doors softly, 
+                no loud TV or music.<br>
+                You'll fit right in here, Kim — 
+                everyone is very friendly!"
+            </div>
+        </div>
+
+        <div class="speaking-tip">
+            <span class="tip-icon">💬</span>
+            <span>
+                Say the times clearly: 
+                <strong>"TEN pm to SEVEN am"</strong>. 
+                Mime closing a door softly. 
+                <strong>"You'll fit right in"</strong> 
+                = you will belong here easily. 
+                Say it warmly to make 
+                Kim feel welcome! 😊
+            </span>
+        </div>
+
+        <div class="kim-expects">
+            <div class="kim-expects-label">
+                👩 Kim should say...
+            </div>
+            <p>
+                She should ask about 
+                paying the <strong>rent</strong>.<br>
+                How much per week?<br>
+                When does she pay — 
+                weekly or fortnightly?<br>
+                How does she pay — 
+                cash or bank transfer?<br>
+                Listen for: 
+                <strong>"How much is the rent?" 
+                "When do I pay?" 
+                "How do I pay?"</strong>
+            </p>
+        </div>
+
+        <div class="teach-note">
+            <strong>📝 Teaching Moment</strong>
+            Teach the word 
+            <em>"fortnight"</em> = 
+            two weeks. 
+            This is very common 
+            in Australia! 
+            Also teach: 
+            <em>"bank transfer"</em> 
+            vs <em>"cash"</em> — 
+            most Australian landlords 
+            prefer bank transfer.
+        </div>
+
+        <button class="btn-next"
+                onclick="goNext('step10','step11',10)">
+            ✅ Kim responded — Next Step →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 11 — Explain rent and payment -->
+    <!-- ======================================== -->
+    <div class="step-card" id="step11">
+
+        <div class="step-badge">
+            <div class="step-circle">11</div>
+            <div class="step-info">
+                <h3>Explain rent and payment</h3>
+                <p>Step 11 of 12</p>
+            </div>
+        </div>
+
+        <div class="your-line-box">
+            <div class="your-line-label">
+                🎭 Your Line — Read this out loud!
+            </div>
+            <div class="your-line-text">
+                "The rent is \$210 per week — 
+                that includes all the bills 
+                and Wi-Fi.<br>
+                I prefer bank transfer — 
+                every Monday morning 
+                before 9am please.<br>
+                The bond is two weeks rent — 
+                so \$420 — 
+                you pay that today.<br>
+                I'll give you a receipt 
+                for everything, no worries!"
+            </div>
+        </div>
+
+        <div class="speaking-tip">
+            <span class="tip-icon">💬</span>
+            <span>
+                Say the numbers clearly: 
+                <strong>"TWO hundred and TEN 
+                dollars"</strong> and 
+                <strong>"FOUR hundred and 
+                TWENTY dollars"</strong>. 
+                Teach Kim: 
+                <em>"bond"</em> = 
+                a security deposit 
+                you get back when 
+                you leave. 
+                <em>"Receipt"</em> = 
+                written proof of payment.
+            </span>
+        </div>
+
+        <div class="kim-expects">
+            <div class="kim-expects-label">
+                👩 Kim should say...
+            </div>
+            <p>
+                She should ask what to do 
+                if there is a 
+                <strong>problem or emergency</strong>.<br>
+                What if something 
+                <strong>breaks</strong> in her room?<br>
+                Who does she call 
+                at <strong>night</strong> 
+                or on <strong>weekends</strong>?<br>
+                She should ask for 
+                Dave's <strong>phone number</strong>.<br>
+                Listen for: 
+                <strong>"What do I do if...?" 
+                "Can I have your number?"</strong>
+            </p>
+        </div>
+
+        <div class="teach-note">
+            <strong>📝 Teaching Moment</strong>
+            Teach Kim: 
+            <em>"What do I do 
+            if there is an emergency?"</em> 
+            This is a very useful phrase 
+            in daily life in Australia. 
+            Also: 
+            <em>"Can I please have 
+            your phone number?"</em> — 
+            practice the polite form 
+            with "please"!
+        </div>
+
+        <button class="btn-next"
+                onclick="goNext('step11','step12',11)">
+            ✅ Kim responded — Next Step →
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- STEP 12 — Give phone number and goodbye -->
+    <!-- ======================================== -->
+    <div class="step-card" id="step12">
+
+        <div class="step-badge">
+            <div class="step-circle">12</div>
+            <div class="step-info">
+                <h3>Give your number — Final Step! 🎉</h3>
+                <p>Step 12 of 12</p>
+            </div>
+        </div>
+
+        <div class="your-line-box">
+            <div class="your-line-label">
+                🎭 Your Line — Read this out loud!
+            </div>
+            <div class="your-line-text">
+                <span class="action">
+                    *(writing phone number down)*
+                </span>
+                "Of course! My number is 
+                0412 783 556 — 
+                I'll write that down for you.<br>
+                Call me any time if 
+                something breaks or 
+                you need help, okay?<br>
+                If it's an emergency at night, 
+                don't hesitate — just call!<br>
+                I think you're going to 
+                love it here, Kim. 
+                Make yourself at home!"
+            </div>
+        </div>
+
+        <div class="speaking-tip">
+            <span class="tip-icon">💬</span>
+            <span>
+                Read the phone number 
+                digit by digit slowly: 
+                <em>"zero four one two — 
+                seven eight three — 
+                five five six"</em>. 
+                <strong>"Don't hesitate"</strong> 
+                = don't be afraid or shy. 
+                <strong>"Make yourself 
+                at home"</strong> = 
+                feel comfortable here. 
+                End with a big warm smile! 😊
+            </span>
+        </div>
+
+        <div class="kim-expects">
+            <div class="kim-expects-label">
+                👩 Kim should say...
+            </div>
+            <p>
+                This is her 
+                <strong>final response</strong> — 
+                make sure she says a lot!<br>
+                She should say she 
+                <strong>understands everything</strong>.<br>
+                She should say 
+                <strong>thank you</strong> warmly.<br>
+                She should say she is 
+                <strong>very happy</strong> 
+                to live here.<br>
+                She might say she is 
+                <strong>excited for work</strong> 
+                and will be a 
+                <strong>good tenant</strong>!<br>
+                Listen for a 
+                long, warm response 
+                with lots of good English!
+            </p>
+        </div>
+
+        <div class="teach-note">
+            <strong>📝 Final Teaching Moment</strong>
+            After Kim finishes — 
+            give her positive feedback! 
+            Tell her: 
+            <em>"Well done! Your English 
+            was great today."</em> 
+            Point out 2-3 things she 
+            did very well, then 
+            1-2 things to practice more. 
+            Always end positively! 🌟
+        </div>
+
+        <button class="btn-next"
+                onclick="finishGame()">
+            🎉 Lesson Complete!
+        </button>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- COMPLETION CARD -->
+    <!-- ======================================== -->
+    <div class="completion-card" id="completionCard">
+
+        <span class="comp-icon">🎓</span>
+        <h2>Lesson Complete!</h2>
+        <p>
+            Kim has finished the full 
+            12-step check-in conversation!<br>
+            She covered: name, room, bathroom, 
+            kitchen, Wi-Fi, rubbish, 
+            quiet time, rent and emergencies.<br>
+            <strong>Excellent lesson! 🌟</strong>
+        </p>
+
+        <!-- FEEDBACK CHECKLIST -->
+        <div class="feedback-box">
+            <p>✅ Feedback Checklist</p>
+            <label>
+                <input type="checkbox">
+                Said full name and spelled 
+                H-U-Y-N-H correctly
+            </label>
+            <label>
+                <input type="checkbox">
+                Used "Can I please...?" politely
+            </label>
+            <label>
+                <input type="checkbox">
+                Asked about bathroom and 
+                mentioned early shifts
+            </label>
+            <label>
+                <input type="checkbox">
+                Asked about washing machine 
+                and kitchen
+            </label>
+            <label>
+                <input type="checkbox">
+                Asked about Wi-Fi password
+            </label>
+            <label>
+                <input type="checkbox">
+                Asked about rubbish and 
+                cleaning roster
+            </label>
+            <label>
+                <input type="checkbox">
+                Asked about rent and 
+                how to pay
+            </label>
+            <label>
+                <input type="checkbox">
+                Asked what to do in an 
+                emergency
+            </label>
+            <label>
+                <input type="checkbox">
+                Said thank you and goodbye 
+                warmly at the end
+            </label>
+            <label>
+                <input type="checkbox">
+                Spoke naturally without 
+                too many long pauses
+            </label>
+        </div>
+
+        <div class="comp-buttons">
+            <button onclick="restartGame()" 
+                    class="btn-comp white">
+                🔄 Play Again
+            </button>
+            <a href="../index.html" 
+               class="btn-comp outline">
+                🎮 Game Menu
+            </a>
+        </div>
+
+    </div>
 
 </div>
 
-<div class="footer">Made with <span>♥</span> by TeeTalk English</div>
+<div class="footer">
+    Made with <span>♥</span> by TeeTalk English · 
+    Teacher Page
+</div>
+
+<script>
+    const TOTAL = 12;
+
+    function goNext(currentId, nextId, stepNum) {
+        document.getElementById(currentId)
+            .classList.remove('active');
+        const next = document.getElementById(nextId);
+        next.classList.add('active');
+        updateProgress(stepNum + 1);
+        setTimeout(() => {
+            next.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 100);
+    }
+
+    function finishGame() {
+        document.getElementById('step12')
+            .classList.remove('active');
+        const card = document.getElementById('completionCard');
+        card.classList.add('show');
+        updateProgress(12);
+        setTimeout(() => {
+            card.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 100);
+    }
+
+    function restartGame() {
+        window.location.href = 'teacher.html';
+    }
+
+    function updateProgress(step) {
+        const pct = Math.min((step / TOTAL) * 100, 100);
+        document.getElementById('progressFill')
+            .style.width = pct + '%';
+        document.getElementById('stepCount')
+            .textContent = 'Step ' + step + ' of ' + TOTAL;
+    }
+</script>
+
 </body>
 </html>

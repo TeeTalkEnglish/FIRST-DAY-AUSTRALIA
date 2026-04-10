@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>👩‍🏫 Teacher Dashboard — Australian Grocery Game</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .dash-stat {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .dash-stat .dash-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--green);
+    }
+    .dash-stat .dash-label {
+      font-size: 0.85rem;
+      color: var(--mid-grey);
+      margin-top: 4px;
+    }
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .report-table th {
+      background: var(--green);
+      color: white;
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+    .report-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+    }
+    .report-table tr:hover td {
+      background: var(--light-green);
+    }
+    .score-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+    .score-high { background: var(--light-green); color: var(--dark-green); }
+    .score-mid { background: var(--light-orange); color: #e65100; }
+    .score-low { background: var(--light-red); color: var(--red); }
+    .tab-bar {
+      display: flex;
+      gap: 4px;
+      background: var(--grey);
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 10px 20px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      flex: 1;
+      text-align: center;
+      min-width: 120px;
+    }
+    .tab-btn.active {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      color: var(--green);
+    }
+    .tab-btn:hover:not(.active) {
+      background: rgba(255,255,255,0.5);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .game-link-box {
+      background: var(--light-blue);
+      border: 2px solid #bbdefb;
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin: 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .game-link-box input {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-family: monospace;
+    }
+    .game-link-box input:focus {
+      border-color: var(--blue);
+      outline: none;
+    }
+    .answer-key-dialogue {
+      margin: 16px 0;
+      padding: 16px;
+      background: var(--grey);
+      border-radius: var(--radius-sm);
+    }
+    .answer-key-dialogue h4 {
+      margin-bottom: 10px;
+      color: var(--green);
+    }
+    .answer-line {
+      margin: 12px 0;
+      padding: 12px;
+      background: var(--white);
+      border-radius: var(--radius-sm);
+    }
+    .answer-line .al-speaker {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .answer-line .al-text {
+      font-style: italic;
+      color: var(--mid-grey);
+      margin-bottom: 8px;
+    }
+    .answer-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 4px 0;
+      font-size: 0.88rem;
+    }
+    .quality-tag {
+      padding: 1px 8px;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      display: inline-block;
+    }
+    .quality-correct { background: var(--light-green); color: var(--dark-green); }
+    .quality-partial { background: var(--light-orange); color: #e65100; }
+    .quality-wrong { background: var(--light-red); color: var(--red); }
+    .report-detail-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+    }
+    .report-detail-box {
+      background: var(--white);
+      border-radius: var(--radius);
+      max-width: 700px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    .vocab-reference-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 8px;
+    }
+    .vocab-ref-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--grey);
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+    }
+    .vocab-ref-item .vr-word {
+      font-weight: 700;
+      min-width: 110px;
+    }
+    .teacher-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--green);
+      color: white;
+      padding: 14px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      z-index: 3000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      animation: slideInRight 0.3s ease;
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @media print {
+      .no-print { display: none !important; }
+      .top-nav { display: none; }
+      .tab-bar { display: none; }
+      body { background: white; }
+      .card { box-shadow: none; border: 1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="top-nav no-print">
+    <div class="logo">🛒 Grocery Game</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="student.html">Play Game</a>
+      <a href="teacher.html" class="active">Teacher</a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div style="margin-bottom: 24px;">
+      <h1>👩‍🏫 Teacher Dashboard</h1>
+      <p style="color: var(--mid-grey);">Configure the game, view student reports, and access answer keys and vocabulary references.</p>
+    </div>
+
+    <!-- TABS -->
+    <div class="tab-bar no-print">
+        <button class="tab-btn" onclick="switchTab('script', this)">🎤 Teacher Script</button>
+      <button class="tab-btn active" onclick="switchTab('settings', this)">⚙️ Settings</button>
+      <button class="tab-btn" onclick="switchTab('reports', this)">📊 Reports</button>
+      <button class="tab-btn" onclick="switchTab('answers', this)">📝 Answer Key</button>
+      <button class="tab-btn" onclick="switchTab('vocab', this)">📚 Vocabulary</button>
+      <button class="tab-btn" onclick="switchTab('print', this)">🖨️ Printables</button>
+    </div>
+
+    
+        <!-- ========== TAB: TEACHER SCRIPT ========== -->
+    <div class="tab-content" id="tab-script">
+      <div class="card">
+        <h3 style="margin-bottom: 8px;">🎤 Challenge Mode — Teacher Script</h3>
+        <p style="color: var(--mid-grey); margin-bottom: 8px;">
+          In <strong>Hard (Challenge) mode</strong>, the student does NOT see what the store staff says.
+          <strong>You read it aloud</strong> and the student types their response.
+        </p>
+        <div class="tip-box" style="margin-bottom: 20px;">
+          <span class="tip-icon">📋</span>
+          <div>
+            <strong>How it works:</strong>
+            <ol style="margin: 8px 0 0 16px; font-size: 0.9rem;">
+              <li>The student's screen shows "🎤 Listen to your teacher"</li>
+              <li>You read the green script below out loud</li>
+              <li>The student types what they would say back</li>
+              <li>The game scores their response for: correct item, amount, and politeness</li>
+            </ol>
+          </div>
+        </div>
+        <div id="teacherScriptContent"></div>
+      </div>
+    </div>
+
+    <!-- ========== TAB: SETTINGS ========== -->
+    <div class="tab-content active" id="tab-settings">
+      <div class="teacher-grid">
+
+        <!-- Left: Settings Form -->
+        <div>
+          <div class="card">
+            <h3 style="margin-bottom: 16px;">⚙️ Game Configuration</h3>
+
+            <div class="form-group">
+              <label>Difficulty Level</label>
+              <select id="settingDifficulty" onchange="updateGameLink()">
+                <option value="easy">🟢 Easy — Quick Shop (\$50, 6 items)</option>
+                <option value="medium">🟡 Medium — Weekly Groceries (\$80, 23 items)</option>
+                <option value="hard">🔴 Hard — First Week in Australia (\$120, 23+ items)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Supermarket</label>
+              <select id="settingStore" onchange="updateGameLink()">
+                <option value="">Let student choose</option>
+                <option value="woolworths">Woolworths</option>
+                <option value="coles">Coles</option>
+                <option value="aldi">Aldi</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Custom Budget (leave empty for default)</label>
+              <input type="number" id="settingBudget" placeholder="e.g. 75" min="20" max="200" step="5" onchange="updateGameLink()">
+            </div>
+
+            <div class="form-group">
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="settingAutoStart" onchange="updateGameLink()" style="accent-color: var(--green); width: 16px; height: 16px;">
+                Auto-start game (skip welcome screen)
+              </label>
+            </div>
+
+            <div style="margin-top: 20px;">
+              <button class="btn btn-primary" onclick="applySettings()">💾 Save Settings</button>
+              <button class="btn btn-secondary" onclick="resetSettings()" style="margin-left: 8px;">🔄 Reset</button>
+            </div>
+          </div>
+
+          <!-- Game Link -->
+          <div class="card" style="margin-top: 16px;">
+            <h3 style="margin-bottom: 12px;">🔗 Student Game Link</h3>
+            <p style="font-size: 0.9rem; color: var(--mid-grey); margin-bottom: 12px;">
+              Share this link with your student. It opens the game with your settings pre-configured.
+            </p>
+            <div class="game-link-box">
+              <input type="text" id="gameLinkInput" readonly value="student.html?difficulty=easy">
+              <button class="btn btn-primary btn-sm" onclick="copyGameLink()">📋 Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Preview -->
+        <div>
+          <div class="card">
+            <h3 style="margin-bottom: 16px;">👁️ Settings Preview</h3>
+            <div class="stat-box" style="margin-bottom: 10px;">
+              <div class="stat-label">Difficulty</div>
+              <div class="stat-value" id="previewDifficulty">🟢 Easy</div>
+            </div>
+            <div class="stat-box" style="margin-bottom: 10px;">
+              <div class="stat-label">Budget</div>
+              <div class="stat-value" id="previewBudget">\$50</div>
+            </div>
+            <div class="stat-box" style="margin-bottom: 10px;">
+              <div class="stat-label">Shopping List Items</div>
+              <div class="stat-value" id="previewListCount">6</div>
+            </div>
+            <div class="stat-box" style="margin-bottom: 10px;">
+              <div class="stat-label">Dialogues Included</div>
+              <div class="stat-value" id="previewDialogues">2</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Features</div>
+              <div id="previewFeatures" style="margin-top: 4px; font-size: 0.85rem;"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3 style="margin-bottom: 12px;">📋 Shopping List Preview</h3>
+            <div id="previewShoppingList" style="max-height: 350px; overflow-y: auto;"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========== TAB: REPORTS ========== -->
+    <div class="tab-content" id="tab-reports">
+      <div class="card">
+        <div class="section-header">
+          <h3>📊 Student Game Reports</h3>
+          <div>
+            <button class="btn btn-secondary btn-sm" onclick="refreshReports()">🔄 Refresh</button>
+            <button class="btn btn-danger btn-sm" onclick="clearReports()" style="margin-left: 8px;">🗑️ Clear All</button>
+          </div>
+        </div>
+        <div class="dashboard-stats" id="reportStats"></div>
+        <div style="overflow-x: auto; margin-top: 16px;">
+          <table class="report-table" id="reportTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Difficulty</th>
+                <th>Store</th>
+                <th>Items Found</th>
+                <th>Spent</th>
+                <th>Budget</th>
+                <th>Dialogues</th>
+                <th>Time</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="reportTableBody">
+              <tr>
+                <td colspan="10" style="text-align: center; color: var(--mid-grey); padding: 24px;">
+                  No reports yet. Reports appear after a student completes the game.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== TAB: ANSWER KEY ========== -->
+    <div class="tab-content" id="tab-answers">
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">📝 Dialogue Answer Key</h3>
+        <p style="color: var(--mid-grey); margin-bottom: 20px;">
+          All dialogues with correct, partial, and wrong answers plus feedback for each option.
+        </p>
+        <div id="answerKeyContent"></div>
+      </div>
+      <div class="card" style="margin-top: 20px;">
+        <h3 style="margin-bottom: 16px;">🇦🇺 Slang Quiz — Answer Key</h3>
+        <div id="slangQuizAnswers"></div>
+      </div>
+      <div class="card" style="margin-top: 20px;">
+        <h3 style="margin-bottom: 16px;">🤖 Self-Checkout — Answer Key</h3>
+        <div id="selfCheckoutAnswers"></div>
+      </div>
+    </div>
+
+    <!-- ========== TAB: VOCABULARY ========== -->
+    <div class="tab-content" id="tab-vocab">
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">📚 Complete Vocabulary List</h3>
+        <p style="color: var(--mid-grey); margin-bottom: 16px;" id="vocabCountText">All vocabulary items used in the game.</p>
+        <div style="margin-bottom: 16px;">
+          <input type="text" id="vocabSearch" placeholder="🔍 Search vocabulary..."
+                 oninput="filterVocab()"
+                 style="width: 100%; padding: 10px 14px; border: 2px solid #e0e0e0; border-radius: var(--radius-sm); font-size: 1rem;">
+        </div>
+        <div class="vocab-reference-grid" id="vocabReferenceGrid"></div>
+      </div>
+      <div class="card" style="margin-top: 20px;">
+        <h3 style="margin-bottom: 16px;">🌏 Cultural Tips Reference</h3>
+        <div id="culturalTipsRef"></div>
+      </div>
+    </div>
+
+    <!-- ========== TAB: PRINTABLES ========== -->
+    <div class="tab-content" id="tab-print">
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">🖨️ Printable Resources</h3>
+        <p style="color: var(--mid-grey); margin-bottom: 20px;">
+          Print these for your student to use alongside the game or for offline practice.
+        </p>
+        <div class="card-grid">
+          <div class="card" style="border: 2px solid #e0e0e0;">
+            <h4>📋 Shopping List Worksheet</h4>
+            <p style="font-size: 0.9rem; color: var(--mid-grey); margin: 8px 0;">
+              Printable shopping list based on selected difficulty.
+            </p>
+            <button class="btn btn-primary btn-sm" onclick="printShoppingList()">🖨️ Print</button>
+          </div>
+          <div class="card" style="border: 2px solid #e0e0e0;">
+            <h4>📚 Vocabulary Cards</h4>
+            <p style="font-size: 0.9rem; color: var(--mid-grey); margin: 8px 0;">
+              Flashcard-style vocabulary reference with all Aussie words.
+            </p>
+            <button class="btn btn-primary btn-sm" onclick="printVocab()">🖨️ Print</button>
+          </div>
+          <div class="card" style="border: 2px solid #e0e0e0;">
+            <h4>💵 Australian Money Guide</h4>
+            <p style="font-size: 0.9rem; color: var(--mid-grey); margin: 8px 0;">
+              Visual reference of Australian coins and notes.
+            </p>
+            <button class="btn btn-primary btn-sm" onclick="printMoney()">🖨️ Print</button>
+          </div>
+          <div class="card" style="border: 2px solid #e0e0e0;">
+            <h4>🥩 Meat Cuts Reference</h4>
+            <p style="font-size: 0.9rem; color: var(--mid-grey); margin: 8px 0;">
+              Australian meat cut names — essential for a future butcher!
+            </p>
+            <button class="btn btn-primary btn-sm" onclick="printMeatCuts()">🖨️ Print</button>
+          </div>
+          <div class="card" style="border: 2px solid #e0e0e0;">
+            <h4>🌏 Cultural Tips Sheet</h4>
+            <p style="font-size: 0.9rem; color: var(--mid-grey); margin: 8px 0;">
+              All cultural tips about Australian shopping customs.
+            </p>
+            <button class="btn btn-primary btn-sm" onclick="printCulturalTips()">🖨️ Print</button>
+          </div>
+          <div class="card" style="border: 2px solid #e0e0e0;">
+            <h4>📝 Answer Key</h4>
+            <p style="font-size: 0.9rem; color: var(--mid-grey); margin: 8px 0;">
+              Complete answer key for all dialogues, quiz, and self-checkout.
+            </p>
+            <button class="btn btn-primary btn-sm" onclick="printAnswerKey()">🖨️ Print</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div><!-- end .container -->
+
+  <!-- REPORT DETAIL OVERLAY -->
+  <div class="report-detail-overlay" id="reportDetailOverlay" style="display: none;" onclick="closeReportDetail(event)">
+    <div class="report-detail-box" onclick="event.stopPropagation()">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3>📊 Report Details</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeReportDetail()">✕ Close</button>
+      </div>
+      <div id="reportDetailContent"></div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="teacherToastContainer"></div>
+
+  <script src="game-data.js"></script>
+  <script>
+    /* ============================================
+       TEACHER DASHBOARD ENGINE
+       ============================================ */
+
+    /* --- INIT --- */
+      document.addEventListener('DOMContentLoaded', function() {
+      updateGameLink();
+      loadSavedSettings();
+      renderTeacherScript();
+    });
+
+    function loadSavedSettings() {
+      var savedDiff = localStorage.getItem('teacherDifficulty');
+      if (savedDiff) {
+        document.getElementById('settingDifficulty').value = savedDiff;
+      }
+      var savedStore = localStorage.getItem('teacherStore');
+      if (savedStore) {
+        document.getElementById('settingStore').value = savedStore;
+      }
+      var savedBudget = localStorage.getItem('teacherBudget');
+      if (savedBudget) {
+        document.getElementById('settingBudget').value = savedBudget;
+      }
+      updateGameLink();
+    }
+
+    /* --- TAB SWITCHING --- */
+         function switchTab(tabId, btn) {
+      // Hide all tab contents
+      var contents = document.querySelectorAll('.tab-content');
+      for (var i = 0; i < contents.length; i++) {
+        contents[i].classList.remove('active');
+      }
+
+      // Remove active from all buttons
+      var btns = document.querySelectorAll('.tab-btn');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.remove('active');
+      }
+
+      // Show selected tab
+      var tabEl = document.getElementById('tab-' + tabId);
+      if (tabEl) {
+        tabEl.classList.add('active');
+      } else {
+        console.error('Tab not found: tab-' + tabId);
+      }
+
+      // Activate button
+      if (btn) {
+        btn.classList.add('active');
+      }
+
+      // Load tab content
+      if (tabId === 'reports') refreshReports();
+      if (tabId === 'answers') renderAnswerKey();
+      if (tabId === 'vocab') renderVocabReference();
+      if (tabId === 'script') renderTeacherScript();
+    }
+
+    function renderTeacherScript() {
+      var container = document.getElementById('teacherScriptContent');
+      if (!GAME_DATA.challengeDialogues) {
+        container.innerHTML = '<p style="color:var(--mid-grey);">Challenge dialogues not found in game data.</p>';
+        return;
+      }
+
+      var html = '';
+      var dialogueKeys = Object.keys(GAME_DATA.challengeDialogues);
+
+      for (var d = 0; d < dialogueKeys.length; d++) {
+        var key = dialogueKeys[d];
+        var lines = GAME_DATA.challengeDialogues[key];
+
+        var title = key;
+        if (key === 'meatCounter') title = '🥩 Meat Counter';
+        if (key === 'checkout') title = '💳 Checkout';
+        if (key === 'askingHelp') title = '❓ Asking for Help';
+
+        html += '<div style="margin-bottom: 24px;">';
+        html += '<h4 style="color:var(--green);margin-bottom:12px;">' + title + '</h4>';
+
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          html += '<div style="margin-bottom:16px;padding:16px;background:var(--grey);border-radius:var(--radius-sm);border-left:4px solid var(--green);">';
+
+          // Step number
+          html += '<div style="font-size:0.8rem;color:var(--mid-grey);margin-bottom:6px;">Step ' + (i + 1) + ' of ' + lines.length + '</div>';
+
+          // What to say
+          html += '<div style="background:var(--light-green);border:2px solid #a5d6a7;border-radius:var(--radius-sm);padding:14px;margin-bottom:12px;">';
+          html += '<div style="font-weight:700;font-size:0.85rem;color:var(--dark-green);margin-bottom:4px;">🎤 SAY THIS OUT LOUD:</div>';
+          html += '<div style="font-size:1.1rem;font-weight:600;">"' + line.speak + '"</div>';
+          html += '</div>';
+
+          // Teacher instruction
+          html += '<div style="font-size:0.85rem;color:var(--mid-grey);margin-bottom:8px;">';
+          html += '<strong>Instruction:</strong> ' + line.teacherScript;
+          html += '</div>';
+
+          // What student should say
+          html += '<div style="background:var(--light-blue);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:8px;">';
+          html += '<div style="font-weight:600;font-size:0.8rem;color:var(--blue);margin-bottom:2px;">Expected student response:</div>';
+          html += '<div style="font-style:italic;font-size:0.9rem;">"' + line.exampleAnswer + '"</div>';
+          html += '</div>';
+
+          // Scoring criteria
+          html += '<div style="font-size:0.82rem;color:var(--mid-grey);">';
+          html += '<strong>Scoring:</strong> ';
+          html += 'Item keyword (+' + line.scoring.hasItem + ') | ';
+          if (line.scoring.hasAmount > 0) {
+            html += 'Amount (+' + line.scoring.hasAmount + ') | ';
+          }
+          html += 'Polite (+' + line.scoring.isPolite + ') | ';
+          html += 'Perfect bonus (+' + line.scoring.perfect + ')';
+          html += '</div>';
+
+          html += '</div>';
+        }
+
+        html += '</div>';
+      }
+
+      container.innerHTML = html;
+    }
+
+    /* =====================
+       SETTINGS TAB
+       ===================== */
+    function findProductById(id) {
+      var sections = Object.keys(GAME_DATA.products);
+      for (var s = 0; s < sections.length; s++) {
+        var arr = GAME_DATA.products[sections[s]];
+        for (var p = 0; p < arr.length; p++) {
+          if (arr[p].id === id) {
+            var copy = Object.assign({}, arr[p]);
+            copy.section = sections[s];
+            return copy;
+          }
+        }
+      }
+      return null;
+    }
+
+    function updateGameLink() {
+      var diff = document.getElementById('settingDifficulty').value;
+      var store = document.getElementById('settingStore').value;
+      var budget = document.getElementById('settingBudget').value;
+      var autoStart = document.getElementById('settingAutoStart').checked;
+
+      var params = 'difficulty=' + diff;
+      if (store) params += '&store=' + store;
+      if (budget) params += '&budget=' + budget;
+      if (autoStart) params += '&autostart=true';
+
+      document.getElementById('gameLinkInput').value = 'student.html?' + params;
+      updatePreview(diff, budget);
+    }
+
+    function updatePreview(diff, customBudget) {
+      var listData = GAME_DATA.shoppingLists[diff];
+      if (!listData) return;
+
+      var useBudget = customBudget ? parseFloat(customBudget) : listData.budget;
+
+      // Difficulty label
+      var diffLabel = '🟢 Easy';
+      if (diff === 'medium') diffLabel = '🟡 Medium';
+      if (diff === 'hard') diffLabel = '🔴 Hard';
+      document.getElementById('previewDifficulty').textContent = diffLabel;
+      document.getElementById('previewBudget').textContent = '$' + useBudget;
+      document.getElementById('previewListCount').textContent = listData.requiredItems.length;
+      document.getElementById('previewDialogues').textContent = listData.dialogues.length;
+
+      // Features
+      var features = [];
+      for (var i = 0; i < listData.dialogues.length; i++) {
+        var d = listData.dialogues[i];
+        if (d === 'meatCounter') features.push('🥩 Meat Counter');
+        if (d === 'askingHelp') features.push('❓ Asking for Help');
+        if (d === 'checkout') features.push('💳 Checkout');
+      }
+      if (diff === 'hard') {
+        features.push('🤖 Self-Checkout');
+        features.push('🇦🇺 Slang Quiz');
+      }
+
+      var featHtml = '';
+      for (var i = 0; i < features.length; i++) {
+        featHtml += '<span style="display:inline-block;background:var(--light-green);color:var(--green);';
+        featHtml += 'padding:2px 10px;border-radius:10px;margin:2px;font-size:0.8rem;">';
+        featHtml += features[i] + '</span>';
+      }
+      document.getElementById('previewFeatures').innerHTML = featHtml;
+
+      // Shopping list preview
+      var listContainer = document.getElementById('previewShoppingList');
+      var listHtml = '';
+      var total = 0;
+
+      for (var i = 0; i < listData.requiredItems.length; i++) {
+        var product = findProductById(listData.requiredItems[i]);
+        if (!product) continue;
+        total += product.price;
+        listHtml += '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f0f0f0;font-size:0.88rem;">';
+        listHtml += '<span>' + product.emoji + '</span>';
+        listHtml += '<span style="flex:1;">' + product.name + '</span>';
+        listHtml += '<span style="color:var(--mid-grey);">' + product.weight + '</span>';
+        listHtml += '<span style="font-weight:700;">$' + product.price.toFixed(2) + '</span>';
+        listHtml += '</div>';
+      }
+
+      listHtml += '<div style="padding:8px 0;font-weight:700;display:flex;justify-content:space-between;">';
+      listHtml += '<span>Total (all list items):</span>';
+      listHtml += '<span>$' + total.toFixed(2) + '</span>';
+      listHtml += '</div>';
+
+      listContainer.innerHTML = listHtml;
+    }
+
+    function applySettings() {
+      var diff = document.getElementById('settingDifficulty').value;
+      var store = document.getElementById('settingStore').value;
+      var budget = document.getElementById('settingBudget').value;
+
+      localStorage.setItem('teacherDifficulty', diff);
+
+      if (store) {
+        localStorage.setItem('teacherStore', store);
+      } else {
+        localStorage.removeItem('teacherStore');
+      }
+
+      if (budget) {
+        localStorage.setItem('teacherBudget', budget);
+      } else {
+        localStorage.removeItem('teacherBudget');
+      }
+
+      showTeacherToast('✅ Settings saved! Student will use these next time.');
+    }
+
+    function resetSettings() {
+      localStorage.removeItem('teacherDifficulty');
+      localStorage.removeItem('teacherStore');
+      localStorage.removeItem('teacherBudget');
+
+      document.getElementById('settingDifficulty').value = 'easy';
+      document.getElementById('settingStore').value = '';
+      document.getElementById('settingBudget').value = '';
+      document.getElementById('settingAutoStart').checked = false;
+
+      updateGameLink();
+      showTeacherToast('🔄 Settings reset to defaults.');
+    }
+
+    function copyGameLink() {
+      var input = document.getElementById('gameLinkInput');
+      input.select();
+      input.setSelectionRange(0, 99999);
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(input.value).then(function() {
+          showTeacherToast('📋 Link copied to clipboard!');
+        });
+      } else {
+        document.execCommand('copy');
+        showTeacherToast('📋 Link copied!');
+      }
+    }
+
+    /* =====================
+       REPORTS TAB
+       ===================== */
+    function getReports() {
+      try {
+        return JSON.parse(localStorage.getItem('groceryGameReports') || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function refreshReports() {
+      var reports = getReports();
+      renderReportStats(reports);
+      renderReportTable(reports);
+    }
+
+    function renderReportStats(reports) {
+      var c = document.getElementById('reportStats');
+      if (reports.length === 0) { c.innerHTML = ''; return; }
+
+      var totalGames = reports.length;
+      var totalItemPercent = 0;
+      var totalDialoguePercent = 0;
+      var totalTime = 0;
+      var underBudgetCount = 0;
+
+      for (var i = 0; i < reports.length; i++) {
+        var r = reports[i];
+        var req = r.listItemsRequired || 1;
+        totalItemPercent += (r.listItemsFound / req) * 100;
+
+        var dTotal = (r.dialogueScores && r.dialogueScores.total) ? r.dialogueScores.total : 1;
+        var dCorrect = (r.dialogueScores && r.dialogueScores.correct) ? r.dialogueScores.correct : 0;
+        totalDialoguePercent += (dCorrect / dTotal) * 100;
+
+        totalTime += r.timeSeconds || 0;
+        if (!r.overBudget) underBudgetCount++;
+      }
+
+      var avgItems = Math.round(totalItemPercent / totalGames);
+      var avgDialogue = Math.round(totalDialoguePercent / totalGames);
+      var avgTime = Math.floor(totalTime / totalGames);
+      var avgMins = Math.floor(avgTime / 60);
+      var avgSecs = avgTime % 60;
+
+      var html = '';
+      html += '<div class="dash-stat"><div class="dash-value">' + totalGames + '</div><div class="dash-label">Games Played</div></div>';
+      html += '<div class="dash-stat"><div class="dash-value">' + avgItems + '%</div><div class="dash-label">Avg Items Found</div></div>';
+      html += '<div class="dash-stat"><div class="dash-value">' + avgDialogue + '%</div><div class="dash-label">Avg Dialogue Score</div></div>';
+      html += '<div class="dash-stat"><div class="dash-value">' + avgMins + ':' + String(avgSecs).padStart(2, '0') + '</div><div class="dash-label">Avg Time</div></div>';
+      html += '<div class="dash-stat"><div class="dash-value">' + underBudgetCount + '/' + totalGames + '</div><div class="dash-label">Under Budget</div></div>';
+
+      c.innerHTML = html;
+    }
+
+    function renderReportTable(reports) {
+      var tbody = document.getElementById('reportTableBody');
+      if (reports.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--mid-grey);padding:24px;">No reports yet.</td></tr>';
+        return;
+      }
+
+      var html = '';
+      for (var i = 0; i < reports.length; i++) {
+        var r = reports[i];
+        var date = new Date(r.timestamp);
+        var dateStr = date.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: '2-digit' });
+        var timeStr = date.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' });
+
+        var itemPercent = Math.round((r.listItemsFound / (r.listItemsRequired || 1)) * 100);
+        var itemClass = 'score-low';
+        if (itemPercent === 100) itemClass = 'score-high';
+        else if (itemPercent >= 50) itemClass = 'score-mid';
+
+        var dTotal = (r.dialogueScores && r.dialogueScores.total) ? r.dialogueScores.total : 0;
+        var dCorrect = (r.dialogueScores && r.dialogueScores.correct) ? r.dialogueScores.correct : 0;
+        var dPercent = dTotal > 0 ? Math.round((dCorrect / dTotal) * 100) : 0;
+
+        var mins = Math.floor((r.timeSeconds || 0) / 60);
+        var secs = (r.timeSeconds || 0) % 60;
+
+        var diffIcon = '🟢';
+        if (r.difficulty === 'medium') diffIcon = '🟡';
+        if (r.difficulty === 'hard') diffIcon = '🔴';
+
+        var budgetStatus = r.overBudget
+          ? '<span style="color:var(--red);">Over ❌</span>'
+          : '<span style="color:var(--green);">Under ✅</span>';
+
+        html += '<tr>';
+        html += '<td>' + (i + 1) + '</td>';
+        html += '<td>' + dateStr + '<br><small style="color:var(--mid-grey);">' + timeStr + '</small></td>';
+        html += '<td>' + diffIcon + ' ' + (r.difficulty || 'easy') + '</td>';
+        html += '<td>' + (r.store || '—') + '</td>';
+        html += '<td><span class="score-badge ' + itemClass + '">' + r.listItemsFound + '/' + r.listItemsRequired + '</span></td>';
+        html += '<td>$' + (r.spent ? r.spent.toFixed(2) : '0.00') + '</td>';
+        html += '<td>' + budgetStatus + '</td>';
+        html += '<td>' + dCorrect + '/' + dTotal + ' (' + dPercent + '%)</td>';
+        html += '<td>' + mins + ':' + String(secs).padStart(2, '0') + '</td>';
+        html += '<td><button class="btn btn-primary btn-sm" onclick="showReportDetail(' + i + ')">View</button></td>';
+        html += '</tr>';
+      }
+
+      tbody.innerHTML = html;
+    }
+
+    function showReportDetail(index) {
+      var reports = getReports();
+      var r = reports[index];
+      if (!r) return;
+
+      var html = '<div style="margin-top: 16px;">';
+
+      // Cart items
+      html += '<h4>🛒 Cart Items (' + (r.cartItems ? r.cartItems.length : 0) + ')</h4>';
+      html += '<div style="margin: 8px 0;">';
+      if (r.cartItems) {
+        for (var i = 0; i < r.cartItems.length; i++) {
+          html += '<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #f0f0f0;font-size:0.88rem;">';
+          html += '<span>' + r.cartItems[i].name + '</span>';
+          html += '<span>$' + (r.cartItems[i].price ? r.cartItems[i].price.toFixed(2) : '0.00') + '</span>';
+          html += '</div>';
+        }
+      }
+      html += '</div>';
+
+      // Missing items
+      if (r.listItemsMissing && r.listItemsMissing.length > 0) {
+        html += '<h4 style="margin-top: 16px;">❌ Missing Items</h4>';
+        html += '<ul style="padding-left: 20px; margin: 8px 0;">';
+        for (var i = 0; i < r.listItemsMissing.length; i++) {
+          html += '<li>' + r.listItemsMissing[i] + '</li>';
+        }
+        html += '</ul>';
+      } else {
+        html += '<p style="color: var(--green); margin-top: 12px;">✅ All list items found!</p>';
+      }
+
+      // Sections visited
+      html += '<h4 style="margin-top: 16px;">🗺️ Sections Visited</h4>';
+      html += '<div style="margin: 8px 0;">';
+      if (r.sectionsVisited) {
+        for (var i = 0; i < r.sectionsVisited.length; i++) {
+          var secId = r.sectionsVisited[i];
+          var secName = secId;
+          var secIcon = '📦';
+          for (var j = 0; j < GAME_DATA.sections.length; j++) {
+            if (GAME_DATA.sections[j].id === secId) {
+              secName = GAME_DATA.sections[j].name;
+              secIcon = GAME_DATA.sections[j].icon;
+              break;
+            }
+          }
+          html += '<span style="display:inline-block;background:var(--light-green);padding:3px 12px;border-radius:12px;margin:2px;font-size:0.85rem;">';
+          html += secIcon + ' ' + secName + '</span>';
+        }
+      }
+      html += '</div>';
+
+      // Vocab learned
+      html += '<h4 style="margin-top: 16px;">📚 Vocabulary Learned (' + (r.vocabLearned ? r.vocabLearned.length : 0) + ')</h4>';
+      html += '<div style="margin: 8px 0; display: flex; flex-wrap: wrap; gap: 4px;">';
+      if (r.vocabLearned) {
+        for (var i = 0; i < r.vocabLearned.length; i++) {
+          html += '<span style="background:var(--light-blue);padding:2px 10px;border-radius:10px;font-size:0.8rem;">';
+          html += r.vocabLearned[i] + '</span>';
+        }
+      }
+      html += '</div>';
+
+      // Achievements
+      html += '<h4 style="margin-top: 16px;">🏆 Achievements</h4>';
+      html += '<div style="margin: 8px 0; display: flex; flex-wrap: wrap; gap: 6px;">';
+      if (r.achievements) {
+        for (var i = 0; i < r.achievements.length; i++) {
+          var aId = r.achievements[i];
+          var aName = aId;
+          var aIcon = '🏆';
+          for (var j = 0; j < GAME_DATA.achievements.length; j++) {
+            if (GAME_DATA.achievements[j].id === aId) {
+              aName = GAME_DATA.achievements[j].name;
+              aIcon = GAME_DATA.achievements[j].icon;
+              break;
+            }
+          }
+          html += '<span style="background:var(--light-green);padding:4px 12px;border-radius:12px;font-size:0.85rem;">';
+          html += aIcon + ' ' + aName + '</span>';
+        }
+      }
+      html += '</div></div>';
+
+      document.getElementById('reportDetailContent').innerHTML = html;
+      document.getElementById('reportDetailOverlay').style.display = 'flex';
+    }
+
+    function closeReportDetail(event) {
+      if (!event || event.target === document.getElementById('reportDetailOverlay')) {
+        document.getElementById('reportDetailOverlay').style.display = 'none';
+      }
+    }
+
+    function clearReports() {
+      if (confirm('Are you sure you want to delete all student reports? This cannot be undone.')) {
+        localStorage.removeItem('groceryGameReports');
+        refreshReports();
+        showTeacherToast('🗑️ All reports cleared.');
+      }
+    }
+
+    /* =====================
+       ANSWER KEY TAB
+       ===================== */
+    function renderAnswerKey() {
+      var container = document.getElementById('answerKeyContent');
+      var html = '';
+
+      var dialogueKeys = Object.keys(GAME_DATA.dialogues);
+      for (var d = 0; d < dialogueKeys.length; d++) {
+        var key = dialogueKeys[d];
+        var dialogueLines = GAME_DATA.dialogues[key];
+
+        var title = key;
+        if (key === 'meatCounter') title = '🥩 Meat Counter Dialogue';
+        if (key === 'checkout') title = '💳 Checkout Dialogue';
+        if (key === 'askingHelp') title = '❓ Asking for Help Dialogue';
+
+        html += '<div class="answer-key-dialogue">';
+        html += '<h4>' + title + '</h4>';
+
+        for (var i = 0; i < dialogueLines.length; i++) {
+          var line = dialogueLines[i];
+          html += '<div class="answer-line">';
+          html += '<div class="al-speaker">' + line.avatar + ' ' + line.speaker + ' (' + line.role + ')</div>';
+          html += '<div class="al-text">"' + line.text + '"</div>';
+
+          for (var j = 0; j < line.options.length; j++) {
+            var opt = line.options[j];
+            var qClass = 'quality-' + opt.quality;
+            var qLabel = '❌ AVOID';
+            if (opt.quality === 'correct') qLabel = '✅ BEST';
+            if (opt.quality === 'partial') qLabel = '⚠️ OK';
+
+            html += '<div class="answer-option">';
+            html += '<span class="quality-tag ' + qClass + '">' + qLabel + '</span>';
+            html += '<div>';
+            html += '<div>"' + opt.text + '"</div>';
+            html += '<div style="font-size:0.8rem;color:var(--mid-grey);margin-top:2px;">' + opt.feedback + '</div>';
+            html += '</div></div>';
+          }
+
+          html += '</div>';
+        }
+
+        html += '</div>';
+      }
+
+      container.innerHTML = html;
+
+      // Slang Quiz Answers
+      var quizHtml = '';
+      for (var i = 0; i < GAME_DATA.slangQuiz.length; i++) {
+        var q = GAME_DATA.slangQuiz[i];
+        quizHtml += '<div class="answer-line">';
+        quizHtml += '<div class="al-speaker">Question ' + (i + 1) + '</div>';
+        quizHtml += '<div class="al-text">' + q.question + '</div>';
+
+        for (var j = 0; j < q.options.length; j++) {
+          var opt = q.options[j];
+          var qClass = opt.correct ? 'quality-correct' : 'quality-wrong';
+          var qLabel = opt.correct ? '✅ CORRECT' : '❌';
+
+          quizHtml += '<div class="answer-option">';
+          quizHtml += '<span class="quality-tag ' + qClass + '">' + qLabel + '</span>';
+          quizHtml += '<span>' + opt.text + '</span>';
+          quizHtml += '</div>';
+        }
+
+        quizHtml += '</div>';
+      }
+      document.getElementById('slangQuizAnswers').innerHTML = quizHtml;
+
+      // Self-Checkout Answers
+      var scHtml = '';
+      for (var i = 0; i < GAME_DATA.selfCheckout.steps.length; i++) {
+        var step = GAME_DATA.selfCheckout.steps[i];
+        scHtml += '<div class="answer-line">';
+        scHtml += '<div class="al-speaker">Step ' + (i + 1) + '</div>';
+        scHtml += '<div class="al-text">' + step.instruction + '</div>';
+
+        for (var j = 0; j < step.options.length; j++) {
+          var opt = step.options[j];
+          var qClass = opt.correct ? 'quality-correct' : 'quality-wrong';
+          var qLabel = opt.correct ? '✅ CORRECT' : '❌';
+
+          scHtml += '<div class="answer-option">';
+          scHtml += '<span class="quality-tag ' + qClass + '">' + qLabel + '</span>';
+          scHtml += '<div><div>' + opt.text + '</div>';
+          if (opt.feedback) {
+            scHtml += '<div style="font-size:0.8rem;color:var(--mid-grey);margin-top:2px;">' + opt.feedback + '</div>';
+          }
+          scHtml += '</div></div>';
+        }
+
+        scHtml += '</div>';
+      }
+      document.getElementById('selfCheckoutAnswers').innerHTML = scHtml;
+    }
+
+    /* =====================
+       VOCABULARY TAB
+       ===================== */
+    function renderVocabReference() {
+      document.getElementById('vocabCountText').textContent = 'All ' + GAME_DATA.vocabulary.length + ' vocabulary items used in the game.';
+      renderVocabGrid(GAME_DATA.vocabulary);
+      renderCulturalTips();
+    }
+
+    function renderVocabGrid(words) {
+      var c = document.getElementById('vocabReferenceGrid');
+      var html = '';
+      for (var i = 0; i < words.length; i++) {
+        html += '<div class="vocab-ref-item">';
+        html += '<span class="vr-word">' + words[i].word + '</span>';
+        html += '<span>' + words[i].meaning + '</span>';
+        html += '</div>';
+      }
+      c.innerHTML = html;
+    }
+
+    function filterVocab() {
+      var query = document.getElementById('vocabSearch').value.toLowerCase();
+      var filtered = [];
+      for (var i = 0; i < GAME_DATA.vocabulary.length; i++) {
+        var v = GAME_DATA.vocabulary[i];
+        if (v.word.toLowerCase().indexOf(query) >= 0 || v.meaning.toLowerCase().indexOf(query) >= 0) {
+          filtered.push(v);
+        }
+      }
+      renderVocabGrid(filtered);
+    }
+
+    function renderCulturalTips() {
+      var c = document.getElementById('culturalTipsRef');
+      var html = '';
+      for (var i = 0; i < GAME_DATA.culturalTips.length; i++) {
+        var t = GAME_DATA.culturalTips[i];
+        html += '<div class="tip-box" style="margin-bottom: 8px;">';
+        html += '<span class="tip-icon">' + t.icon + '</span>';
+        html += '<div><strong>' + t.title + '</strong>';
+        html += '<div style="font-size:0.88rem;color:var(--mid-grey);margin-top:2px;">' + t.text + '</div>';
+        html += '</div></div>';
+      }
+      c.innerHTML = html;
+    }
+
+    /* =====================
+       PRINTABLES
+       ===================== */
+     function openPrintWindow(title, bodyContent) {
+      var w = window.open('', '_blank');
+      var styles = 'body{font-family:Arial,sans-serif;padding:24px;max-width:800px;margin:0 auto;color:#333;}';
+      styles += 'h1{font-size:1.5rem;border-bottom:3px solid #00843D;padding-bottom:8px;}';
+      styles += 'h2{font-size:1.2rem;color:#00843D;margin-top:24px;}';
+      styles += 'table{width:100%;border-collapse:collapse;margin:12px 0;}';
+      styles += 'th{background:#00843D;color:white;padding:8px 12px;text-align:left;}';
+      styles += 'td{padding:8px 12px;border-bottom:1px solid #ddd;}';
+      styles += '.item-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px dotted #ccc;}';
+      styles += '.checkbox{width:16px;height:16px;border:2px solid #333;display:inline-block;margin-right:8px;}';
+      styles += '.tip{background:#fff3e0;padding:10px;border-radius:6px;margin:8px 0;border-left:4px solid #ff9800;}';
+      styles += '.vocab-card{display:inline-block;border:1px solid #ddd;border-radius:6px;padding:8px 14px;margin:4px;}';
+      styles += '.vocab-word{font-weight:bold;}';
+      styles += '.footer{text-align:center;margin-top:30px;color:#999;font-size:0.8rem;}';
+
+      w.document.open();
+      w.document.write('<html><head><title>' + title + '<\/title>');
+      w.document.write('<style>' + styles + '<\/style>');
+      w.document.write('<\/head><body>');
+      w.document.write(bodyContent);
+      w.document.write('<div class="footer">Australian Grocery Shopping Game<\/div>');
+      w.document.write('<\/body><\/html>');
+      w.document.close();
+      w.print();
+    }
+   
+    function printShoppingList() {
+      var diff = document.getElementById('settingDifficulty').value;
+      var listData = GAME_DATA.shoppingLists[diff];
+      var total = 0;
+
+      var body = '<h1>📋 Shopping List — ' + listData.name + '</h1>';
+      body += '<p>Budget: <strong>$' + listData.budget + '</strong> | Items: <strong>' + listData.requiredItems.length + '</strong></p>';
+
+      for (var i = 0; i < listData.requiredItems.length; i++) {
+        var p = findProductById(listData.requiredItems[i]);
+        if (!p) continue;
+        total += p.price;
+        body += '<div class="item-row">';
+        body += '<span class="checkbox"></span>';
+        body += '<span>' + p.emoji + ' <strong>' + p.name + '</strong></span>';
+        body += '<span style="margin-left:auto;color:#666;">' + p.weight + '</span>';
+        body += '<span style="margin-left:16px;font-weight:bold;">$' + p.price.toFixed(2) + '</span>';
+        body += '</div>';
+      }
+
+      body += '<div style="margin-top:16px;font-weight:bold;font-size:1.1rem;text-align:right;">Estimated Total: $' + total.toFixed(2) + '</div>';
+      openPrintWindow('Shopping List', body);
+    }
+
+    function printVocab() {
+      var body = '<h1>📚 Australian Grocery Vocabulary</h1>';
+      body += '<p>' + GAME_DATA.vocabulary.length + ' words and phrases for Australian supermarkets</p>';
+      body += '<div style="margin-top:16px;">';
+
+      for (var i = 0; i < GAME_DATA.vocabulary.length; i++) {
+        var v = GAME_DATA.vocabulary[i];
+        body += '<div class="vocab-card"><span class="vocab-word">' + v.word + '</span> — ' + v.meaning + '</div>';
+      }
+
+      body += '</div>';
+      openPrintWindow('Vocabulary Cards', body);
+    }
+
+    function printMoney() {
+      var body = '<h1>💵 Australian Money Guide</h1>';
+      body += '<table><thead><tr><th>Name</th><th>Value</th><th>Notes</th></tr></thead><tbody>';
+
+      for (var i = 0; i < GAME_DATA.australianMoney.length; i++) {
+        var m = GAME_DATA.australianMoney[i];
+        body += '<tr>';
+        body += '<td>' + m.emoji + ' ' + m.name + '</td>';
+        body += '<td>$' + m.value.toFixed(2) + '</td>';
+        body += '<td>' + (m.note || '') + '</td>';
+        body += '</tr>';
+      }
+
+      body += '</tbody></table>';
+      body += '<div class="tip">💡 <strong>Tip:</strong> Most Australians pay by card (tap/contactless). Keep a \$1 or \$2 coin for shopping trolleys!</div>';
+      openPrintWindow('Australian Money Guide', body);
+    }
+
+    function printMeatCuts() {
+      var body = '<h1>🥩 Australian Meat Cuts Reference</h1>';
+      body += '<p>Common meat terminology used in Australian supermarkets and butcher shops.</p>';
+      body += '<table><thead><tr><th>Australian Name</th><th>Meaning / Description</th></tr></thead><tbody>';
+
+      var meatWords = ['Mince', 'Rashers', 'Scotch fillet', 'Chops', 'Fillet', 'Snags', 'Sausage sizzle', 'Barbie', 'Deli'];
+      for (var i = 0; i < meatWords.length; i++) {
+        for (var j = 0; j < GAME_DATA.vocabulary.length; j++) {
+          if (GAME_DATA.vocabulary[j].word === meatWords[i]) {
+            body += '<tr><td><strong>' + GAME_DATA.vocabulary[j].word + '</strong></td>';
+            body += '<td>' + GAME_DATA.vocabulary[j].meaning + '</td></tr>';
+            break;
+          }
+        }
+      }
+
+      body += '</tbody></table>';
+
+      // Meat products reference
+      body += '<h2>Common Meat Products</h2>';
+      body += '<table><thead><tr><th>Product</th><th>Typical Size</th><th>Approx. Price</th></tr></thead><tbody>';
+
+      var meatProducts = GAME_DATA.products.meat || [];
+      for (var i = 0; i < meatProducts.length; i++) {
+        var p = meatProducts[i];
+        body += '<tr>';
+        body += '<td>' + p.emoji + ' ' + p.name + '</td>';
+        body += '<td>' + p.weight + '</td>';
+        body += '<td>$' + p.price.toFixed(2) + '</td>';
+        body += '</tr>';
+      }
+
+      body += '</tbody></table>';
+
+      // Meat-specific cultural tips
+      body += '<h2>Butcher Tips</h2>';
+      for (var i = 0; i < GAME_DATA.culturalTips.length; i++) {
+        var t = GAME_DATA.culturalTips[i];
+        if (t.title.indexOf('Butcher') >= 0 || t.title.indexOf('Meat') >= 0) {
+          body += '<div class="tip">' + t.icon + ' <strong>' + t.title + '</strong><br>' + t.text + '</div>';
+        }
+      }
+
+      openPrintWindow('Meat Cuts Reference', body);
+    }
+
+    function printCulturalTips() {
+      var body = '<h1>🌏 Australian Shopping — Cultural Tips</h1>';
+      body += '<p>Things your student should know before shopping in Australia for the first time.</p>';
+
+      for (var i = 0; i < GAME_DATA.culturalTips.length; i++) {
+        var t = GAME_DATA.culturalTips[i];
+        body += '<div class="tip">';
+        body += t.icon + ' <strong>' + t.title + '</strong><br>';
+        body += t.text;
+        body += '</div>';
+      }
+
+      openPrintWindow('Cultural Tips', body);
+    }
+
+    function printAnswerKey() {
+      var body = '<h1>📝 Complete Answer Key</h1>';
+
+      // Dialogues
+      var dialogueKeys = Object.keys(GAME_DATA.dialogues);
+      for (var d = 0; d < dialogueKeys.length; d++) {
+        var key = dialogueKeys[d];
+        var lines = GAME_DATA.dialogues[key];
+
+        var title = key;
+        if (key === 'meatCounter') title = '🥩 Meat Counter';
+        if (key === 'checkout') title = '💳 Checkout';
+        if (key === 'askingHelp') title = '❓ Asking for Help';
+
+        body += '<h2>' + title + '</h2>';
+
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          body += '<div style="margin:12px 0;padding:10px;background:#f5f5f5;border-radius:6px;">';
+          body += '<strong>' + line.avatar + ' ' + line.speaker + ':</strong> "' + line.text + '"<br><br>';
+
+          for (var j = 0; j < line.options.length; j++) {
+            var opt = line.options[j];
+            var label = '❌';
+            if (opt.quality === 'correct') label = '✅ BEST';
+            if (opt.quality === 'partial') label = '⚠️ OK';
+
+            body += '<div style="margin:4px 0;padding-left:16px;">';
+            body += label + ' "' + opt.text + '"';
+            body += '<div style="font-size:0.85rem;color:#666;margin-left:24px;">' + opt.feedback + '</div>';
+            body += '</div>';
+          }
+
+          body += '</div>';
+        }
+      }
+
+      // Quiz
+      body += '<h2>🇦🇺 Slang Quiz</h2>';
+      for (var i = 0; i < GAME_DATA.slangQuiz.length; i++) {
+        var q = GAME_DATA.slangQuiz[i];
+        body += '<div style="margin:8px 0;"><strong>Q' + (i + 1) + ':</strong> ' + q.question + '<br>';
+        for (var j = 0; j < q.options.length; j++) {
+          var label = q.options[j].correct ? '✅' : '❌';
+          body += label + ' ' + q.options[j].text + '<br>';
+        }
+        body += '</div>';
+      }
+
+      // Self-Checkout
+      body += '<h2>🤖 Self-Checkout</h2>';
+      for (var i = 0; i < GAME_DATA.selfCheckout.steps.length; i++) {
+        var step = GAME_DATA.selfCheckout.steps[i];
+        body += '<div style="margin:8px 0;"><strong>Step ' + (i + 1) + ':</strong> ' + step.instruction + '<br>';
+        for (var j = 0; j < step.options.length; j++) {
+          var label = step.options[j].correct ? '✅' : '❌';
+          body += label + ' ' + step.options[j].text + '<br>';
+        }
+        body += '</div>';
+      }
+
+      openPrintWindow('Answer Key', body);
+    }
+
+    /* =====================
+       TOAST NOTIFICATION
+       ===================== */
+    function showTeacherToast(message) {
+      var container = document.getElementById('teacherToastContainer');
+      var toast = document.createElement('div');
+      toast.className = 'teacher-toast';
+      toast.textContent = message;
+      container.appendChild(toast);
+
+      setTimeout(function() {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 3000);
+    }
+
+  </script>
+
+</body>
+</html>

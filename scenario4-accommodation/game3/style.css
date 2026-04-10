@@ -1,0 +1,434 @@
+/* ══════════════════════════════════════════
+   GAME 3 — HOUSE RULES QUIZ
+   style.css  (shared across all game3 pages)
+══════════════════════════════════════════ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fdf0f0;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* ── HEADER ── */
+.header {
+    background-color: #c0392b;
+    color: white;
+    padding: 32px 40px 36px;
+    text-align: center;
+}
+
+.game-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.scenario-tag {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}
+
+.header p {
+    font-size: 0.95rem;
+    opacity: 0.88;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ── NAV TABS ── */
+.nav-tabs {
+    background: white;
+    border-bottom: 2px solid #eee;
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.nav-tabs a {
+    text-decoration: none;
+    padding: 14px 22px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #888;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    margin-bottom: -2px;
+}
+
+.nav-tabs a:hover {
+    color: #c0392b;
+}
+
+.nav-tabs a.active {
+    color: #c0392b;
+    border-bottom-color: #c0392b;
+}
+
+/* ── CONTAINER ── */
+.container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 28px 20px 70px;
+}
+
+/* ── SECTION HEADING ── */
+.section-heading {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #c0392b;
+    border-left: 4px solid #c0392b;
+    padding-left: 12px;
+    margin: 28px 0 14px;
+}
+
+/* ── CARD ── */
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.game-number-badge {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+}
+
+.orange { background: #e67e22; }
+.red    { background: #c0392b; }
+.green  { background: #27ae60; }
+.purple { background: #8e44ad; }
+
+.card-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 4px;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #222;
+}
+
+.card-desc {
+    font-size: 0.93rem;
+    color: #555;
+    line-height: 1.65;
+    margin-bottom: 16px;
+}
+
+/* ── BADGES ── */
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.badge {
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    border: 1.5px solid;
+}
+
+.badge-hard    { color: #c0392b; border-color: #f5c0c0; background: #fdf0f0; }
+.badge-medium  { color: #e67e22; border-color: #fdd8a8; background: #fff8f0; }
+.badge-easy    { color: #27ae60; border-color: #a9dfbf; background: #eafaf1; }
+.badge-players { color: #555;    border-color: #ddd;    background: #f8f8f8; }
+.badge-time    { color: #8e44ad; border-color: #d7bde2; background: #f5eef8; }
+.badge-type    { color: #2980b9; border-color: #aed6f1; background: #eaf4fb; }
+
+/* ── CHARACTER CARD ── */
+.character-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    border-left: 5px solid #c0392b;
+}
+
+.char-avatar {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    background: #fde8d8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    flex-shrink: 0;
+}
+
+.char-body h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.char-body p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 12px;
+}
+
+.tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag {
+    background: #fdf0f0;
+    border: 1.5px solid #f5c0c0;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #c0392b;
+}
+
+/* ── STEPS ── */
+.steps {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.step-num {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #c0392b;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.step-title {
+    font-size: 0.97rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 4px;
+}
+
+.step-desc {
+    font-size: 0.88rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* ── RULES GRID ── */
+.rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.rule-tile {
+    background: white;
+    border-radius: 14px;
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border-top: 4px solid #e67e22;
+}
+
+.rule-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.rule-name {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 4px;
+}
+
+.rule-detail {
+    font-size: 0.78rem;
+    color: #888;
+    line-height: 1.5;
+}
+
+/* ── VOCAB VISUAL GRID ── */
+.vocab-grid-visual {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.vocab-card-visual {
+    border-radius: 12px;
+    border: 1.5px solid #eee;
+    overflow: hidden;
+    text-align: center;
+    transition: box-shadow 0.2s, transform 0.2s;
+    background: #fafafa;
+}
+
+.vocab-card-visual:hover {
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.vocab-img-wrap {
+    width: 100%;
+    height: 90px;
+    overflow: hidden;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+}
+
+.vocab-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.vocab-card-visual .vocab-word {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: #c0392b;
+    padding: 8px 8px 4px;
+}
+
+.vocab-card-visual .vocab-def {
+    font-size: 0.76rem;
+    color: #888;
+    padding: 0 8px 10px;
+    line-height: 1.4;
+}
+
+/* ── GOALS LIST ── */
+.goals-list {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.goals-list li {
+    font-size: 0.92rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* ── CTA BUTTONS ── */
+.cta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 13px 26px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background: #c0392b;
+    color: white;
+}
+
+.btn-primary:hover { background: #a93226; }
+
+.btn-secondary {
+    background: #e67e22;
+    color: white;
+}
+
+.btn-secondary:hover { background: #d35400; }
+
+.btn-ghost {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.btn-ghost:hover { background: #e0e0e0; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 560px) {
+    .header h1          { font-size: 1.6rem; }
+    .rules-grid         { grid-template-columns: 1fr 1fr; }
+    .vocab-grid-visual  { grid-template-columns: repeat(2, 1fr); }
+    .character-card     { flex-direction: column; align-items: center; text-align: center; }
+    .tag-row            { justify-content: center; }
+    .cta-row            { flex-direction: column; }
+    .btn                { width: 100%; }
+    .nav-tabs a         { padding: 12px 14px; font-size: 0.82rem; }
+}

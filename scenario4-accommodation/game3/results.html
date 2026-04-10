@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results — Game 2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+    <div class="game-badge">🎮 Game 2 · Results</div>
+    <div class="scenario-tag">✅ Check Your Score Together</div>
+    <h1>How Did Mai Do?</h1>
+    <p>Compare both forms and count the points!</p>
+</div>
+
+<nav class="nav-tabs">
+    <a href="index.html">📋 Index</a>
+    <a href="student.html">👩 Student</a>
+    <a href="teacher.html">👩‍🏫 Teacher</a>
+    <a href="results.html" class="active">✅ Results</a>
+</nav>
+
+<div class="container">
+
+    <!-- ANSWER KEY -->
+    <div class="section-header">
+        <div class="bar"></div>
+        <h2>Answer Key — Correct Answers</h2>
+    </div>
+
+    <div class="answer-key">
+        <h3>📋 Compare Teacher's Form with These Answers</h3>
+
+        <div class="answer-row">
+            <span class="q">Given Name</span>
+            <span class="a">Mai</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Family Name</span>
+            <span class="a hard">Nguyen</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Spelling</span>
+            <span class="a hard">N — G — U — Y — E — N</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Date of Birth</span>
+            <span class="a hard">14 March 1992</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Country of Birth</span>
+            <span class="a">Vietnam</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Passport Number</span>
+            <span class="a hard">B7742983</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Passport Expiry</span>
+            <span class="a">22 / 07 / 2029</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Visa Type</span>
+            <span class="a hard">482</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Visa Number</span>
+            <span class="a hard">VN482-66103</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Visa Expiry</span>
+            <span class="a">30 / 11 / 2026</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Employer</span>
+            <span class="a">Riverbank Meats Pty Ltd</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Job Title</span>
+            <span class="a">Meat Boner / Butcher</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Work Start Date</span>
+            <span class="a">Monday, 6 January 2025</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Work Shift</span>
+            <span class="a">Early (5am – 1pm)</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Australian Mobile</span>
+            <span class="a hard">0412 783 556</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Email</span>
+            <span class="a">mai.nguyen92@gmail.com</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Emergency Contact Name</span>
+            <span class="a hard">Nguyen Van Thanh</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Relationship</span>
+            <span class="a">Father</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Vietnam Phone</span>
+            <span class="a hard">+84 909 334 217</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Vietnam Address</span>
+            <span class="a">12 Le Loi Street, District 3, Ho Chi Minh City</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Check-In Date</span>
+            <span class="a">4 January 2025</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Room Number</span>
+            <span class="a">Room 3B</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Weekly Rent</span>
+            <span class="a hard">\$210 per week</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Bond</span>
+            <span class="a">\$420 (2 weeks)</span>
+        </div>
+        <div class="answer-row">
+            <span class="q">Payment Method</span>
+            <span class="a">Bank Transfer</span>
+        </div>
+    </div>
+
+    <!-- INTERACTIVE SCORE CHECKER -->
+    <div class="section-header">
+        <div class="bar"></div>
+        <h2>Score Checker — Tap Each Item</h2>
+    </div>
+
+    <div class="card card-green">
+        <h2>🏆 Click ✓ for correct, ✗ for wrong</h2>
+        <ul class="checklist" id="scoreList">
+            <li data-pts="2">
+                <div class="check-circle" onclick="toggleCheck(this)">?</div>
+                <span>Full name — Mai Nguyen</span>
+                <span class="challenge-tag easy-tag">EASY</span>
+                <span class="points">2 pts</span>
+            </li>
+            <li data-pts="3">
+                <div class="check-circle" onclick="toggleCheck(this)">?</div>
+                <span>Surname spelling — N-G-U-Y-E-N</span>
+                <span class="challenge-tag">HARD</span>
+                <span class="points">3 pts</span>
+            </li>
+            <li data-pts="2">
+                <div class="check-circle" onclick="toggleCheck(this)">?</div>
+                <span>Date of birth — 14 March 1992</span>
+                <span class="challenge-tag medium-tag">MEDIUM</span>
+                <span class="points">2 pts</span>
+            </li>
+            <li data-pts="3">
+                <div class="check-circle" onclick="toggleCheck(this)">?</div>
+                <span>Passport number — B7742983</span>
+                <span class="challenge-tag">HARD</span>
+                <span class="points">3 pts</span>
+            </li>
+            <li data-pts="3">
+                <div class="check-circle" onclick="toggleCheck(this)">?</div>
+                <span>Visa type 482 + number VN482-66103</span>
+                <span class="challenge-tag">HARD</span>
+                <span class="points">3 pts</span>
+            </li>
+            <li data-pts="1">
+                <div class="check-circle" onclick="toggleCheck(this)">?</div>
+                <span>Work start date — 6 January 2025</span>
+                <span class="challenge-tag easy-tag">EASY</span>
+                <span class="points">1 pt</span>
+            </li>
+            <li data-pts="2">
+                <div class="check-circle" onclick="toggleCheck(this)">?</div>
+                <span>\
+                                    Australian mobile — 0412 783 556</span>
+                <span class="challenge-tag">HARD</span>
+                <span class="points">2 pts</span>
+            </li>
+            <li data-pts="2">
+                <div class="check-circle" onclick="toggleCheck(this)">?</div>
+                <span>Emergency contact name — Nguyen Van Thanh</span>
+                <span class="challenge-tag medium-tag">MEDIUM</span>
+                <span class="points">2 pts</span>
+            </li>
+            <li data-pts="3">
+                <div class="check-circle" onclick="toggleCheck(this)">?</div>
+                <span>Vietnam phone — +84 909 334 217</span>
+                <span class="challenge-tag">HARD</span>
+                <span class="points">3 pts</span>
+            </li>
+            <li data-pts="1">
+                <div class="check-circle" onclick="toggleCheck(this)">?</div>
+                <span>Weekly rent — \$210 per week</span>
+                <span class="challenge-tag medium-tag">MEDIUM</span>
+                <span class="points">1 pt</span>
+            </li>
+            <li data-pts="3" id="bonus-item">
+                <div class="check-circle" onclick="toggleCheck(this)">?</div>
+                <span>Caught teacher's deliberate mistakes!</span>
+                <span class="challenge-tag" style="background:#9b59b6;">BONUS</span>
+                <span class="points">3 pts</span>
+            </li>
+        </ul>
+
+        <!-- LIVE SCORE DISPLAY -->
+        <div style="margin-top: 20px; padding: 16px; 
+                    background: #f9f9f9; border-radius: 10px; 
+                    text-align: center;">
+            <p style="font-size:13px; color:#888; 
+                      text-transform:uppercase; 
+                      letter-spacing:1px; margin-bottom:6px;">
+                Current Score
+            </p>
+            <div style="font-size: 48px; font-weight: 800; 
+                        color: #e8524a; line-height:1;" 
+                 id="currentScore">0
+            </div>
+            <div style="font-size: 16px; color: #888;">
+                out of <strong>25</strong> points
+            </div>
+            <div id="scoreFeedback" 
+                 style="margin-top:10px; font-size:14px; 
+                        color:#555; min-height:20px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- MISTAKE TRACKER -->
+    <div class="section-header">
+        <div class="bar"></div>
+        <h2>Deliberate Mistake Tracker</h2>
+    </div>
+
+    <div class="card card-orange">
+        <h2>😈 Did Mai Catch the Mistakes?</h2>
+        <p style="font-size:13px; color:#888; margin-bottom:16px;">
+            Teacher — tick which mistakes you made and whether Mai corrected them
+        </p>
+        <ul class="checklist" id="mistakeList">
+            <li>
+                <div class="check-circle" 
+                     onclick="toggleMistake(this, 'used')">?</div>
+                <span>
+                    <strong>Passport</strong> — said 
+                    <span style="color:#e8524a;">B7724983</span> 
+                    instead of B7742983
+                </span>
+                <span class="points" id="m1-result"></span>
+            </li>
+            <li>
+                <div class="check-circle" 
+                     onclick="toggleMistake(this, 'used')">?</div>
+                <span>
+                    <strong>Birthday</strong> — said 
+                    <span style="color:#e8524a;">14 May</span> 
+                    instead of 14 March
+                </span>
+                <span class="points" id="m2-result"></span>
+            </li>
+            <li>
+                <div class="check-circle" 
+                     onclick="toggleMistake(this, 'used')">?</div>
+                <span>
+                    <strong>Mobile</strong> — said 
+                    <span style="color:#e8524a;">0412 783 565</span> 
+                    instead of 0412 783 556
+                </span>
+                <span class="points" id="m3-result"></span>
+            </li>
+            <li>
+                <div class="check-circle" 
+                     onclick="toggleMistake(this, 'used')">?</div>
+                <span>
+                    <strong>Rent</strong> — said 
+                    <span style="color:#e8524a;">\$220</span> 
+                    instead of \$210
+                </span>
+                <span class="points" id="m4-result"></span>
+            </li>
+            <li>
+                <div class="check-circle" 
+                     onclick="toggleMistake(this, 'used')">?</div>
+                <span>
+                    <strong>Visa number</strong> — said 
+                    <span style="color:#e8524a;">VN482-66130</span> 
+                    instead of VN482-66103
+                </span>
+                <span class="points" id="m5-result"></span>
+            </li>
+            <li>
+                <div class="check-circle" 
+                     onclick="toggleMistake(this, 'used')">?</div>
+                <span>
+                    <strong>Vietnam phone</strong> — said 
+                    <span style="color:#e8524a;">+84 909 334 271</span> 
+                    instead of +84 909 334 217
+                </span>
+                <span class="points" id="m6-result"></span>
+            </li>
+        </ul>
+
+        <!-- MISTAKE SUB-TRACKER -->
+        <div style="margin-top:20px; padding:16px; 
+                    background:#fffbf0; border-radius:10px;">
+            <p style="font-size:13px; font-weight:700; 
+                      color:#f39c12; margin-bottom:12px; 
+                      letter-spacing:1px; text-transform:uppercase;">
+                ✅ Did Mai Correct the Mistakes?
+            </p>
+            <div id="mistakeCorrectionArea">
+                <p style="font-size:13px; color:#aaa; font-style:italic;">
+                    Mark mistakes as used above to track corrections here...
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FINAL SCORE CARD -->
+    <div class="section-header">
+        <div class="bar"></div>
+        <h2>Final Score</h2>
+    </div>
+
+    <div class="score-area">
+        <h2>🏆 Mai's Final Score</h2>
+        <div class="score-display" id="finalScore">—</div>
+        <p>out of 25 points</p>
+        <div id="finalBadge" style="margin-top:14px; font-size:22px;"></div>
+        <button onclick="calculateFinal()" 
+                style="margin-top:16px; padding:12px 28px; 
+                       background:white; color:#e8524a; 
+                       border:none; border-radius:10px; 
+                       font-size:15px; font-weight:700; 
+                       cursor:pointer; letter-spacing:0.5px;">
+            🎯 Calculate Final Score
+        </button>
+    </div>
+
+    <!-- GRADE GUIDE -->
+    <div class="card card-green">
+        <h2>📊 Grade Guide</h2>
+        <table class="vocab-table" 
+               style="width:100%; border-collapse:collapse; 
+                      font-size:14px;">
+            <tr>
+                <th>Score</th>
+                <th>Grade</th>
+                <th>Feedback</th>
+            </tr>
+            <tr>
+                <td><strong>23 – 25</strong></td>
+                <td>⭐⭐⭐ Excellent!</td>
+                <td>Outstanding communication!</td>
+            </tr>
+            <tr>
+                <td><strong>18 – 22</strong></td>
+                <td>⭐⭐ Very Good</td>
+                <td>Great job — a few small errors</td>
+            </tr>
+            <tr>
+                <td><strong>13 – 17</strong></td>
+                <td>⭐ Good</td>
+                <td>Good effort — practice numbers!</td>
+            </tr>
+            <tr>
+                <td><strong>8 – 12</strong></td>
+                <td>📚 Keep Practicing</td>
+                <td>Focus on spelling and numbers</td>
+            </tr>
+            <tr>
+                <td><strong>0 – 7</strong></td>
+                <td>💪 Try Again!</td>
+                <td>Play again — you will improve!</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- WHAT TO PRACTICE -->
+    <div class="card card-blue">
+        <h2>📚 What to Practice Next</h2>
+        <ul style="list-style:none; padding:0;">
+            <li style="padding:8px 0; border-bottom:1px solid #e8f4fd; 
+                       font-size:14px; color:#555;">
+                🔢 <strong>Numbers:</strong> Practice saying long numbers 
+                digit by digit — 
+                <em>"zero — four — one — two..."</em>
+            </li>
+            <li style="padding:8px 0; border-bottom:1px solid #e8f4fd; 
+                       font-size:14px; color:#555;">
+                🔤 <strong>Spelling:</strong> Practice spelling your name 
+                and address in English out loud every day
+            </li>
+            <li style="padding:8px 0; border-bottom:1px solid #e8f4fd; 
+                       font-size:14px; color:#555;">
+                📅 <strong>Dates:</strong> Practice — 
+                <em>"the fourteenth of March, nineteen ninety-two"</em>
+            </li>
+            <li style="padding:8px 0; border-bottom:1px solid #e8f4fd; 
+                       font-size:14px; color:#555;">
+                ✈️ <strong>Visa & Passport:</strong> Learn to say your 
+                visa type and number clearly — very important in Australia!
+            </li>
+            <li style="padding:8px 0; font-size:14px; color:#555;">
+                💬 <strong>Correcting mistakes:</strong> Practice saying — 
+                <em>"Sorry, that's not right. It is..."</em>
+            </li>
+        </ul>
+    </div>
+
+    <!-- PLAY AGAIN BUTTONS -->
+    <div style="display:grid; 
+                grid-template-columns: 1fr 1fr; 
+                gap: 12px; 
+                margin-top: 10px;">
+        <a href="student.html" 
+           class="btn-next" 
+           style="margin-top:0; font-size:14px;">
+            🔄 Play Again
+        </a>
+        <a href="../scenario3-accommodation/index.html" 
+           class="btn-next" 
+           style="margin-top:0; font-size:14px; 
+                  background: linear-gradient(135deg, #2c3e50, #34495e);">
+            ← Back to Game 1
+        </a>
+    </div>
+
+</div><!-- end container -->
+
+<div class="footer">
+    Made with <span>♥</span> by TeeTalk English · Game 2
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+    // ---- SCORE TRACKING ----
+    let totalScore = 0;
+    let mistakesUsed = [];
+    let mistakesCaught = 0;
+
+    // Toggle main checklist items
+    function toggleCheck(el) {
+        const li = el.closest('li');
+        const pts = parseInt(li.getAttribute('data-pts'));
+
+        if (el.classList.contains('done')) {
+            // Was correct — now mark wrong
+            el.classList.remove('done');
+            el.classList.add('wrong');
+            el.textContent = '✗';
+            el.style.background = '#e8524a';
+            el.style.borderColor = '#e8524a';
+            el.style.color = 'white';
+            totalScore -= pts;
+        } else if (el.classList.contains('wrong')) {
+            // Was wrong — reset to unknown
+            el.classList.remove('wrong');
+            el.textContent = '?';
+            el.style.background = '';
+            el.style.borderColor = '#ddd';
+            el.style.color = '#888';
+        } else {
+            // Unknown — mark correct
+            el.classList.add('done');
+            el.textContent = '✓';
+            el.style.background = '#27ae60';
+            el.style.borderColor = '#27ae60';
+            el.style.color = 'white';
+            totalScore += pts;
+        }
+
+        // Update live score display
+        updateLiveScore();
+    }
+
+    // Update the live score box
+    function updateLiveScore() {
+        const display = document.getElementById('currentScore');
+        const feedback = document.getElementById('scoreFeedback');
+        display.textContent = Math.max(0, totalScore);
+
+        if (totalScore >= 23) {
+            feedback.textContent = '⭐⭐⭐ Outstanding! Amazing communication!';
+            feedback.style.color = '#27ae60';
+        } else if (totalScore >= 18) {
+            feedback.textContent = '⭐⭐ Very good! Almost perfect!';
+            feedback.style.color = '#2ecc71';
+        } else if (totalScore >= 13) {
+            feedback.textContent = '⭐ Good effort! Keep practicing numbers!';
+            feedback.style.color = '#f39c12';
+        } else if (totalScore >= 8) {
+            feedback.textContent = '📚 Keep practicing — you are improving!';
+            feedback.style.color = '#e67e22';
+        } else if (totalScore > 0) {
+            feedback.textContent = '💪 Try again — practice makes perfect!';
+            feedback.style.color = '#e8524a';
+        } else {
+            feedback.textContent = '';
+        }
+    }
+
+    // ---- MISTAKE TRACKER ----
+    // Step 1: Teacher marks which mistakes they used
+    function toggleMistake(el, phase) {
+        const li = el.closest('li');
+        const mistakeId = Array.from(
+            document.querySelectorAll('#mistakeList li')
+        ).indexOf(li);
+
+        if (el.classList.contains('done')) {
+            // Unmark
+            el.classList.remove('done');
+            el.textContent = '?';
+            el.style.background = '';
+            el.style.borderColor = '#ddd';
+            el.style.color = '#888';
+            mistakesUsed = mistakesUsed.filter(m => m !== mistakeId);
+            updateMistakeArea();
+        } else {
+            // Mark as used
+            el.classList.add('done');
+            el.textContent = '✓';
+            el.style.background = '#f39c12';
+            el.style.borderColor = '#f39c12';
+            el.style.color = 'white';
+            if (!mistakesUsed.includes(mistakeId)) {
+                mistakesUsed.push(mistakeId);
+            }
+            updateMistakeArea();
+        }
+    }
+
+    // Show correction checkboxes for used mistakes
+    function updateMistakeArea() {
+        const area = document.getElementById('mistakeCorrectionArea');
+        const mistakeLabels = [
+            'Passport number mistake',
+            'Birthday month mistake',
+            'Mobile number mistake',
+            'Weekly rent mistake',
+            'Visa number mistake',
+            'Vietnam phone mistake'
+        ];
+
+        if (mistakesUsed.length === 0) {
+            area.innerHTML = `<p style="font-size:13px; 
+                color:#aaa; font-style:italic;">
+                Mark mistakes as used above to track corrections here...
+            </p>`;
+            return;
+        }
+
+        let html = '';
+        mistakesUsed.forEach(idx => {
+            html += `
+            <div style="display:flex; align-items:center; 
+                        gap:12px; padding:8px 0; 
+                        border-bottom:1px solid #ffe;" 
+                 id="correction-${idx}">
+                <div style="display:flex; gap:8px;">
+                    <button onclick="markCorrection(${idx}, true)" 
+                            id="yes-${idx}"
+                            style="padding:5px 12px; border:2px solid #27ae60; 
+                                   background:white; border-radius:6px; 
+                                   color:#27ae60; font-weight:700; 
+                                   cursor:pointer; font-size:12px;">
+                        ✓ Caught it!
+                    </button>
+                    <button onclick="markCorrection(${idx}, false)" 
+                            id="no-${idx}"
+                            style="padding:5px 12px; border:2px solid #e8524a; 
+                                   background:white; border-radius:6px; 
+                                   color:#e8524a; font-weight:700; 
+                                   cursor:pointer; font-size:12px;">
+                        ✗ Missed it
+                    </button>
+                </div>
+                <span style="font-size:13px; color:#555;">
+                    ${mistakeLabels[idx]}
+                </span>
+            </div>`;
+        });
+        area.innerHTML = html;
+    }
+
+    // Track if student caught each mistake
+    let correctionResults = {};
+
+    function markCorrection(idx, caught) {
+        correctionResults[idx] = caught;
+
+        // Visual feedback
+        const yesBtn = document.getElementById(`yes-${idx}`);
+        const noBtn = document.getElementById(`no-${idx}`);
+
+        if (caught) {
+            yesBtn.style.background = '#27ae60';
+            yesBtn.style.color = 'white';
+            noBtn.style.background = 'white';
+            noBtn.style.color = '#e8524a';
+        } else {
+            noBtn.style.background = '#e8524a';
+            noBtn.style.color = 'white';
+            yesBtn.style.background = 'white';
+            yesBtn.style.color = '#27ae60';
+        }
+    }
+
+    // ---- FINAL SCORE CALCULATION ----
+    function calculateFinal() {
+        // Count caught mistakes
+        let caughtCount = 0;
+        Object.values(correctionResults).forEach(v => {
+            if (v === true) caughtCount++;
+        });
+
+        // Bonus points: up to 3 for catching mistakes
+        // (1 point per caught mistake, max 3)
+        const bonusPoints = Math.min(caughtCount, 3);
+
+        // Update bonus item in main list if not already ticked
+        const bonusCircle = document.querySelector(
+            '#bonus-item .check-circle'
+        );
+        if (bonusPoints > 0 && !bonusCircle.classList.contains('done')) {
+            bonusCircle.classList.add('done');
+            bonusCircle.textContent = '✓';
+            bonusCircle.style.background = '#9b59b6';
+            bonusCircle.style.borderColor = '#9b59b6';
+            bonusCircle.style.color = 'white';
+            totalScore += bonusPoints;
+            updateLiveScore();
+        }
+
+        const finalScoreEl = document.getElementById('finalScore');
+        const finalBadge = document.getElementById('finalBadge');
+        const safeScore = Math.max(0, Math.min(totalScore, 25));
+
+        finalScoreEl.textContent = safeScore;
+
+        // Show grade badge
+        if (safeScore >= 23) {
+            finalBadge.innerHTML = `
+                <div style="background:rgba(255,255,255,0.2); 
+                            border-radius:12px; padding:14px 20px; 
+                            display:inline-block;">
+                    ⭐⭐⭐<br>
+                    <strong style="font-size:18px;">EXCELLENT!</strong><br>
+                    <span style="font-size:13px; opacity:0.85;">
+                        Outstanding communication skills!
+                    </span>
+                </div>`;
+        } else if (safeScore >= 18) {
+            finalBadge.innerHTML = `
+                <div style="background:rgba(255,255,255,0.2); 
+                            border-radius:12px; padding:14px 20px; 
+                            display:inline-block;">
+                    ⭐⭐<br>
+                    <strong style="font-size:18px;">VERY GOOD!</strong><br>
+                    <span style="font-size:13px; opacity:0.85;">
+                        Great job — almost perfect!
+                    </span>
+                </div>`;
+        } else if (safeScore >= 13) {
+            finalBadge.innerHTML = `
+                <div style="background:rgba(255,255,255,0.2); 
+                            border-radius:12px; padding:14px 20px; 
+                            display:inline-block;">
+                    ⭐<br>
+                    <strong style="font-size:18px;">GOOD EFFORT!</strong><br>
+                    <span style="font-size:13px; opacity:0.85;">
+                        Keep practicing numbers and spelling!
+                    </span>
+                </div>`;
+        } else if (safeScore >= 8) {
+            finalBadge.innerHTML = `
+                <div style="background:rgba(255,255,255,0.2); 
+                            border-radius:12px; padding:14px 20px; 
+                            display:inline-block;">
+                    📚<br>
+                    <strong style="font-size:18px;">KEEP PRACTICING!</strong><br>
+                    <span style="font-size:13px; opacity:0.85;">
+                        Focus on numbers, dates and spelling.
+                    </span>
+                </div>`;
+        } else {
+            finalBadge.innerHTML = `
+                <div style="background:rgba(255,255,255,0.2); 
+                            border-radius:12px; padding:14px 20px; 
+                            display:inline-block;">
+                    💪<br>
+                    <strong style="font-size:18px;">TRY AGAIN!</strong><br>
+                    <span style="font-size:13px; opacity:0.85;">
+                        Play again — you will improve every time!
+                    </span>
+                </div>`;
+        }
+
+        // Scroll to final score
+        finalScoreEl.closest('.score-area').scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+</script>
+
+</body>
+</html>

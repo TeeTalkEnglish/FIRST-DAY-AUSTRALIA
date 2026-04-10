@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎮 Play — Australian Grocery Game</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .game-area { min-height: 60vh; }
+    .list-preview {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .list-preview-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--grey);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+    }
+    .list-preview-item .item-emoji { font-size: 1.3rem; }
+    .section-back-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .section-back-bar h2 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+    }
+    .dialogue-progress {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .dialogue-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ddd;
+    }
+    .dialogue-dot.active { background: var(--green); }
+    .dialogue-dot.done { background: var(--dark-green); }
+    .self-checkout-screen {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .self-checkout-machine {
+      background: #1a1a2e;
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      text-align: center;
+      color: white;
+      margin-bottom: 20px;
+    }
+    .self-checkout-machine .machine-screen {
+      background: #16213e;
+      border: 2px solid #0f3460;
+      border-radius: var(--radius-sm);
+      padding: 24px;
+      margin-bottom: 20px;
+      min-height: 100px;
+    }
+    .self-checkout-machine .machine-screen p { font-size: 1.1rem; line-height: 1.6; }
+    .self-checkout-machine .machine-options { display: flex; flex-direction: column; gap: 10px; }
+    .self-checkout-machine .machine-btn {
+      padding: 14px 20px;
+      border: 2px solid #0f3460;
+      background: #16213e;
+      color: white;
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+    }
+    .self-checkout-machine .machine-btn:hover { border-color: var(--gold); background: #0f3460; }
+    .self-checkout-machine .machine-btn.correct-choice { border-color: var(--green); background: rgba(0, 132, 61, 0.3); }
+    .self-checkout-machine .machine-btn.wrong-choice { border-color: var(--red); background: rgba(229, 57, 53, 0.3); }
+    .machine-feedback { padding: 12px 16px; border-radius: var(--radius-sm); margin-top: 12px; font-size: 0.9rem; text-align: left; }
+    .machine-feedback.good { background: rgba(0,132,61,0.2); color: #66bb6a; }
+    .machine-feedback.bad { background: rgba(229,57,53,0.2); color: #ef5350; }
+    .self-checkout-progress { display: flex; gap: 4px; justify-content: center; margin-bottom: 16px; }
+    .sc-step { width: 30px; height: 6px; border-radius: 3px; background: #333; }
+    .sc-step.done { background: var(--green); }
+    .sc-step.active { background: var(--gold); }
+    .quiz-card { max-width: 650px; margin: 0 auto; }
+    .quiz-question-number { font-size: 0.85rem; color: var(--mid-grey); margin-bottom: 8px; }
+    .quiz-question {
+      font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; line-height: 1.5;
+      background: var(--grey); padding: 16px; border-radius: var(--radius-sm); border-left: 4px solid var(--blue);
+    }
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .achievement-item {
+      text-align: center; padding: 16px 12px; background: var(--grey);
+      border-radius: var(--radius-sm); opacity: 0.4; transition: var(--transition);
+    }
+    .achievement-item.unlocked { opacity: 1; background: var(--light-green); border: 2px solid var(--green); }
+    .achievement-item .achievement-icon { font-size: 2rem; margin-bottom: 6px; }
+    .achievement-item .achievement-name { font-weight: 700; font-size: 0.85rem; }
+    .achievement-item .achievement-desc { font-size: 0.75rem; color: var(--mid-grey); margin-top: 2px; }
+    .vocab-learned-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .vocab-learned-item { padding: 10px 14px; background: var(--light-blue); border-radius: var(--radius-sm); border-left: 3px solid var(--blue); }
+    .vocab-learned-item .vl-word { font-weight: 700; font-size: 0.95rem; }
+    .vocab-learned-item .vl-meaning { font-size: 0.83rem; color: var(--mid-grey); }
+    .timer-display { text-align: center; font-size: 0.85rem; color: var(--mid-grey); }
+    .timer-display .timer-value { font-weight: 700; font-size: 1rem; color: var(--dark-grey); }
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <div class="logo">🛒 Grocery Game</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="student.html" class="active">Play Game</a>
+      <a href="teacher.html">Teacher</a>
+    </div>
+  </nav>
+
+  <div class="container-wide">
+    <div class="phase-bar" id="phaseBar"></div>
+
+    <div class="game-wrapper">
+      <div class="game-area">
+
+        <!-- WELCOME -->
+        <div class="screen active" id="screen-welcome">
+          <div class="card welcome-content">
+            <div style="font-size: 4rem; margin-bottom: 16px;">🇦🇺🛒</div>
+            <h1>Welcome to the Supermarket!</h1>
+            <p style="color: var(--mid-grey); margin: 12px auto; max-width: 500px;">
+              It's your first week in Australia. You need to buy groceries and essentials. Let's go shopping!
+            </p>
+            <h3 style="margin: 28px 0 12px;">Choose your supermarket:</h3>
+            <div class="store-choice">
+              <div class="store-option" data-store="woolworths" onclick="selectStore(this)">
+                <div class="store-logo">🟢</div>
+                <strong>Woolworths</strong>
+                <div style="font-size: 0.8rem; color: var(--mid-grey);">"The Fresh Food People"</div>
+              </div>
+              <div class="store-option" data-store="coles" onclick="selectStore(this)">
+                <div class="store-logo">🔴</div>
+                <strong>Coles</strong>
+                <div style="font-size: 0.8rem; color: var(--mid-grey);">"Good things are happening"</div>
+              </div>
+              <div class="store-option" data-store="aldi" onclick="selectStore(this)">
+                <div class="store-logo">🔵</div>
+                <strong>Aldi</strong>
+                <div style="font-size: 0.8rem; color: var(--mid-grey);">"Good Different"</div>
+              </div>
+            </div>
+            <h3 style="margin: 28px 0 12px;">Choose difficulty:</h3>
+            <div class="store-choice">
+              <div class="store-option selected" data-diff="easy" onclick="selectDifficulty(this)">
+                <div style="font-size: 1.5rem;">🟢</div>
+                <strong>Easy</strong>
+                <div style="font-size: 0.8rem; color: var(--mid-grey);">6 items · \$50 budget</div>
+              </div>
+              <div class="store-option" data-diff="medium" onclick="selectDifficulty(this)">
+                <div style="font-size: 1.5rem;">🟡</div>
+                <strong>Medium</strong>
+                <div style="font-size: 0.8rem; color: var(--mid-grey);">23 items · \$80 budget</div>
+              </div>
+              <div class="store-option" data-diff="hard" onclick="selectDifficulty(this)">
+                <div style="font-size: 1.5rem;">🔴</div>
+                <strong>Hard</strong>
+                <div style="font-size: 0.8rem; color: var(--mid-grey);">23+ items · \$120 budget</div>
+              </div>
+            </div>
+            <div style="margin-top: 28px;">
+              <button class="btn btn-primary btn-block" id="btnStartGame" onclick="startGame()" disabled>
+                🛒 Let's Go Shopping!
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SHOPPING LIST -->
+        <div class="screen" id="screen-list">
+          <div class="card">
+            <h2>📋 Your Shopping List</h2>
+            <p style="color: var(--mid-grey); margin: 8px 0 16px;">
+              Here's what you need to buy today. Try to find everything and stay within your budget!
+            </p>
+            <div class="tip-box">
+              <span class="tip-icon">💡</span>
+              <div><strong>Tip:</strong> Items marked with ⭐ are on your list. You can buy extras, but watch your budget!</div>
+            </div>
+            <div class="list-preview" id="listPreview"></div>
+            <div style="margin-top: 20px; text-align: center;">
+              <button class="btn btn-primary" onclick="goToPhase('store')">🏪 Enter the Store →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STORE MAP -->
+        <div class="screen" id="screen-store">
+          <div class="section-back-bar">
+            <h2>🏪 Store Sections</h2>
+            <span style="color: var(--mid-grey); font-size: 0.9rem;">Click a section to browse items</span>
+          </div>
+          <div class="store-map" id="storeMap"></div>
+          <div class="tip-box">
+            <span class="tip-icon">🛒</span>
+            <div><strong>Remember:</strong> The <strong>meat counter</strong> 🥩 will have a conversation with the butcher!</div>
+          </div>
+          <div style="margin-top: 20px; text-align: center;">
+            <button class="btn btn-primary" id="btnToCheckout" onclick="goToCheckoutPhase()" disabled>
+              💳 Go to Checkout →
+            </button>
+          </div>
+        </div>
+
+        <!-- SECTION PRODUCTS -->
+        <div class="screen" id="screen-section">
+          <div class="section-back-bar">
+            <h2 id="sectionTitle">🥩 Section</h2>
+            <button class="btn btn-secondary btn-sm" onclick="goToPhase('store')">← Back to Store Map</button>
+          </div>
+          <div id="sectionTip"></div>
+          <div class="product-grid" id="productGrid"></div>
+          <div id="sectionVocab" style="margin-top: 16px;"></div>
+        </div>
+
+               <!-- DIALOGUE (supports both normal and challenge mode) -->
+        <div class="screen" id="screen-dialogue">
+          <div class="dialogue-box" style="max-width: 600px; margin: 0 auto; box-shadow: var(--shadow);">
+            <div class="dialogue-header" id="dialogueHeader">
+              <span class="speaker-avatar" id="dialogueAvatar">👨‍🍳</span>
+              <div>
+                <div class="speaker-name" id="dialogueName">Butcher Dave</div>
+                <div class="speaker-role" id="dialogueRole">Meat Counter Staff</div>
+              </div>
+              <!-- Challenge mode badge -->
+              <div id="challengeBadge" style="display:none;margin-left:auto;background:var(--gold);color:var(--dark-grey);padding:4px 12px;border-radius:12px;font-size:0.75rem;font-weight:700;">
+                🔥 CHALLENGE MODE
+              </div>
+            </div>
+            <div class="dialogue-body">
+              <div class="dialogue-progress" id="dialogueProgress"></div>
+
+              <!-- NORMAL MODE: shows text and multiple choice -->
+              <div id="normalModeContent">
+                <div class="dialogue-text" id="dialogueText"></div>
+                <div class="dialogue-options" id="dialogueOptions"></div>
+              </div>
+
+              <!-- CHALLENGE MODE: hidden text, free type -->
+                          <!-- CHALLENGE MODE: listen and choose -->
+              <div id="challengeModeContent" style="display:none;">
+                <div style="background:#fff3e0;border:2px dashed #ff9800;border-radius:var(--radius-sm);padding:20px;text-align:center;margin-bottom:16px;">
+                  <div style="font-size:2.5rem;margin-bottom:8px;">🎤</div>
+                  <div style="font-weight:700;font-size:1.1rem;color:#e65100;">Listen to your teacher!</div>
+                  <div style="font-size:0.85rem;color:var(--mid-grey);margin-top:4px;">Your teacher will speak as the store staff. Listen carefully, then choose your response.</div>
+                </div>
+
+                <!-- Hint -->
+                <div id="challengeHint" style="background:var(--light-blue);border:1px solid #bbdefb;border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:16px;">
+                  <div style="font-weight:600;font-size:0.85rem;color:var(--blue);margin-bottom:4px;">💡 Hint</div>
+                  <div id="challengeHintText" style="font-size:0.9rem;color:var(--mid-grey);"></div>
+                </div>
+
+                <!-- Response options (multiple choice, but harder) -->
+                <div id="challengeOptionsArea">
+                  <div style="font-weight:600;font-size:0.9rem;margin-bottom:8px;">🗣️ What would you say?</div>
+                  <div class="dialogue-options" id="challengeOptions"></div>
+                </div>
+
+                <!-- Dollar amount input (for price questions) -->
+                <div id="challengeAmountArea" style="display:none;">
+                  <div style="font-weight:600;font-size:0.9rem;margin-bottom:8px;">💰 How much did they say? Type the dollar amount:</div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                    <span style="font-size:1.5rem;font-weight:700;">$</span>
+                    <input type="number" id="challengeAmountInput" step="0.01" min="0" max="999"
+                      placeholder="0.00"
+                      style="flex:1;padding:14px;border:3px solid #e0e0e0;border-radius:var(--radius-sm);font-size:1.3rem;font-weight:700;text-align:center;">
+                  </div>
+                  <button class="btn btn-primary btn-block" id="challengeAmountSubmit" onclick="submitChallengeAmount()">
+                    💰 Submit Amount
+                  </button>
+                </div>
+
+                <!-- Feedback -->
+                <div id="challengeFeedback" style="display:none;margin-top:16px;">
+                  <div id="challengeScoreBar" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;"></div>
+                  <div id="challengeFeedbackText" style="padding:12px 16px;border-radius:var(--radius-sm);font-size:0.9rem;"></div>
+                  <div id="challengeExampleAnswer" style="margin-top:12px;background:var(--light-green);border:1px solid #a5d6a7;border-radius:var(--radius-sm);padding:12px 16px;">
+                    <div style="font-weight:600;font-size:0.85rem;color:var(--dark-green);margin-bottom:4px;">💬 What was said:</div>
+                    <div id="challengeWhatWasSaid" style="font-size:0.95rem;font-weight:600;"></div>
+                    <div id="challengeExampleText" style="font-size:0.9rem;font-style:italic;color:var(--mid-grey);margin-top:4px;"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Shared feedback area for normal mode -->
+              <div class="dialogue-feedback" id="dialogueFeedback"></div>
+            </div>
+            <div class="dialogue-footer" id="dialogueFooter" style="display: none;">
+              <button class="btn btn-primary btn-sm" id="dialogueNextBtn" onclick="nextDialogueLine()">Continue →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SELF-CHECKOUT -->
+        <div class="screen" id="screen-selfCheckout">
+          <div class="self-checkout-screen">
+            <h2 style="text-align: center; margin-bottom: 16px;">🤖 Self-Checkout Machine</h2>
+            <div class="self-checkout-progress" id="scProgress"></div>
+            <div class="self-checkout-machine">
+              <div class="machine-screen">
+                <p id="scInstruction">Touch the screen to start.</p>
+              </div>
+              <div class="machine-options" id="scOptions"></div>
+              <div class="machine-feedback" id="scFeedback" style="display: none;"></div>
+            </div>
+            <div style="text-align: center;">
+              <button class="btn btn-primary btn-sm" id="scNextBtn" onclick="nextSCStep()" style="display: none;">Next Step →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHECKOUT -->
+        <div class="screen" id="screen-checkout">
+          <div class="dialogue-box" style="max-width: 600px; margin: 0 auto; box-shadow: var(--shadow);">
+            <div class="dialogue-header" id="checkoutDialogueHeader">
+              <span class="speaker-avatar" id="checkoutAvatar">👩</span>
+              <div>
+                <div class="speaker-name" id="checkoutName">Sarah</div>
+                <div class="speaker-role" id="checkoutRole">Checkout Staff</div>
+              </div>
+            </div>
+            <div class="dialogue-body">
+              <div class="dialogue-progress" id="checkoutProgress"></div>
+              <div class="dialogue-text" id="checkoutText"></div>
+              <div class="dialogue-options" id="checkoutOptions"></div>
+              <div class="dialogue-feedback" id="checkoutFeedback"></div>
+            </div>
+            <div class="dialogue-footer" id="checkoutFooter" style="display: none;">
+              <button class="btn btn-primary btn-sm" id="checkoutNextBtn" onclick="nextCheckoutLine()">Continue →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUIZ -->
+        <div class="screen" id="screen-quiz">
+          <div class="quiz-card card">
+            <h2 style="text-align: center; margin-bottom: 20px;">🇦🇺 Aussie Slang Quiz</h2>
+            <div class="quiz-question-number" id="quizQNum"></div>
+            <div class="quiz-question" id="quizQuestion"></div>
+            <div class="dialogue-options" id="quizOptions"></div>
+            <div class="dialogue-feedback" id="quizFeedback"></div>
+            <div style="text-align: right; margin-top: 12px;">
+              <button class="btn btn-primary btn-sm" id="quizNextBtn" onclick="nextQuizQuestion()" style="display: none;">Next Question →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESULTS -->
+        <div class="screen" id="screen-results">
+          <div class="card results-card">
+            <h2>🎉 Shopping Complete!</h2>
+            <div class="score-circle" id="scoreCircle">
+              <span id="finalScore">0</span>
+              <span>points</span>
+            </div>
+            <p id="scoreMessage" style="font-size: 1.1rem; margin-bottom: 8px;"></p>
+            <div class="results-stats">
+              <div class="stat-box"><div class="stat-value" id="statItemsFound">0/0</div><div class="stat-label">List Items Found</div></div>
+              <div class="stat-box"><div class="stat-value" id="statSpent">\$0</div><div class="stat-label">Total Spent</div></div>
+              <div class="stat-box"><div class="stat-value" id="statBudget">\$0</div><div class="stat-label">Budget Remaining</div></div>
+              <div class="stat-box"><div class="stat-value" id="statDialogues">0/0</div><div class="stat-label">Dialogues Correct</div></div>
+              <div class="stat-box"><div class="stat-value" id="statTime">0:00</div><div class="stat-label">Time Taken</div></div>
+              <div class="stat-box"><div class="stat-value" id="statSections">0/6</div><div class="stat-label">Sections Visited</div></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top: 20px;">
+            <h3>🏆 Achievements</h3>
+            <div class="achievements-grid" id="achievementsGrid"></div>
+          </div>
+          <div class="card" style="margin-top: 20px;">
+            <h3>🛒 Your Cart Summary</h3>
+            <div id="cartSummary" style="margin-top: 12px;"></div>
+          </div>
+          <div class="card" style="margin-top: 20px;">
+            <h3>📚 Vocabulary You Learned</h3>
+            <div class="vocab-learned-grid" id="vocabLearned"></div>
+          </div>
+          <div style="text-align: center; margin-top: 24px;">
+            <button class="btn btn-primary" onclick="location.reload()">🔄 Play Again</button>
+            <a href="index.html" class="btn btn-secondary" style="margin-left: 12px;">🏠 Home</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="sidebar" id="gameSidebar">
+        <div class="card budget-display">
+          <div class="budget-label">BUDGET</div>
+          <div class="budget-amount" id="budgetDisplay">\$50.00</div>
+          <div class="budget-label" id="budgetRemaining">remaining</div>
+        </div>
+        <div class="card" style="padding: 12px;">
+          <div class="timer-display">⏱️ <span class="timer-value" id="timerDisplay">0:00</span></div>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: 10px;">📋 Shopping List</h4>
+          <div id="sidebarList"></div>
+          <div style="margin-top: 10px; font-size: 0.8rem; color: var(--mid-grey);">
+            <span id="listProgress">0</span> / <span id="listTotal">0</span> items found
+          </div>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: 10px;">🛒 My Cart (<span id="cartCount">0</span>)</h4>
+          <div id="cartItems" style="max-height: 300px; overflow-y: auto;"></div>
+          <div style="margin-top: 10px; border-top: 2px solid #eee; padding-top: 10px; display: flex; justify-content: space-between; font-weight: 700;">
+            <span>Total:</span>
+            <span id="cartTotal">\$0.00</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toastContainer"></div>
+
+  <script src="game-data.js"></script>
+  <script>
+    /* ============================================
+       GAME ENGINE - CLEAN VERSION
+       ============================================ */
+
+    var STATE = {
+      store: null,
+      difficulty: 'easy',
+      phase: 'welcome',
+      budget: 50,
+      spent: 0,
+      cart: [],
+      requiredItems: [],
+      foundItems: [],
+      sectionsVisited: [],
+      dialogueScores: { correct: 0, partial: 0, wrong: 0, total: 0, meatDone: false, helpDone: false },
+      scScore: { correct: 0, total: 0 },
+      quizScore: { correct: 0, total: 0 },
+      currentDialogue: null,
+      currentDialogueIndex: 0,
+      onDialogueComplete: null,
+      currentSCStep: 0,
+      currentQuizIndex: 0,
+      vocabLearned: new Set(),
+      achievements: new Set(),
+      startTime: null,
+      timerInterval: null,
+      elapsedSeconds: 0
+    };
+
+    /* --- INIT --- */
+    document.addEventListener('DOMContentLoaded', function() {
+      renderPhaseBar();
+      checkTeacherSettings();
+      updateGameLink_initial();
+    });
+
+    function updateGameLink_initial() {
+      updateStartButton();
+    }
+
+    function checkTeacherSettings() {
+      var params = new URLSearchParams(window.location.search);
+      var diff = params.get('difficulty') || localStorage.getItem('teacherDifficulty');
+      if (diff && GAME_DATA.shoppingLists[diff]) {
+        STATE.difficulty = diff;
+        var diffBtns = document.querySelectorAll('.store-option[data-diff]');
+        for (var i = 0; i < diffBtns.length; i++) {
+          if (diffBtns[i].dataset.diff === diff) {
+            diffBtns[i].classList.add('selected');
+          } else {
+            diffBtns[i].classList.remove('selected');
+          }
+        }
+      }
+      var store = params.get('store') || localStorage.getItem('teacherStore');
+      if (store) {
+        STATE.store = store;
+        var storeBtns = document.querySelectorAll('.store-option[data-store]');
+        for (var i = 0; i < storeBtns.length; i++) {
+          if (storeBtns[i].dataset.store === store) {
+            storeBtns[i].classList.add('selected');
+          } else {
+            storeBtns[i].classList.remove('selected');
+          }
+        }
+        updateStartButton();
+      }
+      var budget = params.get('budget') || localStorage.getItem('teacherBudget');
+      if (budget) {
+        STATE.budget = parseFloat(budget);
+      }
+    }
+
+    /* --- PHASE BAR --- */
+    function renderPhaseBar() {
+      var bar = document.getElementById('phaseBar');
+      var phaseIndex = -1;
+      for (var i = 0; i < GAME_DATA.phases.length; i++) {
+        if (GAME_DATA.phases[i].id === STATE.phase) { phaseIndex = i; break; }
+      }
+      var html = '';
+      for (var i = 0; i < GAME_DATA.phases.length; i++) {
+        var p = GAME_DATA.phases[i];
+        if (i > 0) html += '<div class="phase-connector"></div>';
+        var cls = 'phase-step';
+        if (i === phaseIndex) cls += ' active';
+        if (i < phaseIndex) cls += ' done';
+        html += '<div class="' + cls + '">' + p.icon + ' ' + p.name + '</div>';
+      }
+      bar.innerHTML = html;
+    }
+
+    /* --- STORE & DIFFICULTY SELECTION --- */
+    function selectStore(el) {
+      var all = document.querySelectorAll('.store-option[data-store]');
+      for (var i = 0; i < all.length; i++) all[i].classList.remove('selected');
+      el.classList.add('selected');
+      STATE.store = el.dataset.store;
+      updateStartButton();
+    }
+
+    function selectDifficulty(el) {
+      var all = document.querySelectorAll('.store-option[data-diff]');
+      for (var i = 0; i < all.length; i++) all[i].classList.remove('selected');
+      el.classList.add('selected');
+      STATE.difficulty = el.dataset.diff;
+      updateStartButton();
+    }
+
+    function updateStartButton() {
+      document.getElementById('btnStartGame').disabled = !STATE.store;
+    }
+
+    /* --- FIND PRODUCT --- */
+    function findProductById(id) {
+      var sections = Object.keys(GAME_DATA.products);
+      for (var s = 0; s < sections.length; s++) {
+        var arr = GAME_DATA.products[sections[s]];
+        for (var p = 0; p < arr.length; p++) {
+          if (arr[p].id === id) {
+            var copy = Object.assign({}, arr[p]);
+            copy.section = sections[s];
+            return copy;
+          }
+        }
+      }
+      return null;
+    }
+
+    /* --- START GAME --- */
+    function startGame() {
+      var listData = GAME_DATA.shoppingLists[STATE.difficulty];
+      STATE.budget = listData.budget;
+      STATE.requiredItems = [];
+      for (var i = 0; i < listData.requiredItems.length; i++) {
+        var prod = findProductById(listData.requiredItems[i]);
+        if (prod) STATE.requiredItems.push(prod);
+      }
+      STATE.startTime = Date.now();
+      startTimer();
+      updateBudgetDisplay();
+      renderSidebarList();
+      goToPhase('list');
+    }
+
+    /* --- TIMER --- */
+    function startTimer() {
+      STATE.timerInterval = setInterval(function() {
+        STATE.elapsedSeconds = Math.floor((Date.now() - STATE.startTime) / 1000);
+        var mins = Math.floor(STATE.elapsedSeconds / 60);
+        var secs = STATE.elapsedSeconds % 60;
+        document.getElementById('timerDisplay').textContent = mins + ':' + String(secs).padStart(2, '0');
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(STATE.timerInterval);
+    }
+
+    /* --- PHASE NAVIGATION --- */
+    function goToPhase(phaseId) {
+      STATE.phase = phaseId;
+      var screens = document.querySelectorAll('.screen');
+      for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+
+      var map = {
+        welcome: 'screen-welcome',
+        list: 'screen-list',
+        store: 'screen-store',
+        shopping: 'screen-section',
+        selfCheckout: 'screen-selfCheckout',
+        checkout: 'screen-checkout',
+        quiz: 'screen-quiz',
+        results: 'screen-results'
+      };
+
+      var screenId = map[phaseId];
+      if (screenId) document.getElementById(screenId).classList.add('active');
+      renderPhaseBar();
+
+      if (phaseId === 'list') renderListPreview();
+      if (phaseId === 'store') renderStoreMap();
+      if (phaseId === 'selfCheckout') initSelfCheckout();
+      if (phaseId === 'results') renderResults();
+    }
+
+    /* --- LIST PREVIEW --- */
+    function renderListPreview() {
+      var c = document.getElementById('listPreview');
+      var html = '';
+      for (var i = 0; i < STATE.requiredItems.length; i++) {
+        var item = STATE.requiredItems[i];
+        html += '<div class="list-preview-item">';
+        html += '<span class="item-emoji">' + item.emoji + '</span>';
+        html += '<div><strong>' + item.name + '</strong>';
+        html += '<div style="font-size:0.8rem;color:var(--mid-grey);">' + item.weight + ' — $' + item.price.toFixed(2) + '</div></div>';
+        html += '</div>';
+      }
+      c.innerHTML = html;
+    }
+
+    /* --- SIDEBAR LIST --- */
+    function renderSidebarList() {
+      var c = document.getElementById('sidebarList');
+      document.getElementById('listTotal').textContent = STATE.requiredItems.length;
+      var html = '';
+      for (var i = 0; i < STATE.requiredItems.length; i++) {
+        var item = STATE.requiredItems[i];
+        var found = STATE.foundItems.indexOf(item.id) >= 0;
+        html += '<div class="shopping-list-item ' + (found ? 'found' : '') + '">';
+        html += '<div class="checkmark">' + (found ? '✓' : '') + '</div>';
+        html += '<span>' + item.emoji + ' ' + item.name + '</span>';
+        html += '</div>';
+      }
+      c.innerHTML = html;
+      document.getElementById('listProgress').textContent = STATE.foundItems.length;
+    }
+
+    /* --- STORE MAP --- */
+    function renderStoreMap() {
+      var c = document.getElementById('storeMap');
+      var html = '';
+      for (var i = 0; i < GAME_DATA.sections.length; i++) {
+        var s = GAME_DATA.sections[i];
+        var visited = STATE.sectionsVisited.indexOf(s.id) >= 0;
+
+        // Count list items in section
+        var sectionListCount = 0;
+        var sectionFoundCount = 0;
+        for (var j = 0; j < STATE.requiredItems.length; j++) {
+          if (STATE.requiredItems[j].section === s.id) {
+            sectionListCount++;
+            if (STATE.foundItems.indexOf(STATE.requiredItems[j].id) >= 0) sectionFoundCount++;
+          }
+        }
+
+        var badge = '';
+        if (sectionListCount > 0) {
+          badge = '<div style="font-size:0.75rem;margin-top:6px;color:var(--green);">⭐ ' + sectionFoundCount + '/' + sectionListCount + ' list items</div>';
+        }
+
+        html += '<div class="section-card ' + (visited ? 'completed' : '') + '" onclick="enterSection(\'' + s.id + '\')">';
+        html += '<div class="section-icon">' + s.icon + '</div>';
+        html += '<h4>' + s.name + '</h4>';
+        html += '<p>' + s.description + '</p>';
+        html += badge;
+        html += '</div>';
+      }
+      c.innerHTML = html;
+      document.getElementById('btnToCheckout').disabled = STATE.cart.length === 0;
+    }
+
+    /* --- ENTER SECTION --- */
+    function enterSection(sectionId) {
+      if (STATE.sectionsVisited.indexOf(sectionId) < 0) {
+        STATE.sectionsVisited.push(sectionId);
+      }
+
+      var section = null;
+      for (var i = 0; i < GAME_DATA.sections.length; i++) {
+        if (GAME_DATA.sections[i].id === sectionId) { section = GAME_DATA.sections[i]; break; }
+      }
+
+      // Meat counter dialogue
+      if (sectionId === 'meat' && !STATE.dialogueScores.meatDone) {
+        startDialogue('meatCounter', function() {
+          STATE.dialogueScores.meatDone = true;
+          showSection(sectionId, section);
+        });
+        return;
+      }
+
+      // Asking for help dialogue
+      if (sectionId === 'pantry' && !STATE.dialogueScores.helpDone &&
+          (STATE.difficulty === 'medium' || STATE.difficulty === 'hard')) {
+        startDialogue('askingHelp', function() {
+          STATE.dialogueScores.helpDone = true;
+          showSection(sectionId, section);
+        });
+        return;
+      }
+
+      showSection(sectionId, section);
+    }
+
+    /* --- SHOW SECTION PRODUCTS --- */
+    function showSection(sectionId, section) {
+      STATE.phase = 'shopping';
+      renderPhaseBar();
+
+      var screens = document.querySelectorAll('.screen');
+      for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+      document.getElementById('screen-section').classList.add('active');
+      document.getElementById('sectionTitle').innerHTML = section.icon + ' ' + section.name;
+
+      var products = GAME_DATA.products[sectionId] || [];
+      var grid = document.getElementById('productGrid');
+      var html = '';
+
+      for (var i = 0; i < products.length; i++) {
+        var p = products[i];
+        var inCart = false;
+        for (var j = 0; j < STATE.cart.length; j++) {
+          if (STATE.cart[j].id === p.id) { inCart = true; break; }
+        }
+        var onList = false;
+        for (var j = 0; j < STATE.requiredItems.length; j++) {
+          if (STATE.requiredItems[j].id === p.id) { onList = true; break; }
+        }
+
+        html += '<div class="product-card ' + (inCart ? 'in-cart' : '') + '" id="product-' + p.id + '">';
+        if (onList) html += '<div class="on-list-tag">⭐ ON LIST</div>';
+        html += '<button class="add-btn" onclick="toggleCartItem(\'' + p.id + '\',\'' + sectionId + '\')">' + (inCart ? '✕' : '+') + '</button>';
+        html += '<div class="product-emoji">' + p.emoji + '</div>';
+        html += '<div class="product-name">' + p.name + '</div>';
+        html += '<div class="product-weight">' + p.weight + '</div>';
+        html += '<div class="product-price">$' + p.price.toFixed(2) + '</div>';
+        html += '</div>';
+      }
+      grid.innerHTML = html;
+
+      // Section tips
+      var tipsContainer = document.getElementById('sectionTip');
+      var tippedProducts = products.filter(function(p) { return p.tip; });
+      if (tippedProducts.length > 0) {
+        var tipHtml = '<div class="vocab-box"><h4>📝 Good to Know</h4>';
+        var showCount = Math.min(tippedProducts.length, 3);
+        for (var i = 0; i < showCount; i++) {
+          tipHtml += '<div style="margin:6px 0;"><span class="vocab-word">' + tippedProducts[i].name + ':</span> ';
+          tipHtml += '<span class="vocab-meaning">' + tippedProducts[i].tip + '</span></div>';
+        }
+        tipHtml += '</div>';
+        tipsContainer.innerHTML = tipHtml;
+      } else {
+        tipsContainer.innerHTML = '';
+      }
+
+      renderSectionVocab(sectionId);
+    }
+
+    /* --- SECTION VOCAB --- */
+    function renderSectionVocab(sectionId) {
+      var container = document.getElementById('sectionVocab');
+      var vocabMap = {
+        meat: ['Mince', 'Rashers', 'Scotch fillet', 'Chops', 'Fillet', 'Snags', 'Deli'],
+        produce: ['Capsicum', 'Rocket', 'Coriander', 'Zucchini'],
+        pantry: [],
+        dairy: ['Free range', 'Use-by date', 'Best before'],
+        household: [],
+        drinks: []
+      };
+
+      var wordNames = vocabMap[sectionId] || [];
+      var relevantWords = [];
+      for (var i = 0; i < wordNames.length; i++) {
+        for (var j = 0; j < GAME_DATA.vocabulary.length; j++) {
+          if (GAME_DATA.vocabulary[j].word === wordNames[i]) {
+            relevantWords.push(GAME_DATA.vocabulary[j]);
+            STATE.vocabLearned.add(GAME_DATA.vocabulary[j].word);
+            break;
+          }
+        }
+      }
+
+      if (relevantWords.length === 0) { container.innerHTML = ''; return; }
+
+      var html = '<div class="vocab-box"><h4>🗣️ Vocabulary for this section</h4>';
+      for (var i = 0; i < relevantWords.length; i++) {
+        html += '<div style="margin:4px 0;"><span class="vocab-word">' + relevantWords[i].word + '</span> — ';
+        html += '<span class="vocab-meaning">' + relevantWords[i].meaning + '</span></div>';
+      }
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    /* --- CART MANAGEMENT --- */
+    function toggleCartItem(productId, sectionId) {
+      var existingIdx = -1;
+      for (var i = 0; i < STATE.cart.length; i++) {
+        if (STATE.cart[i].id === productId) { existingIdx = i; break; }
+      }
+
+      if (existingIdx >= 0) {
+        var removed = STATE.cart.splice(existingIdx, 1)[0];
+        STATE.spent -= removed.price;
+        var foundIdx = STATE.foundItems.indexOf(productId);
+        if (foundIdx >= 0) STATE.foundItems.splice(foundIdx, 1);
+        showToast('Removed ' + removed.name, 'warning');
+      } else {
+        var product = null;
+        var arr = GAME_DATA.products[sectionId] || [];
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i].id === productId) { product = Object.assign({}, arr[i]); product.section = sectionId; break; }
+        }
+        if (!product) return;
+
+        STATE.cart.push(product);
+        STATE.spent += product.price;
+
+        var isOnList = false;
+        for (var i = 0; i < STATE.requiredItems.length; i++) {
+          if (STATE.requiredItems[i].id === productId) { isOnList = true; break; }
+        }
+
+        if (isOnList) {
+          if (STATE.foundItems.indexOf(productId) < 0) STATE.foundItems.push(productId);
+          showToast('✅ ' + product.name + ' — on your list!', 'success');
+        } else {
+          showToast('Added ' + product.name + ' (not on list)', 'warning');
+        }
+
+        if (product.tip) STATE.vocabLearned.add(product.name);
+      }
+
+      updateBudgetDisplay();
+      renderSidebarList();
+      renderCartItems();
+
+      // Refresh product card
+      var card = document.getElementById('product-' + productId);
+      if (card) {
+        var inCart = false;
+        for (var i = 0; i < STATE.cart.length; i++) {
+          if (STATE.cart[i].id === productId) { inCart = true; break; }
+        }
+        if (inCart) { card.classList.add('in-cart'); } else { card.classList.remove('in-cart'); }
+        var btn = card.querySelector('.add-btn');
+        btn.textContent = inCart ? '✕' : '+';
+      }
+    }
+
+    /* --- BUDGET DISPLAY --- */
+    function updateBudgetDisplay() {
+      var remaining = STATE.budget - STATE.spent;
+      var display = document.getElementById('budgetDisplay');
+      display.textContent = '$' + remaining.toFixed(2);
+      if (remaining < 0) { display.classList.add('over-budget'); } else { display.classList.remove('over-budget'); }
+      document.getElementById('budgetRemaining').textContent = remaining >= 0 ? 'remaining' : 'OVER BUDGET!';
+      document.getElementById('cartTotal').textContent = '$' + STATE.spent.toFixed(2);
+      document.getElementById('cartCount').textContent = STATE.cart.length;
+    }
+
+    /* --- CART ITEMS --- */
+    function renderCartItems() {
+      var c = document.getElementById('cartItems');
+      if (STATE.cart.length === 0) {
+        c.innerHTML = '<p style="color:var(--mid-grey);font-size:0.85rem;">Your cart is empty</p>';
+        return;
+      }
+      var html = '';
+      for (var i = 0; i < STATE.cart.length; i++) {
+        var item = STATE.cart[i];
+        html += '<div class="cart-item">';
+        html += '<div class="item-name"><span>' + item.emoji + '</span><span>' + item.name + '</span></div>';
+        html += '<div style="display:flex;align-items:center;gap:8px;">';
+        html += '<span>$' + item.price.toFixed(2) + '</span>';
+        html += '<button class="remove-btn" onclick="toggleCartItem(\'' + item.id + '\',\'' + item.section + '\')">✕</button>';
+        html += '</div></div>';
+      }
+      c.innerHTML = html;
+    }
+
+    /* =====================
+       DIALOGUE SYSTEM
+       ===================== */
+    function startDialogue(dialogueKey, onComplete) {
+      var dialogueData = GAME_DATA.dialogues[dialogueKey];
+      if (!dialogueData || dialogueData.length === 0) {
+        if (onComplete) onComplete();
+        return;
+      }
+
+      STATE.currentDialogue = dialogueData;
+      STATE.currentDialogueIndex = 0;
+      STATE.onDialogueComplete = onComplete;
+
+      STATE.vocabLearned.add("G'day");
+      STATE.vocabLearned.add('Mate');
+      STATE.vocabLearned.add('No worries');
+      STATE.vocabLearned.add('On special');
+
+      var screens = document.querySelectorAll('.screen');
+      for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+      document.getElementById('screen-dialogue').classList.add('active');
+
+      renderDialogueLine();
+    }
+
+    function renderDialogueLine() {
+      var line = STATE.currentDialogue[STATE.currentDialogueIndex];
+      if (!line) {
+        if (STATE.onDialogueComplete) STATE.onDialogueComplete();
+        return;
+      }
+
+      document.getElementById('dialogueAvatar').textContent = line.avatar;
+      document.getElementById('dialogueName').textContent = line.speaker;
+      document.getElementById('dialogueRole').textContent = line.role;
+      document.getElementById('dialogueText').textContent = line.text;
+      document.getElementById('dialogueFeedback').style.display = 'none';
+      document.getElementById('dialogueFeedback').className = 'dialogue-feedback';
+      document.getElementById('dialogueFooter').style.display = 'none';
+
+      // Progress dots
+      var progHtml = '';
+      for (var i = 0; i < STATE.currentDialogue.length; i++) {
+        var cls = 'dialogue-dot';
+        if (i < STATE.currentDialogueIndex) cls += ' done';
+        if (i === STATE.currentDialogueIndex) cls += ' active';
+        progHtml += '<div class="' + cls + '"></div>';
+      }
+      document.getElementById('dialogueProgress').innerHTML = progHtml;
+
+      // Options
+      var optHtml = '';
+      for (var i = 0; i < line.options.length; i++) {
+        var letter = String.fromCharCode(65 + i);
+        optHtml += '<button class="dialogue-option" onclick="chooseDialogueOption(' + i + ')" id="dopt-' + i + '">';
+        optHtml += '<span style="font-weight:700;color:var(--blue);">' + letter + '.</span> ';
+        optHtml += '<span>' + line.options[i].text + '</span>';
+        optHtml += '</button>';
+      }
+      document.getElementById('dialogueOptions').innerHTML = optHtml;
+    }
+
+    function chooseDialogueOption(index) {
+      var line = STATE.currentDialogue[STATE.currentDialogueIndex];
+      var option = line.options[index];
+
+      // Disable all
+      var allOpts = document.querySelectorAll('#dialogueOptions .dialogue-option');
+      for (var i = 0; i < allOpts.length; i++) {
+        allOpts[i].disabled = true;
+        allOpts[i].style.pointerEvents = 'none';
+      }
+
+      var chosen = document.getElementById('dopt-' + index);
+      var cls = option.quality === 'correct' ? 'correct' : option.quality === 'partial' ? 'partial' : 'wrong';
+      chosen.classList.add(cls);
+
+      // Show correct if wrong
+      if (option.quality !== 'correct') {
+        for (var i = 0; i < line.options.length; i++) {
+          if (line.options[i].quality === 'correct') {
+            document.getElementById('dopt-' + i).classList.add('correct');
+            break;
+          }
+        }
+      }
+
+      var fb = document.getElementById('dialogueFeedback');
+      fb.textContent = option.feedback;
+      fb.className = 'dialogue-feedback show';
+      fb.classList.add(option.quality === 'correct' ? 'good' : option.quality === 'partial' ? 'ok' : 'bad');
+
+      STATE.dialogueScores[option.quality]++;
+      STATE.dialogueScores.total++;
+
+      document.getElementById('dialogueFooter').style.display = 'block';
+    }
+
+    function nextDialogueLine() {
+      STATE.currentDialogueIndex++;
+      if (STATE.currentDialogueIndex >= STATE.currentDialogue.length) {
+        if (STATE.onDialogueComplete) STATE.onDialogueComplete();
+        return;
+      }
+      renderDialogueLine();
+    }
+
+    /* =====================
+       CHECKOUT
+       ===================== */
+    function goToCheckoutPhase() {
+      if (STATE.difficulty === 'hard') {
+        goToPhase('selfCheckout');
+      } else {
+        startCheckoutDialogue();
+      }
+    }
+
+    function startCheckoutDialogue() {
+      STATE.currentDialogue = GAME_DATA.dialogues.checkout;
+      STATE.currentDialogueIndex = 0;
+      STATE.vocabLearned.add('EFTPOS');
+      STATE.vocabLearned.add('Tap');
+      STATE.vocabLearned.add('Checkout');
+      STATE.vocabLearned.add('Reusable bag');
+
+      var screens = document.querySelectorAll('.screen');
+      for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+      document.getElementById('screen-checkout').classList.add('active');
+      STATE.phase = 'checkout';
+      renderPhaseBar();
+      renderCheckoutLine();
+    }
+
+    function renderCheckoutLine() {
+      var line = STATE.currentDialogue[STATE.currentDialogueIndex];
+      if (!line) { finishCheckout(); return; }
+
+      document.getElementById('checkoutAvatar').textContent = line.avatar;
+      document.getElementById('checkoutName').textContent = line.speaker;
+      document.getElementById('checkoutRole').textContent = line.role;
+      document.getElementById('checkoutText').textContent = line.text;
+      document.getElementById('checkoutFeedback').style.display = 'none';
+      document.getElementById('checkoutFeedback').className = 'dialogue-feedback';
+      document.getElementById('checkoutFooter').style.display = 'none';
+
+      var progHtml = '';
+      for (var i = 0; i < STATE.currentDialogue.length; i++) {
+        var cls = 'dialogue-dot';
+        if (i < STATE.currentDialogueIndex) cls += ' done';
+        if (i === STATE.currentDialogueIndex) cls += ' active';
+        progHtml += '<div class="' + cls + '"></div>';
+      }
+      document.getElementById('checkoutProgress').innerHTML = progHtml;
+
+      var optHtml = '';
+      for (var i = 0; i < line.options.length; i++) {
+        var letter = String.fromCharCode(65 + i);
+        optHtml += '<button class="dialogue-option" onclick="chooseCheckoutOption(' + i + ')" id="copt-' + i + '">';
+        optHtml += '<span style="font-weight:700;color:var(--blue);">' + letter + '.</span> ';
+        optHtml += '<span>' + line.options[i].text + '</span>';
+        optHtml += '</button>';
+      }
+      document.getElementById('checkoutOptions').innerHTML = optHtml;
+    }
+
+    function chooseCheckoutOption(index) {
+      var line = STATE.currentDialogue[STATE.currentDialogueIndex];
+      var option = line.options[index];
+
+      var allOpts = document.querySelectorAll('#checkoutOptions .dialogue-option');
+      for (var i = 0; i < allOpts.length; i++) {
+        allOpts[i].disabled = true;
+        allOpts[i].style.pointerEvents = 'none';
+      }
+
+      var chosen = document.getElementById('copt-' + index);
+      chosen.classList.add(option.quality === 'correct' ? 'correct' : option.quality === 'partial' ? 'partial' : 'wrong');
+
+      if (option.quality !== 'correct') {
+        for (var i = 0; i < line.options.length; i++) {
+          if (line.options[i].quality === 'correct') {
+            document.getElementById('copt-' + i).classList.add('correct');
+            break;
+          }
+        }
+      }
+
+      var fb = document.getElementById('checkoutFeedback');
+      fb.textContent = option.feedback;
+      fb.className = 'dialogue-feedback show';
+      fb.classList.add(option.quality === 'correct' ? 'good' : option.quality === 'partial' ? 'ok' : 'bad');
+
+      STATE.dialogueScores[option.quality]++;
+      STATE.dialogueScores.total++;
+      document.getElementById('checkoutFooter').style.display = 'block';
+    }
+
+    function nextCheckoutLine() {
+      STATE.currentDialogueIndex++;
+      if (STATE.currentDialogueIndex >= STATE.currentDialogue.length) {
+        finishCheckout();
+        return;
+      }
+      renderCheckoutLine();
+    }
+
+    function finishCheckout() {
+      if (STATE.difficulty === 'hard') {
+        goToPhase('quiz');
+        initQuiz();
+      } else {
+        goToPhase('results');
+      }
+    }
+
+    /* =====================
+       SELF-CHECKOUT
+       ===================== */
+    function initSelfCheckout() {
+      STATE.currentSCStep = 0;
+      renderSCStep();
+    }
+
+    function renderSCStep() {
+      var steps = GAME_DATA.selfCheckout.steps;
+      var step = steps[STATE.currentSCStep];
+      if (!step) { startCheckoutDialogue(); return; }
+
+      var progHtml = '';
+      for (var i = 0; i < steps.length; i++) {
+        var cls = 'sc-step';
+        if (i < STATE.currentSCStep) cls += ' done';
+        if (i === STATE.currentSCStep) cls += ' active';
+        progHtml += '<div class="' + cls + '"></div>';
+      }
+      document.getElementById('scProgress').innerHTML = progHtml;
+      document.getElementById('scInstruction').textContent = step.instruction;
+      document.getElementById('scFeedback').style.display = 'none';
+      document.getElementById('scNextBtn').style.display = 'none';
+
+      var optHtml = '';
+      for (var i = 0; i < step.options.length; i++) {
+        optHtml += '<button class="machine-btn" onclick="chooseSCOption(' + i + ')" id="sc-opt-' + i + '">';
+        optHtml += step.options[i].text;
+        optHtml += '</button>';
+      }
+      document.getElementById('scOptions').innerHTML = optHtml;
+    }
+
+    function chooseSCOption(index) {
+      var step = GAME_DATA.selfCheckout.steps[STATE.currentSCStep];
+      var option = step.options[index];
+
+      var allBtns = document.querySelectorAll('.machine-btn');
+      for (var i = 0; i < allBtns.length; i++) {
+        allBtns[i].disabled = true;
+        allBtns[i].style.pointerEvents = 'none';
+      }
+
+      var chosen = document.getElementById('sc-opt-' + index);
+      chosen.classList.add(option.correct ? 'correct-choice' : 'wrong-choice');
+
+      if (!option.correct) {
+        for (var i = 0; i < step.options.length; i++) {
+          if (step.options[i].correct) {
+            document.getElementById('sc-opt-' + i).classList.add('correct-choice');
+            break;
+          }
+        }
+      }
+
+      var fb = document.getElementById('scFeedback');
+      fb.textContent = option.feedback || (option.correct ? 'Correct! ✅' : 'Not quite — see the correct answer above.');
+      fb.className = 'machine-feedback ' + (option.correct ? 'good' : 'bad');
+      fb.style.display = 'block';
+
+      STATE.scScore.total++;
+      if (option.correct) STATE.scScore.correct++;
+      STATE.vocabLearned.add('Self-checkout');
+      STATE.vocabLearned.add('Barcode');
+
+      document.getElementById('scNextBtn').style.display = 'inline-flex';
+    }
+
+    function nextSCStep() {
+      STATE.currentSCStep++;
+      renderSCStep();
+    }
+
+    /* =====================
+       SLANG QUIZ
+       ===================== */
+    function initQuiz() {
+      STATE.currentQuizIndex = 0;
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      var questions = GAME_DATA.slangQuiz;
+      var q = questions[STATE.currentQuizIndex];
+      if (!q) { goToPhase('results'); return; }
+
+      document.getElementById('quizQNum').textContent = 'Question ' + (STATE.currentQuizIndex + 1) + ' of ' + questions.length;
+      document.getElementById('quizQuestion').textContent = q.question;
+      document.getElementById('quizFeedback').style.display = 'none';
+      document.getElementById('quizFeedback').className = 'dialogue-feedback';
+      document.getElementById('quizNextBtn').style.display = 'none';
+
+      var optHtml = '';
+      for (var i = 0; i < q.options.length; i++) {
+        var letter = String.fromCharCode(65 + i);
+        optHtml += '<button class="dialogue-option" onclick="chooseQuizOption(' + i + ')" id="quiz-opt-' + i + '">';
+        optHtml += '<span style="font-weight:700;color:var(--blue);">' + letter + '.</span> ';
+        optHtml += '<span>' + q.options[i].text + '</span>';
+        optHtml += '</button>';
+      }
+      document.getElementById('quizOptions').innerHTML = optHtml;
+    }
+
+    function chooseQuizOption(index) {
+      var q = GAME_DATA.slangQuiz[STATE.currentQuizIndex];
+      var option = q.options[index];
+
+      var allOpts = document.querySelectorAll('#quizOptions .dialogue-option');
+      for (var i = 0; i < allOpts.length; i++) {
+        allOpts[i].disabled = true;
+        allOpts[i].style.pointerEvents = 'none';
+      }
+
+      var chosen = document.getElementById('quiz-opt-' + index);
+      chosen.classList.add(option.correct ? 'correct' : 'wrong');
+
+      if (!option.correct) {
+        for (var i = 0; i < q.options.length; i++) {
+          if (q.options[i].correct) {
+            document.getElementById('quiz-opt-' + i).classList.add('correct');
+            break;
+          }
+        }
+      }
+
+      // Find correct answer text
+      var correctText = '';
+      for (var i = 0; i < q.options.length; i++) {
+        if (q.options[i].correct) { correctText = q.options[i].text; break; }
+      }
+
+      var fb = document.getElementById('quizFeedback');
+      fb.textContent = option.correct ? '✅ Correct! Well done!' : '❌ Not quite. The correct answer is: "' + correctText + '"';
+      fb.className = 'dialogue-feedback show ' + (option.correct ? 'good' : 'bad');
+
+      STATE.quizScore.total++;
+      if (option.correct) STATE.quizScore.correct++;
+      document.getElementById('quizNextBtn').style.display = 'inline-flex';
+    }
+
+    function nextQuizQuestion() {
+      STATE.currentQuizIndex++;
+      renderQuizQuestion();
+    }
+
+    /* =====================
+       RESULTS
+       ===================== */
+    function renderResults() {
+      stopTimer();
+      var scoring = GAME_DATA.scoring;
+      var score = 0;
+
+      score += STATE.dialogueScores.correct * scoring.correctDialogue;
+      score += STATE.dialogueScores.partial * scoring.partialDialogue;
+      score += STATE.foundItems.length * scoring.itemOnList;
+
+      // Extra items penalty
+      var extraCount = 0;
+      for (var i = 0; i < STATE.cart.length; i++) {
+        var isOnList = false;
+        for (var j = 0; j < STATE.requiredItems.length; j++) {
+          if (STATE.requiredItems[j].id === STATE.cart[i].id) { isOnList = true; break; }
+        }
+        if (!isOnList) extraCount++;
+      }
+      score += extraCount * scoring.itemNotOnList;
+
+      var remaining = STATE.budget - STATE.spent;
+      score += remaining >= 0 ? scoring.underBudget : scoring.overBudget;
+      if (STATE.foundItems.length === STATE.requiredItems.length) score += scoring.allListItems;
+      score += STATE.scScore.correct * scoring.selfCheckoutStep;
+      score += STATE.quizScore.correct * scoring.slangQuizCorrect;
+      score = Math.max(0, score);
+
+      document.getElementById('finalScore').textContent = score
+            document.getElementById('finalScore').textContent = score;
+      document.getElementById('statItemsFound').textContent = STATE.foundItems.length + '/' + STATE.requiredItems.length;
+      document.getElementById('statSpent').textContent = '$' + STATE.spent.toFixed(2);
+
+      if (remaining >= 0) {
+        document.getElementById('statBudget').textContent = '$' + remaining.toFixed(2);
+        document.getElementById('statBudget').style.color = 'var(--green)';
+      } else {
+        document.getElementById('statBudget').textContent = '-$' + Math.abs(remaining).toFixed(2);
+        document.getElementById('statBudget').style.color = 'var(--red)';
+      }
+
+      document.getElementById('statDialogues').textContent = STATE.dialogueScores.correct + '/' + STATE.dialogueScores.total;
+      document.getElementById('statSections').textContent = STATE.sectionsVisited.length + '/6';
+
+      var mins = Math.floor(STATE.elapsedSeconds / 60);
+      var secs = STATE.elapsedSeconds % 60;
+      document.getElementById('statTime').textContent = mins + ':' + String(secs).padStart(2, '0');
+
+      // Score message
+      var msg = document.getElementById('scoreMessage');
+      if (score >= 150) {
+        msg.textContent = "🌟 Outstanding! You're ready for real Australian shopping!";
+      } else if (score >= 100) {
+        msg.textContent = "👏 Great job! You know your way around a supermarket!";
+      } else if (score >= 60) {
+        msg.textContent = "👍 Good effort! Practice a few more times to improve!";
+      } else {
+        msg.textContent = "💪 Keep practising! You'll get better each time!";
+      }
+
+      // Score circle color
+      var circle = document.getElementById('scoreCircle');
+      if (score >= 150) { circle.style.background = 'var(--green)'; }
+      else if (score >= 100) { circle.style.background = '#43a047'; }
+      else if (score >= 60) { circle.style.background = 'var(--orange)'; }
+      else { circle.style.background = 'var(--red)'; }
+
+      calculateAchievements();
+      renderAchievements();
+      renderCartSummary();
+      renderVocabLearned();
+      saveReport();
+    }
+
+    /* --- ACHIEVEMENTS --- */
+    function calculateAchievements() {
+      STATE.achievements.add('first_shop');
+      if (STATE.budget - STATE.spent >= 0) STATE.achievements.add('budget_master');
+      if (STATE.foundItems.length === STATE.requiredItems.length) STATE.achievements.add('full_list');
+      if (STATE.dialogueScores.correct === STATE.dialogueScores.total && STATE.dialogueScores.total > 0) {
+        STATE.achievements.add('polite_shopper');
+      }
+
+      var meatCount = 0;
+      for (var i = 0; i < STATE.cart.length; i++) {
+        if (STATE.cart[i].section === 'meat') meatCount++;
+      }
+      if (meatCount >= 3) STATE.achievements.add('meat_expert');
+
+      if (STATE.scScore.correct === STATE.scScore.total && STATE.scScore.total > 0) {
+        STATE.achievements.add('self_checkout_pro');
+      }
+      if (STATE.quizScore.correct === STATE.quizScore.total && STATE.quizScore.total > 0) {
+        STATE.achievements.add('slang_master');
+      }
+      if (STATE.elapsedSeconds < 300) STATE.achievements.add('speed_shopper');
+    }
+
+    function renderAchievements() {
+      var c = document.getElementById('achievementsGrid');
+      var html = '';
+      for (var i = 0; i < GAME_DATA.achievements.length; i++) {
+        var a = GAME_DATA.achievements[i];
+        var unlocked = STATE.achievements.has(a.id);
+        html += '<div class="achievement-item ' + (unlocked ? 'unlocked' : '') + '">';
+        html += '<div class="achievement-icon">' + (unlocked ? a.icon : '🔒') + '</div>';
+        html += '<div class="achievement-name">' + a.name + '</div>';
+        html += '<div class="achievement-desc">' + a.description + '</div>';
+        html += '</div>';
+      }
+      c.innerHTML = html;
+    }
+
+    /* --- CART SUMMARY --- */
+    function renderCartSummary() {
+      var c = document.getElementById('cartSummary');
+      if (STATE.cart.length === 0) {
+        c.innerHTML = '<p style="color:var(--mid-grey);">You didn\'t buy anything!</p>';
+        return;
+      }
+
+      var tableHtml = '<table style="width:100%;border-collapse:collapse;font-size:0.9rem;">';
+      tableHtml += '<thead><tr style="border-bottom:2px solid #eee;text-align:left;">';
+      tableHtml += '<th style="padding:8px;">Item</th>';
+      tableHtml += '<th style="padding:8px;">Weight</th>';
+      tableHtml += '<th style="padding:8px;">Price</th>';
+      tableHtml += '<th style="padding:8px;">On List?</th>';
+      tableHtml += '</tr></thead><tbody>';
+
+      for (var i = 0; i < STATE.cart.length; i++) {
+        var item = STATE.cart[i];
+        var onList = false;
+        for (var j = 0; j < STATE.requiredItems.length; j++) {
+          if (STATE.requiredItems[j].id === item.id) { onList = true; break; }
+        }
+        tableHtml += '<tr style="border-bottom:1px solid #f0f0f0;">';
+        tableHtml += '<td style="padding:8px;">' + item.emoji + ' ' + item.name + '</td>';
+        tableHtml += '<td style="padding:8px;">' + item.weight + '</td>';
+        tableHtml += '<td style="padding:8px;">$' + item.price.toFixed(2) + '</td>';
+        tableHtml += '<td style="padding:8px;">' + (onList ? '⭐ Yes' : '—') + '</td>';
+        tableHtml += '</tr>';
+      }
+
+      tableHtml += '</tbody><tfoot>';
+      tableHtml += '<tr style="border-top:2px solid #ddd;font-weight:700;">';
+      tableHtml += '<td style="padding:8px;" colspan="2">Total (' + STATE.cart.length + ' items)</td>';
+      tableHtml += '<td style="padding:8px;">$' + STATE.spent.toFixed(2) + '</td>';
+      tableHtml += '<td style="padding:8px;"></td>';
+      tableHtml += '</tr></tfoot></table>';
+
+      // Missing items
+      var missing = [];
+      for (var i = 0; i < STATE.requiredItems.length; i++) {
+        if (STATE.foundItems.indexOf(STATE.requiredItems[i].id) < 0) {
+          missing.push(STATE.requiredItems[i]);
+        }
+      }
+
+      if (missing.length === 0) {
+        tableHtml += '<div class="tip-box" style="margin-top:16px;background:var(--light-green);border-color:#a5d6a7;">';
+        tableHtml += '<span class="tip-icon">🎉</span>';
+        tableHtml += '<div><strong>You found everything on your list!</strong> Great job!</div></div>';
+      } else {
+        tableHtml += '<div class="tip-box" style="margin-top:16px;">';
+        tableHtml += '<span class="tip-icon">⚠️</span>';
+        tableHtml += '<div><strong>You missed ' + missing.length + ' item' + (missing.length > 1 ? 's' : '') + ' from your list:</strong>';
+        tableHtml += '<ul style="margin-top:6px;padding-left:16px;list-style:disc;">';
+        for (var i = 0; i < missing.length; i++) {
+          var sectionName = '';
+          for (var j = 0; j < GAME_DATA.sections.length; j++) {
+            if (GAME_DATA.sections[j].id === missing[i].section) {
+              sectionName = GAME_DATA.sections[j].name;
+              break;
+            }
+          }
+          tableHtml += '<li style="margin:3px 0;">' + missing[i].emoji + ' ' + missing[i].name;
+          tableHtml += ' — $' + missing[i].price.toFixed(2);
+          tableHtml += ' <span style="color:var(--mid-grey);font-size:0.8rem;">(' + sectionName + ')</span></li>';
+        }
+        tableHtml += '</ul></div></div>';
+      }
+
+      c.innerHTML = tableHtml;
+    }
+
+    /* --- VOCAB LEARNED --- */
+    function renderVocabLearned() {
+      var c = document.getElementById('vocabLearned');
+
+      var coreWords = ["G'day", 'Mate', 'No worries', 'Trolley', 'Basket', 'Aisle', 'Checkout', 'Receipt', 'Unit price', 'Woolies'];
+      for (var i = 0; i < coreWords.length; i++) {
+        STATE.vocabLearned.add(coreWords[i]);
+      }
+
+      var learned = [];
+      var learnedArr = Array.from(STATE.vocabLearned);
+      for (var i = 0; i < learnedArr.length; i++) {
+        for (var j = 0; j < GAME_DATA.vocabulary.length; j++) {
+          if (GAME_DATA.vocabulary[j].word === learnedArr[i]) {
+            learned.push(GAME_DATA.vocabulary[j]);
+            break;
+          }
+        }
+      }
+
+      if (learned.length === 0) {
+        c.innerHTML = '<p style="color:var(--mid-grey);">No vocabulary collected yet.</p>';
+        return;
+      }
+
+      var html = '';
+      for (var i = 0; i < learned.length; i++) {
+        html += '<div class="vocab-learned-item">';
+        html += '<div class="vl-word">' + learned[i].word + '</div>';
+        html += '<div class="vl-meaning">' + learned[i].meaning + '</div>';
+        html += '</div>';
+      }
+      c.innerHTML = html;
+    }
+
+    /* --- TOAST NOTIFICATIONS --- */
+    function showToast(message, type) {
+      type = type || 'success';
+      var container = document.getElementById('toastContainer');
+      var toast = document.createElement('div');
+      toast.className = 'toast ' + type;
+
+      var icon = '💬';
+      if (type === 'success') icon = '✅';
+      if (type === 'error') icon = '❌';
+      if (type === 'warning') icon = '⚠️';
+
+      toast.innerHTML = '<span>' + icon + '</span> ' + message;
+      container.appendChild(toast);
+
+      setTimeout(function() {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 3000);
+    }
+
+    /* --- SAVE REPORT --- */
+    function saveReport() {
+      var report = {
+        timestamp: new Date().toISOString(),
+        store: STATE.store,
+        difficulty: STATE.difficulty,
+        timeSeconds: STATE.elapsedSeconds,
+        budget: STATE.budget,
+        spent: STATE.spent,
+        remaining: STATE.budget - STATE.spent,
+        overBudget: STATE.spent > STATE.budget,
+        cartItems: [],
+        cartTotal: STATE.cart.length,
+        listItemsRequired: STATE.requiredItems.length,
+        listItemsFound: STATE.foundItems.length,
+        listItemsMissing: [],
+        sectionsVisited: STATE.sectionsVisited.slice(),
+        dialogueScores: {
+          correct: STATE.dialogueScores.correct,
+          partial: STATE.dialogueScores.partial,
+          wrong: STATE.dialogueScores.wrong,
+          total: STATE.dialogueScores.total
+        },
+        selfCheckoutScore: { correct: STATE.scScore.correct, total: STATE.scScore.total },
+        quizScore: { correct: STATE.quizScore.correct, total: STATE.quizScore.total },
+        vocabLearned: Array.from(STATE.vocabLearned),
+        achievements: Array.from(STATE.achievements)
+      };
+
+      for (var i = 0; i < STATE.cart.length; i++) {
+        report.cartItems.push({
+          name: STATE.cart[i].name,
+          price: STATE.cart[i].price,
+          section: STATE.cart[i].section
+        });
+      }
+
+      for (var i = 0; i < STATE.requiredItems.length; i++) {
+        if (STATE.foundItems.indexOf(STATE.requiredItems[i].id) < 0) {
+          report.listItemsMissing.push(STATE.requiredItems[i].name);
+        }
+      }
+
+      var reports = [];
+      try {
+        reports = JSON.parse(localStorage.getItem('groceryGameReports') || '[]');
+      } catch (e) {
+        reports = [];
+      }
+      reports.push(report);
+      if (reports.length > 50) reports = reports.slice(-50);
+      localStorage.setItem('groceryGameReports', JSON.stringify(reports));
+    }
+
+    /* --- KEYBOARD SHORTCUTS --- */
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        var dlgFooter = document.getElementById('dialogueFooter');
+        if (dlgFooter && dlgFooter.style.display !== 'none' && document.getElementById('screen-dialogue').classList.contains('active')) {
+          nextDialogueLine();
+          return;
+        }
+        var coFooter = document.getElementById('checkoutFooter');
+        if (coFooter && coFooter.style.display !== 'none' && document.getElementById('screen-checkout').classList.contains('active')) {
+          nextCheckoutLine();
+          return;
+        }
+        var scBtn = document.getElementById('scNextBtn');
+        if (scBtn && scBtn.style.display !== 'none' && document.getElementById('screen-selfCheckout').classList.contains('active')) {
+          nextSCStep();
+          return;
+        }
+        var quizBtn = document.getElementById('quizNextBtn');
+        if (quizBtn && quizBtn.style.display !== 'none' && document.getElementById('screen-quiz').classList.contains('active')) {
+          nextQuizQuestion();
+          return;
+        }
+      }
+
+      var letterIndex = -1;
+      if (e.key === 'a' || e.key === 'A') letterIndex = 0;
+      if (e.key === 'b' || e.key === 'B') letterIndex = 1;
+      if (e.key === 'c' || e.key === 'C') letterIndex = 2;
+
+      if (letterIndex >= 0) {
+        if (document.getElementById('screen-dialogue').classList.contains('active')) {
+          var btn = document.getElementById('dopt-' + letterIndex);
+          if (btn && !btn.disabled) btn.click();
+        }
+        if (document.getElementById('screen-checkout').classList.contains('active')) {
+          var btn = document.getElementById('copt-' + letterIndex);
+          if (btn && !btn.disabled) btn.click();
+        }
+        if (document.getElementById('screen-quiz').classList.contains('active')) {
+          var btn = document.getElementById('quiz-opt-' + letterIndex);
+          if (btn && !btn.disabled) btn.click();
+        }
+      }
+    });
+
+    /* =====================
+       CHALLENGE MODE (Hard difficulty)
+       ===================== */
+
+    function isChallengeMode() {
+      return STATE.difficulty === 'hard';
+    }
+
+    // Override startDialogue for challenge mode
+    var _originalStartDialogue = startDialogue;
+    startDialogue = function(dialogueKey, onComplete) {
+      if (isChallengeMode() && GAME_DATA.challengeDialogues && GAME_DATA.challengeDialogues[dialogueKey]) {
+        startChallengeDialogue(dialogueKey, onComplete);
+      } else {
+        _originalStartDialogue(dialogueKey, onComplete);
+      }
+    };
+
+    function startChallengeDialogue(dialogueKey, onComplete) {
+      STATE.currentDialogue = GAME_DATA.challengeDialogues[dialogueKey];
+      STATE.currentDialogueIndex = 0;
+      STATE.onDialogueComplete = onComplete;
+      STATE.currentDialogueType = dialogueKey;
+
+      STATE.vocabLearned.add("G'day");
+      STATE.vocabLearned.add('Mate');
+      STATE.vocabLearned.add('No worries');
+      STATE.vocabLearned.add('On special');
+
+      var screens = document.querySelectorAll('.screen');
+      for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+      document.getElementById('screen-dialogue').classList.add('active');
+
+      // Show challenge mode UI
+      document.getElementById('challengeBadge').style.display = 'block';
+      document.getElementById('normalModeContent').style.display = 'none';
+      document.getElementById('challengeModeContent').style.display = 'block';
+
+      renderChallengeDialogueLine();
+    }
+
+    function renderChallengeDialogueLine() {
+      var line = STATE.currentDialogue[STATE.currentDialogueIndex];
+      if (!line) {
+        if (STATE.onDialogueComplete) STATE.onDialogueComplete();
+        return;
+      }
+
+      document.getElementById('dialogueAvatar').textContent = line.avatar;
+      document.getElementById('dialogueName').textContent = line.speaker;
+      document.getElementById('dialogueRole').textContent = line.role;
+      document.getElementById('challengeHintText').textContent = line.hint;
+      document.getElementById('dialogueFooter').style.display = 'none';
+
+      // Reset input and feedback
+      document.getElementById('challengeInput').value = '';
+      document.getElementById('challengeInput').disabled = false;
+      document.getElementById('challengeFeedback').style.display = 'none';
+      document.getElementById('challengeSubmitBtn').disabled = false;
+      document.getElementById('challengeSubmitBtn').style.display = 'flex';
+
+      // Progress dots
+      var progHtml = '';
+      for (var i = 0; i < STATE.currentDialogue.length; i++) {
+        var cls = 'dialogue-dot';
+        if (i < STATE.currentDialogueIndex) cls += ' done';
+        if (i === STATE.currentDialogueIndex) cls += ' active';
+        progHtml += '<div class="' + cls + '"></div>';
+      }
+      document.getElementById('dialogueProgress').innerHTML = progHtml;
+
+      // Focus the input
+      setTimeout(function() {
+        document.getElementById('challengeInput').focus();
+      }, 300);
+    }
+
+    function submitChallengeResponse() {
+      var line = STATE.currentDialogue[STATE.currentDialogueIndex];
+      var input = document.getElementById('challengeInput').value.trim();
+
+      if (input.length < 2) {
+        showToast('Please type a response!', 'warning');
+        return;
+      }
+
+      var result = scoreChallengeResponse(input, line);
+
+      // Disable input
+      document.getElementById('challengeInput').disabled = true;
+      document.getElementById('challengeSubmitBtn').disabled = true;
+      document.getElementById('challengeSubmitBtn').style.display = 'none';
+
+      // Show feedback
+      var fbContainer = document.getElementById('challengeFeedback');
+      fbContainer.style.display = 'block';
+
+      // Score badges
+      var scoreBarHtml = '';
+      if (result.hasItem) {
+        scoreBarHtml += '<span style="background:var(--light-green);color:var(--dark-green);padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:600;">✅ Correct Item</span>';
+      } else {
+        scoreBarHtml += '<span style="background:var(--light-red);color:var(--red);padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:600;">❌ Item Missing</span>';
+      }
+
+      if (line.amountKeywords && line.amountKeywords.length > 0) {
+        if (result.hasAmount) {
+          scoreBarHtml += '<span style="background:var(--light-green);color:var(--dark-green);padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:600;">✅ Amount Given</span>';
+        } else {
+          scoreBarHtml += '<span style="background:var(--light-orange);color:#e65100;padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:600;">⚠️ No Amount</span>';
+        }
+      }
+
+      if (result.isPolite) {
+        scoreBarHtml += '<span style="background:var(--light-green);color:var(--dark-green);padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:600;">✅ Polite</span>';
+      } else {
+        scoreBarHtml += '<span style="background:var(--light-orange);color:#e65100;padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:600;">⚠️ Could be more polite</span>';
+      }
+
+      // Points badge
+      scoreBarHtml += '<span style="background:var(--gold);color:var(--dark-grey);padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:700;">+' + result.points + ' pts</span>';
+
+      document.getElementById('challengeScoreBar').innerHTML = scoreBarHtml;
+
+      // Feedback text
+      var fbTextEl = document.getElementById('challengeFeedbackText');
+      if (result.isPerfect) {
+        fbTextEl.style.background = 'var(--light-green)';
+        fbTextEl.style.color = 'var(--dark-green)';
+        fbTextEl.textContent = line.feedbackRules.perfect;
+      } else if (!result.hasItem) {
+        fbTextEl.style.background = 'var(--light-red)';
+        fbTextEl.style.color = 'var(--red)';
+        fbTextEl.textContent = line.feedbackRules.noItem;
+      } else if (!result.hasAmount && line.amountKeywords && line.amountKeywords.length > 0) {
+        fbTextEl.style.background = 'var(--light-orange)';
+        fbTextEl.style.color = '#e65100';
+        fbTextEl.textContent = line.feedbackRules.noAmount;
+      } else if (!result.isPolite) {
+        fbTextEl.style.background = 'var(--light-orange)';
+        fbTextEl.style.color = '#e65100';
+        fbTextEl.textContent = line.feedbackRules.notPolite;
+      } else {
+        fbTextEl.style.background = 'var(--light-green)';
+        fbTextEl.style.color = 'var(--dark-green)';
+        fbTextEl.textContent = line.feedbackRules.perfect;
+      }
+
+      // Show example answer
+      document.getElementById('challengeExampleText').textContent = line.exampleAnswer;
+
+      // Track score
+      STATE.dialogueScores.total++;
+      if (result.isPerfect) {
+        STATE.dialogueScores.correct++;
+      } else if (result.hasItem) {
+        STATE.dialogueScores.partial++;
+      } else {
+        STATE.dialogueScores.wrong++;
+      }
+
+      // Show continue button
+      document.getElementById('dialogueFooter').style.display = 'block';
+    }
+
+    function scoreChallengeResponse(input, line) {
+      var lower = input.toLowerCase();
+      var points = 0;
+
+      // Check for item keywords
+      var hasItem = false;
+      for (var i = 0; i < line.acceptableKeywords.length; i++) {
+        if (lower.indexOf(line.acceptableKeywords[i].toLowerCase()) >= 0) {
+          hasItem = true;
+          break;
+        }
+      }
+      if (hasItem) points += line.scoring.hasItem;
+
+      // Check for amount keywords
+      var hasAmount = false;
+      if (line.amountKeywords && line.amountKeywords.length > 0) {
+        for (var i = 0; i < line.amountKeywords.length; i++) {
+          if (lower.indexOf(line.amountKeywords[i].toLowerCase()) >= 0) {
+            hasAmount = true;
+            break;
+          }
+        }
+        if (hasAmount) points += line.scoring.hasAmount;
+      } else {
+        hasAmount = true; // No amount needed for this question
+      }
+
+      // Check for polite keywords
+      var isPolite = false;
+      for (var i = 0; i < line.politeKeywords.length; i++) {
+        if (lower.indexOf(line.politeKeywords[i].toLowerCase()) >= 0) {
+          isPolite = true;
+          break;
+        }
+      }
+      if (isPolite) points += line.scoring.isPolite;
+
+      // Perfect bonus
+      var isPerfect = hasItem && hasAmount && isPolite;
+      if (isPerfect) points += line.scoring.perfect;
+
+      return {
+        hasItem: hasItem,
+        hasAmount: hasAmount,
+        isPolite: isPolite,
+        isPerfect: isPerfect,
+        points: points
+      };
+    }
+
+    // Override nextDialogueLine to handle challenge mode reset
+    var _originalNextDialogueLine = nextDialogueLine;
+    nextDialogueLine = function() {
+      STATE.currentDialogueIndex++;
+      if (STATE.currentDialogueIndex >= STATE.currentDialogue.length) {
+        // Reset to normal mode UI
+        document.getElementById('challengeBadge').style.display = 'none';
+        document.getElementById('normalModeContent').style.display = 'block';
+        document.getElementById('challengeModeContent').style.display = 'none';
+        if (STATE.onDialogueComplete) STATE.onDialogueComplete();
+        return;
+      }
+
+      if (isChallengeMode() && document.getElementById('challengeModeContent').style.display !== 'none') {
+        renderChallengeDialogueLine();
+      } else {
+        renderDialogueLine();
+      }
+    };
+
+    /* --- CHALLENGE CHECKOUT --- */
+    var _originalStartCheckoutDialogue = startCheckoutDialogue;
+    startCheckoutDialogue = function() {
+      if (isChallengeMode() && GAME_DATA.challengeDialogues && GAME_DATA.challengeDialogues.checkout) {
+        STATE.currentDialogue = GAME_DATA.challengeDialogues.checkout;
+        STATE.currentDialogueIndex = 0;
+
+        STATE.vocabLearned.add('EFTPOS');
+        STATE.vocabLearned.add('Tap');
+        STATE.vocabLearned.add('Checkout');
+        STATE.vocabLearned.add('Reusable bag');
+
+        var screens = document.querySelectorAll('.screen');
+        for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+        document.getElementById('screen-checkout').classList.add('active');
+        STATE.phase = 'checkout';
+        renderPhaseBar();
+
+        // Show challenge UI
+        document.getElementById('checkoutChallengeBadge').style.display = 'block';
+        document.getElementById('checkoutNormalContent').style.display = 'none';
+        document.getElementById('checkoutChallengeContent').style.display = 'block';
+
+        renderCheckoutChallengeLine();
+      } else {
+        _originalStartCheckoutDialogue();
+      }
+    };
+
+    function renderCheckoutChallengeLine() {
+      var line = STATE.currentDialogue[STATE.currentDialogueIndex];
+      if (!line) { finishCheckout(); return; }
+
+      document.getElementById('checkoutAvatar').textContent = line.avatar;
+      document.getElementById('checkoutName').textContent = line.speaker;
+      document.getElementById('checkoutRole').textContent = line.role;
+      document.getElementById('checkoutChallengeHintText').textContent = line.hint;
+      document.getElementById('checkoutFooter').style.display = 'none';
+
+      document.getElementById('checkoutChallengeInput').value = '';
+      document.getElementById('checkoutChallengeInput').disabled = false;
+      document.getElementById('checkoutChallengeFeedback').style.display = 'none';
+
+      // Progress dots
+      var progHtml = '';
+      for (var i = 0; i < STATE.currentDialogue.length; i++) {
+        var cls = 'dialogue-dot';
+        if (i < STATE.currentDialogueIndex) cls += ' done';
+        if (i === STATE.currentDialogueIndex) cls += ' active';
+        progHtml += '<div class="' + cls + '"></div>';
+      }
+      document.getElementById('checkoutProgress').innerHTML = progHtml;
+
+      setTimeout(function() {
+        document.getElementById('checkoutChallengeInput').focus();
+      }, 300);
+    }
+
+    function submitCheckoutChallengeResponse() {
+      var line = STATE.currentDialogue[STATE.currentDialogueIndex];
+      var input = document.getElementById('checkoutChallengeInput').value.trim();
+
+      if (input.length < 2) {
+        showToast('Please type a response!', 'warning');
+        return;
+      }
+
+      var result = scoreChallengeResponse(input, line);
+
+      document.getElementById('checkoutChallengeInput').disabled = true;
+
+      var fbContainer = document.getElementById('checkoutChallengeFeedback');
+      fbContainer.style.display = 'block';
+
+      // Score badges
+      var scoreBarHtml = '';
+      if (result.hasItem) {
+        scoreBarHtml += '<span style="background:var(--light-green);color:var(--dark-green);padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:600;">✅ Good Answer</span>';
+      } else {
+        scoreBarHtml += '<span style="background:var(--light-red);color:var(--red);padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:600;">❌ Try Again</span>';
+      }
+      if (result.isPolite) {
+        scoreBarHtml += '<span style="background:var(--light-green);color:var(--dark-green);padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:600;">✅ Polite</span>';
+      }
+      scoreBarHtml += '<span style="background:var(--gold);color:var(--dark-grey);padding:4px 12px;border-radius:12px;font-size:0.8rem;font-weight:700;">+' + result.points + ' pts</span>';
+      document.getElementById('checkoutChallengeScoreBar').innerHTML = scoreBarHtml;
+
+      // Feedback text
+      var fbTextEl = document.getElementById('checkoutChallengeFeedbackText');
+      if (result.isPerfect) {
+        fbTextEl.style.background = 'var(--light-green)';
+        fbTextEl.style.color = 'var(--dark-green)';
+        fbTextEl.textContent = line.feedbackRules.perfect;
+      } else if (!result.hasItem) {
+        fbTextEl.style.background = 'var(--light-red)';
+        fbTextEl.style.color = 'var(--red)';
+        fbTextEl.textContent = line.feedbackRules.noItem;
+      } else if (!result.isPolite) {
+        fbTextEl.style.background = 'var(--light-orange)';
+        fbTextEl.style.color = '#e65100';
+        fbTextEl.textContent = line.feedbackRules.notPolite;
+      } else {
+        fbTextEl.style.background = 'var(--light-green)';
+        fbTextEl.style.color = 'var(--dark-green)';
+        fbTextEl.textContent = line.feedbackRules.perfect;
+      }
+
+      document.getElementById('checkoutChallengeExampleText').textContent = line.exampleAnswer;
+
+      STATE.dialogueScores.total++;
+      if (result.isPerfect) { STATE.dialogueScores.correct++; }
+      else if (result.hasItem) { STATE.dialogueScores.partial++; }
+      else { STATE.dialogueScores.wrong++; }
+
+      document.getElementById('checkoutFooter').style.display = 'block';
+    }
+
+    // Override nextCheckoutLine for challenge mode
+    var _originalNextCheckoutLine = nextCheckoutLine;
+    nextCheckoutLine = function() {
+      STATE.currentDialogueIndex++;
+      if (STATE.currentDialogueIndex >= STATE.currentDialogue.length) {
+        document.getElementById('checkoutChallengeBadge').style.display = 'none';
+        document.getElementById('checkoutNormalContent').style.display = 'block';
+        document.getElementById('checkoutChallengeContent').style.display = 'none';
+        finishCheckout();
+        return;
+      }
+      if (isChallengeMode() && document.getElementById('checkoutChallengeContent').style.display !== 'none') {
+        renderCheckoutChallengeLine();
+      } else {
+        renderCheckoutLine();
+      }
+    };
+
+  </script>
+
+</body>
+</html>

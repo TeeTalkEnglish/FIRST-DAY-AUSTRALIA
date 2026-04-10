@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game 3 – Student | House Rules Quiz</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+        .situation-box {
+            background: #fff8f0;
+            border: 2px solid #fdd8a8;
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+
+        .situation-box .sit-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #e67e22;
+            margin-bottom: 8px;
+        }
+
+        .situation-box p {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .situation-box strong { color: #222; }
+
+        .reminder {
+            background: #f0f8ff;
+            border: 1.5px solid #aed6f1;
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 0.87rem;
+            color: #2471a3;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .reminder strong { color: #1a5276; }
+
+        /* ── PROGRESS ── */
+        .progress-wrap {
+            background: white;
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        }
+
+        .pw-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .pw-header h4 { font-size: 0.85rem; font-weight: 700; color: #444; }
+        .pw-count { font-size: 0.82rem; color: #aaa; font-weight: 600; }
+
+        .progress-track {
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #27ae60;
+            border-radius: 5px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        /* ── MISSION CARD ── */
+        .mission-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px 26px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        }
+
+        .mission-card h3 {
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: #222;
+        }
+
+        .topic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* ── TOPIC ITEM ── */
+        .topic-item {
+            border: 2px solid #eee;
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .topic-item.active-topic { border-color: #e67e22; }
+
+        .topic-item.done {
+            border-color: #a9dfbf;
+            background: #f4fdf7;
+        }
+
+        /* ── TOPIC HEADER ── */
+        .topic-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 20px;
+            cursor: pointer;
+            background: transparent;
+            transition: background 0.2s;
+        }
+
+        .topic-top:hover { background: #fafafa; }
+        .topic-item.done .topic-top { cursor: default; }
+        .topic-item.done .topic-top:hover { background: transparent; }
+
+        .topic-icon { font-size: 1.6rem; flex-shrink: 0; }
+
+        .topic-name {
+            font-size: 0.97rem;
+            font-weight: 700;
+            color: #333;
+            flex: 1;
+        }
+
+        .topic-item.done .topic-name { color: #27ae60; }
+
+        .topic-check {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .topic-item.done .topic-check {
+            background: #27ae60;
+            border-color: #27ae60;
+            color: white;
+        }
+
+        /* ── TOPIC BODY ── */
+        .topic-body {
+            display: none;
+            padding: 0 20px 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .topic-body.open { display: block; }
+
+        /* ── WHAT TO FIND OUT ── */
+        .find-out-box {
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 14px 0 16px;
+        }
+
+        .find-out-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .find-out-items {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .find-out-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 0.88rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .find-out-item .fi-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #e67e22;
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+
+        /* ── HINT 2 ── */
+        .stuck-btn {
+            background: none;
+            border: 1.5px solid #ddd;
+            border-radius: 20px;
+            padding: 5px 14px;
+            font-size: 0.78rem;
+            color: #aaa;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 14px;
+            display: inline-block;
+        }
+
+        .stuck-btn:hover { border-color: #e67e22; color: #e67e22; }
+        .stuck-btn.hidden { display: none; }
+
+        .hint-2-box {
+            display: none;
+            margin-bottom: 14px;
+            padding: 12px 16px;
+            background: #fff0f0;
+            border-radius: 10px;
+            border-left: 3px solid #e67e22;
+        }
+
+        .hint-2-box.visible { display: block; }
+
+        .hint-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #e67e22;
+            margin-bottom: 6px;
+        }
+
+        .hint-2-box p {
+            font-size: 0.85rem;
+            color: #c0392b;
+            line-height: 1.6;
+        }
+
+        /* ── "I ASKED DAVE" BUTTON ── */
+        .asked-dave-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px dashed #e67e22;
+            background: white;
+            color: #e67e22;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .asked-dave-btn:hover {
+            background: #fff8f0;
+        }
+
+        .asked-dave-btn.hidden { display: none; }
+
+        /* ── QUESTIONS — hidden until "I asked Dave" ── */
+        .questions-section {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px dashed #eee;
+        }
+
+        .questions-section.revealed { display: block; }
+
+        .questions-intro {
+            font-size: 0.83rem;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+
+        /* ── QUESTION BLOCK ── */
+        .question-block {
+            margin-bottom: 14px;
+            padding: 14px 16px;
+            background: #f8f8f8;
+            border-radius: 12px;
+            border: 1.5px solid #eee;
+            transition: all 0.2s;
+        }
+
+        .question-block.answered-correct {
+            background: #eafaf1;
+            border-color: #a9dfbf;
+        }
+
+        .question-block.answered-wrong {
+            background: #fdf0f0;
+            border-color: #f5c0c0;
+        }
+
+        /* question is just a small label — NOT a full sentence question */
+        .q-prompt {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .question-block.answered-correct .q-prompt { color: #27ae60; }
+
+        /* ── SELECT ── */
+        .answer-select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            color: #333;
+            background: white;
+            font-family: inherit;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+            transition: border-color 0.2s;
+        }
+
+        .answer-select:focus { outline: none; border-color: #e67e22; }
+        .answer-select.correct { border-color: #27ae60; background-color: #eafaf1; color: #1e8449; }
+        .answer-select.wrong   { border-color: #e74c3c; background-color: #fdf0f0; }
+
+        /* ── RADIO ── */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 14px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #444;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .radio-option:hover { border-color: #e67e22; background: #fff8f0; }
+
+        .radio-option input[type="radio"] {
+            accent-color: #e67e22;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .radio-option.correct  { border-color: #27ae60; background: #eafaf1; color: #1e8449; font-weight: 600; }
+        .radio-option.wrong    { border-color: #e74c3c; background: #fdf0f0; color: #c0392b; }
+        .radio-option.revealed { border-color: #27ae60; background: #eafaf1; color: #1e8449; font-weight: 600; }
+
+        /* ── TEXT INPUT ── */
+        .answer-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            color: #333;
+            background: white;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .answer-input:focus { outline: none; border-color: #e67e22; }
+        .answer-input.correct { border-color: #27ae60; background: #eafaf1; color: #1e8449; }
+        .answer-input.wrong   { border-color: #e74c3c; background: #fdf0f0; }
+
+        /* ── SUBMIT ── */
+        .submit-btn {
+            margin-top: 9px;
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: none;
+            background: #c0392b;
+            color: white;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover { background: #a93226; }
+        .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* ── FEEDBACK ── */
+        .q-feedback {
+            display: none;
+            margin-top: 8px;
+            padding: 9px 14px;
+            border-radius: 10px;
+            font-size: 0.84rem;
+            line-height: 1.6;
+        }
+
+        .q-feedback.fb-correct {
+            display: block;
+            background: #eafaf1;
+            border: 1.5px solid #a9dfbf;
+            color: #1e8449;
+        }
+
+        .q-feedback.fb-wrong {
+            display: block;
+            background: #fdf0f0;
+            border: 1.5px solid #f5c0c0;
+            color: #c0392b;
+        }
+
+        /* ── MARK DONE ── */
+        .mark-done-btn {
+            display: none;
+            margin-top: 14px;
+            width: 100%;
+            padding: 11px;
+            border-radius: 12px;
+            border: 2px solid #27ae60;
+            background: white;
+            color: #27ae60;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mark-done-btn:hover { background: #eafaf1; }
+        .mark-done-btn.visible { display: block; }
+
+        /* topic done score */
+        .topic-score {
+            display: none;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #27ae60;
+            padding: 0 20px 14px 52px;
+        }
+
+        .topic-item.done .topic-score { display: block; }
+
+        /* ── PHRASES CARD ── */
+        .phrases-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px 26px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        }
+
+        .phrases-card h3 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .phrase-group { margin-bottom: 14px; }
+
+        .phrase-group-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+
+        .phrase-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .phrase-pill {
+            background: #f8f8f8;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.83rem;
+            color: #444;
+            font-style: italic;
+        }
+
+        /* ── WELL DONE ── */
+        .well-done {
+            display: none;
+            text-align: center;
+            background: white;
+            border-radius: 16px;
+            padding: 36px 28px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            margin-bottom: 24px;
+        }
+
+        .well-done.visible { display: block; }
+        .wd-icon { font-size: 3.5rem; margin-bottom: 12px; }
+
+        .well-done h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #27ae60;
+            margin-bottom: 8px;
+        }
+
+        .well-done p {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="game-badge">🎮 Game 3</div>
+    <div class="scenario-tag">🏠 Settling In · Scenario 4</div>
+    <h1>House Rules Quiz</h1>
+    <p>Ask Dave about the house rules — then prove you understood!</p>
+</div>
+
+<nav class="nav-tabs">
+    <a href="index.html">📋 Index</a>
+    <a href="student.html" class="active">😊 Student</a>
+    <a href="teacher.html">👨‍🏫 Teacher</a>
+</nav>
+
+<div class="container">
+
+    <!-- SITUATION -->
+    <div class="situation-box">
+        <div class="sit-label">📍 Your Situation</div>
+        <p>
+            You are <strong>Mai</strong>. You just moved into your share house in Australia.
+            Your landlord <strong>Dave</strong> is here.
+            He will <strong>not</strong> explain the rules automatically —
+            <strong>you need to ask him questions to find out!</strong>
+        </p>
+    </div>
+
+    <div class="reminder">
+        💡 <strong>How it works:</strong>
+        Read each topic → think about what you need to ask →
+        talk to Dave → come back and write down what you learned.
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-wrap">
+        <div class="pw-header">
+            <h4>📋 Topics Covered</h4>
+            <span class="pw-count" id="progress-count">0 / 4 done</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         TOPIC LIST
+    ════════════════════════════════ -->
+    <div class="mission-card">
+        <h3>🎯 Your Mission — Find out about these 4 topics:</h3>
+
+        <div class="topic-list">
+
+            <!-- ══ TOPIC 1: QUIET TIME ══ -->
+            <div class="topic-item" id="topic-1">
+
+                <div class="topic-top" onclick="toggleTopic(1)">
+                    <div class="topic-icon">🌙</div>
+                    <div class="topic-name">Noise &amp; Quiet Hours</div>
+                    <div class="topic-check" id="check-1"></div>
+                </div>
+
+                <div class="topic-score" id="score-1"></div>
+
+                <div class="topic-body" id="body-1">
+
+                    <!-- WHAT TO FIND OUT -->
+                    <div class="find-out-box">
+                        <div class="find-out-label">🔍 Things to find out</div>
+                        <div class="find-out-items">
+                            <div class="find-out-item">
+                                <div class="fi-dot"></div>
+                                <span>Is there a time when you must be quiet?</span>
+                            </div>
+                            <div class="find-out-item">
+                                <div class="fi-dot"></div>
+                                <span>Does it change on different days?</span>
+                            </div>
+                            <div class="find-out-item">
+                                <div class="fi-dot"></div>
+                                <span>What kinds of noise are not allowed?</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STUCK HINT -->
+                    <button class="stuck-btn" id="stuck-1" onclick="showHint2(1)">
+                        💬 I'm not sure what to ask — help me
+                    </button>
+                    <div class="hint-2-box" id="hint2-1">
+                        <div class="hint-label">💡 Try starting with...</div>
+                        <p>
+                            "Is there a...time?" &nbsp;·&nbsp;
+                            "What time should I...?" &nbsp;·&nbsp;
+                            "Are weekends different?"
+                        </p>
+                    </div>
+
+                    <!-- I ASKED DAVE BUTTON -->
+                    <button class="asked-dave-btn" id="asked-btn-1" onclick="revealQuestions(1)">
+                        🗣️ I talked to Dave about this — check what I learned
+                    </button>
+
+                    <!-- QUESTIONS — hidden until above clicked -->
+                    <div class="questions-section" id="qs-1">
+
+                        <p class="questions-intro">
+                            Good! Now write down what Dave told you.
+                            Don't look at his answer — use your memory!
+                        </p>
+
+                        <!-- Q1 -->
+                        <div class="question-block" id="q1-block">
+                            <div class="q-prompt">⏰ Quiet time on weekdays starts at...</div>
+                            <select class="answer-select" id="q1-input">
+                                <option value="">— choose —</option>
+                                <option value="9pm">9:00 pm</option>
+                                <option value="930pm">9:30 pm</option>
+                                <option value="10pm">10:00 pm</option>
+                                <option value="11pm">11:00 pm</option>
+                            </select>
+                            <button class="submit-btn" onclick="checkSelect('q1-input','10pm','q1-fb','q1-block',1)">Check ✓</button>
+                            <div class="q-feedback" id="q1-fb"></div>
+                        </div>
+
+                        <!-- Q2 -->
+                        <div class="question-block" id="q2-block">
+                            <div class="q-prompt">⏰ Quiet time on weekends starts at...</div>
+                            <select class="answer-select" id="q2-input">
+                                <option value="">— choose —</option>
+                                <option value="9pm">9:00 pm</option>
+                                <option value="930pm">9:30 pm</option>
+                                <option value="10pm">10:00 pm</option>
+                                <option value="1030pm">10:30 pm</option>
+                            </select>
+                            <button class="submit-btn" onclick="checkSelect('q2-input','930pm','q2-fb','q2-block',1)">Check ✓</button>
+                            <div class="q-feedback" id="q2-fb"></div>
+                        </div>
+
+                        <!-- Q3 -->
+                        <div class="question-block" id="q3-block">
+                            <div class="q-prompt">🚫 One thing NOT allowed after quiet time...</div>
+                            <input type="text"
+                                   class="answer-input"
+                                   id="q3-input"
+                                   placeholder="What did Dave say? Type it..."
+                                   autocomplete="off">
+                            <button class="submit-btn" onclick="checkText('q3-input',['music','phone','door','noise','slam','loud'],'q3-fb','q3-block',1)">Check ✓</button>
+                            <div class="q-feedback" id="q3-fb"></div>
+                        </div>
+
+                        <button class="mark-done-btn" id="done-btn-1" onclick="markDone(1)">
+                            ✅ Done — I understand the noise rules!
+                        </button>
+
+                    </div><!-- /questions-section -->
+                </div><!-- /topic-body -->
+            </div><!-- /topic-1 -->
+
+
+            <!-- ══ TOPIC 2: CLEANING ══ -->
+            <div class="topic-item" id="topic-2">
+
+                <div class="topic-top" onclick="toggleTopic(2)">
+                    <div class="topic-icon">🧹</div>
+                    <div class="topic-name">Cleaning Roster</div>
+                    <div class="topic-check" id="check-2"></div>
+                </div>
+
+                <div class="topic-score" id="score-2"></div>
+
+                <div class="topic-body" id="body-2">
+
+                    <div class="find-out-box">
+                        <div class="find-out-label">🔍 Things to find out</div>
+                        <div class="find-out-items">
+                            <div class="find-out-item">
+                                <div class="fi-dot"></div>
+                                <span>Which area is your responsibility?</span>
+                            </div>
+                            <div class="find-out-item">
+                                <div class="fi-dot"></div>
+                                <span>Which day do you need to clean it?</span>
+                            </div>
+                            <div class="find-out-item">
+                                <div class="fi-dot"></div>
+                                <span>Is there any cleaning you do with other housemates?</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="stuck-btn" id="stuck-2" onclick="showHint2(2)">
+                        💬 I'm not sure what to ask — help me
+                    </button>
+                    <div class="hint-2-box" id="hint2-2">
+                        <div class="hint-label">💡 Try starting with...</div>
+                        <p>
+                            "Who cleans...?" &nbsp;·&nbsp;
+                            "What is my job?" &nbsp;·&nbsp;
+                            "Do we clean together...?"
+                        </p>
+                    </div>
+
+                    <button class="asked-dave-btn" id="asked-btn-2" onclick="revealQuestions(2)">
+                        🗣️ I talked to Dave about this — check what I learned
+                    </button>
+
+                    <div class="questions-section" id="qs-2">
+
+                        <p class="questions-intro">
+                            Great! Now write down what Dave told you.
+                        </p>
+
+                        <!-- Q4 -->
+                        <div class="question-block" id="q4-block">
+                            <div class="q-prompt">🧹 The room I am responsible for cleaning is...</div>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="q4" value="kitchen"> The kitchen
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q4" value="bathroom"> The bathroom
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q4" value="lounge"> The lounge room
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q4" value="hallway"> The hallway
+                                </label>
+                            </div>
+                            <button class="submit-btn" onclick="checkRadio('q4','bathroom','q4-fb','q4-block',2)">Check ✓</button>
+                            <div class="q-feedback" id="q4-fb"></div>
+                        </div>
+
+                        <!-- Q5 -->
+                        <div class="question-block" id="q5-block">
+                            <div class="q-prompt">📅 I clean my area every...</div>
+                            <select class="answer-select" id="q5-input">
+                                <option value="">— choose a day —</option>
+                                <option value="friday">Friday morning</option>
+                                <option value="saturday">Saturday morning</option>
+                                <option value="sunday">Sunday morning</option>
+                                <option value="monday">Monday morning</option>
+                            </select>
+                            <button class="submit-btn" onclick="checkSelect('q5-input','saturday','q5-fb','q5-block',2)">Check ✓</button>
+                            <div class="q-feedback" id="q5-fb"></div>
+                        </div>
+
+                        <!-- Q6 -->
+                        <div class="question-block" id="q6-block">
+                            <div class="q-prompt">👥 We all clean together on...</div>
+                            <input type="text"
+                                   class="answer-input"
+                                   id="q6-input"
+                                   placeholder="Which day did Dave say?"
+                                   autocomplete="off">
+                            <button class="submit-btn" onclick="checkText('q6-input',['sunday'],'q6-fb','q6-block',2)">Check ✓</button>
+                            <div class="q-feedback" id="q6-fb"></div>
+                        </div>
+
+                        <button class="mark-done-btn" id="done-btn-2" onclick="markDone(2)">
+                            ✅ Done — I understand the cleaning rules!
+                        </button>
+
+                    </div>
+                </div>
+            </div><!-- /topic-2 -->
+
+
+            <!-- ══ TOPIC 3: KITCHEN ══ -->
+            <div class="topic-item" id="topic-3">
+
+                <div class="topic-top" onclick="toggleTopic(3)">
+                    <div class="topic-icon">🍳</div>
+                    <div class="topic-name">Kitchen Rules</div>
+                    <div class="topic-check" id="check-3"></div>
+                </div>
+
+                <div class="topic-score" id="score-3"></div>
+
+                <div class="topic-body" id="body-3">
+
+                    <div class="find-out-box">
+                        <div class="find-out-label">🔍 Things to find out</div>
+                        <div class="find-out-items">
+                            <div class="find-out-item">
+                                <div class="fi-dot"></div>
+                                <span>What must you do after cooking?</span>
+                            </div>
+                            <div class="find-out-item">
+                                <div class="fi-dot"></div>
+                                <span>How should you store your food in the fridge?</span>
+                            </div>
+                            <div class="find-out-item">
+                                <div class="fi-dot"></div>
+                                <span>Are there any rules about what or when you cook?</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="stuck-btn" id="stuck-3" onclick="showHint2(3)">
+                        💬 I'm not sure what to ask — help me
+                    </button>
+                    <div class="hint-2-box" id="hint2-3">
+                        <div class="hint-label">💡 Try starting with...</div>
+                        <p>
+                            "What should I do after I cook?" &nbsp;·&nbsp;
+                            "How do I use the fridge?" &nbsp;·&nbsp;
+                            "Are there any rules about cooking?"
+                        </p>
+                    </div>
+
+                    <button class="asked-dave-btn" id="asked-btn-3" onclick="revealQuestions(3)">
+                        🗣️ I talked to Dave about this — check what I learned
+                    </button>
+
+                    <div class="questions-section" id="qs-3">
+
+                        <p class="questions-intro">
+                            Now write down what Dave told you about the kitchen.
+                        </p>
+
+                        <!-- Q7 -->
+                        <div class="question-block" id="q7-block">
+                            <div class="q-prompt">🍽️ After cooking, I must...</div>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="q7" value="soak"> Leave the dishes to soak overnight
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q7" value="wash"> Wash the dishes straight away
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q7" value="next"> Wash them the next morning
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q7" value="bench"> Leave them on the bench
+                                </label>
+                            </div>
+                            <button class="submit-btn" onclick="checkRadio('q7','wash','q7-fb','q7-block',3)">Check ✓</button>
+                            <div class="q-feedback" id="q7-fb"></div>
+                        </div>
+
+                        <!-- Q8 -->
+                        <div class="question-block" id="q8-block">
+                            <div class="q-prompt">🏷️ On my food in the fridge, I must write my...</div>
+                            <input type="text"
+                                   class="answer-input"
+                                   id="q8-input"
+                                   placeholder="Two things — what did Dave say?"
+                                   autocomplete="off">
+                            <button class="submit-btn" onclick="checkText('q8-input',['name','date'],'q8-fb','q8-block',3,true)">Check ✓</button>
+                            <div class="q-feedback" id="q8-fb"></div>
+                        </div>
+
+                        <!-- Q9 -->
+                        <div class="question-block" id="q9-block">
+                            <div class="q-prompt">🐟 I cannot cook fish or strong food after...</div>
+                            <select class="answer-select" id="q9-input">
+                                <option value="">— choose a time —</option>
+                                <option value="7pm">7:00 pm</option>
+                                <option value="8pm">8:00 pm</option>
+                                <option value="9pm">9:00 pm</option>
+                                <option value="10pm">10:00 pm</option>
+                            </select>
+                            <button class="submit-btn" onclick="checkSelect('q9-input','8pm','q9-fb','q9-block',3)">Check ✓</button>
+                            <div class="q-feedback" id="q9-fb"></div>
+                        </div>
+
+                        <button class="mark-done-btn" id="done-btn-3" onclick="markDone(3)">
+                            ✅ Done — I understand the kitchen rules!
+                        </button>
+
+                    </div>
+                </div>
+            </div><!-- /topic-3 -->
+
+
+            <!-- ══ TOPIC 4: RUBBISH ══ -->
+            <div class="topic-item" id="topic-4">
+
+                <div class="topic-top" onclick="toggleTopic(4)">
+                    <div class="topic-icon">🗑️</div>
+                    <div class="topic-name">Rubbish &amp; Recycling</div>
+                    <div class="topic-check" id="check-4"></div>
+                </div>
+
+                <div class="topic-score" id="score-4"></div>
+
+                <div class="topic-body" id="body-4">
+
+                    <div class="find-out-box">
+                        <div class="find-out-label">🔍 Things to find out</div>
+                        <div class="find-out-items">
+                            <div class="find-out-item">
+                                <div class="fi-dot"></div>
+                                <span>Which day does the bin go out?</span>
+                            </div>
+                            <div class="find-out-item">
+                                <div class="fi-dot"></div>
+                                <span>Is recycling different from normal rubbish?</span>
+                            </div>
+                            <div class="find-out-item">
+                                <div class="fi-dot"></div>
+                                <span>Is there anything important about how to use the bin?</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="stuck-btn" id="stuck-4" onclick="showHint2(4)">
+                        💬 I'm not sure what to ask — help me
+                    </button>
+                    <div class="hint-2-box" id="hint2-4">
+                        <div class="hint-label">💡 Try starting with...</div>
+                        <p>
+                            "When does the bin go out?" &nbsp;·&nbsp;
+                            "What day is bin day?" &nbsp;·&nbsp;
+                            "Is there recycling?"
+                        </p>
+                    </div>
+
+                    <button class="asked-dave-btn" id="asked-btn-4" onclick="revealQuestions(4)">
+                        🗣️ I talked to Dave about this — check what I learned
+                    </button>
+
+                    <div class="questions-section" id="qs-4">
+
+                        <p class="questions-intro">
+                            Good — now write down what Dave told you about the bins.
+                        </p>
+
+                        <!-- Q10 -->
+                        <div class="question-block" id="q10-block">
+                            <div class="q-prompt">🗑️ I put the general rubbish bin out on...</div>
+                            <select class="answer-select" id="q10-input">
+                                <option value="">— choose a night —</option>
+                                <option value="monday">Monday night</option>
+                                <option value="tuesday">Tuesday night</option>
+                                <option value="wednesday">Wednesday night</option>
+                                <option value="thursday">Thursday night</option>
+                            </select>
+                            <button class="submit-btn" onclick="checkSelect('q10-input','tuesday','q10-fb','q10-block',4)">Check ✓</button>
+                            <div class="q-feedback" id="q10-fb"></div>
+                        </div>
+
+                        <!-- Q11 -->
+                        <div class="question-block" id="q11-block">
+                            <div class="q-prompt">♻️ The recycling bin goes out...</div>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="q11" value="every"> Every week
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q11" value="fortnight"> Every two weeks
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q11" value="month"> Every month
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="q11" value="full"> Only when it is full
+                                </label>
+                            </div>
+                            <button class="submit-btn" onclick="checkRadio('q11','fortnight','q11-fb','q11-block',4)">Check ✓</button>
+                            <div class="q-feedback" id="q11-fb"></div>
+                        </div>
+
+                        <!-- Q12 -->
+                        <div class="question-block" id="q12-block">
+                            <div class="q-prompt">🔒 I must always close the bin lid because...</div>
+                            <input type="text"
+                                   class="answer-input"
+                                   id="q12-input"
+                                   placeholder="What did Dave say happens if you don't?"
+                                   autocomplete="off">
+                            <button class="submit-btn" onclick="checkText('q12-input',['animal','animals','mess','get in'],'q12-fb','q12-block',4)">Check ✓</button>
+                            <div class="q-feedback" id="q12-fb"></div>
+                        </div>
+
+                        <button class="mark-done-btn" id="done-btn-4" onclick="markDone(4)">
+                            ✅ Done — I understand the rubbish rules!
+                        </button>
+
+                    </div>
+                </div>
+            </div><!-- /topic-4 -->
+
+        </div><!-- /topic-list -->
+    </div><!-- /mission-card -->
+
+    <!-- USEFUL PHRASES -->
+    <div class="phrases-card">
+        <h3>💬 Useful Phrases for Asking Questions</h3>
+        <div class="phrase-group">
+            <div class="phrase-group-label">Starting a question</div>
+            <div class="phrase-pills">
+                <span class="phrase-pill">"Can I ask about...?"</span>
+                <span class="phrase-pill">"I have a question about..."</span>
+                <span class="phrase-pill">"What should I do about...?"</span>
+                <span class="phrase-pill">"Is there a rule for...?"</span>
+            </div>
+        </div>
+        <div class="phrase-group">
+            <div class="phrase-group-label">Asking for more detail</div>
+            <div class="phrase-pills">
+                <span class="phrase-pill">"Sorry, what time exactly?"</span>
+                <span class="phrase-pill">"How often?"</span>
+                <span class="phrase-pill">"Which day?"</span>
+                <span class="phrase-pill">"Can you say that again?"</span>
+            </div>
+        </div>
+        <div class="phrase-group">
+            <div class="phrase-group-label">Checking you understood</div>
+            <div class="phrase-pills">
+                <span class="phrase-pill">"So I need to...?"</span>
+                <span class="phrase-pill">"Is that every week?"</span>
+                <span class="phrase-pill">"Did you say...?"</span>
+                <span class="phrase-pill">"Just to check..."</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- WELL DONE -->
+    <div class="well-done" id="well-done-screen">
+        <div class="wd-icon">🎉</div>
+        <h2>Well done, Mai!</h2>
+        <p>
+            You asked Dave about all 4 house rules and answered every question correctly!<br><br>
+            Now try to explain all 4 rules back to Dave
+            <strong>in your own words</strong> — no looking!
+        </p>
+        <a href="index.html" class="btn btn-primary">← Back to All Games</a>
+    </div>
+
+</div><!-- /container -->
+
+<script>
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+const topicProgress = { 1:0, 2:0, 3:0, 4:0 };
+const topicRequired = { 1:3, 2:3, 3:3, 4:3 };
+const topicDone     = { 1:false, 2:false, 3:false, 4:false };
+let totalDone = 0;
+
+// ══════════════════════════════════════════
+//  TOGGLE TOPIC
+// ══════════════════════════════════════════
+function toggleTopic(n) {
+    if (topicDone[n]) return;
+
+    const body = document.getElementById(`body-${n}`);
+    const item = document.getElementById(`topic-${n}`);
+    const isOpen = body.classList.contains('open');
+
+    // close all
+    [1,2,3,4].forEach(i => {
+        document.getElementById(`body-${i}`).classList.remove('open');
+        document.getElementById(`topic-${i}`).classList.remove('active-topic');
+    });
+
+    if (!isOpen) {
+        body.classList.add('open');
+        item.classList.add('active-topic');
+    }
+}
+
+// ══════════════════════════════════════════
+//  HINT 2
+// ══════════════════════════════════════════
+function showHint2(n) {
+    document.getElementById(`hint2-${n}`).classList.add('visible');
+    document.getElementById(`stuck-${n}`).classList.add('hidden');
+}
+
+// ══════════════════════════════════════════
+//  REVEAL QUESTIONS after "I asked Dave"
+// ══════════════════════════════════════════
+function revealQuestions(n) {
+    document.getElementById(`asked-btn-${n}`).classList.add('hidden');
+    document.getElementById(`qs-${n}`).classList.add('revealed');
+}
+
+// ══════════════════════════════════════════
+//  CHECK: SELECT
+// ══════════════════════════════════════════
+function checkSelect(inputId, correctVal, fbId, blockId, topicNum) {
+    const input = document.getElementById(inputId);
+    const fb    = document.getElementById(fbId);
+    const block = document.getElementById(blockId);
+    const btn   = block.querySelector('.submit-btn');
+
+    if (!input.value) {
+        fb.className = 'q-feedback fb-wrong';
+        fb.textContent = '⚠️ Please choose an answer first!';
+        return;
+    }
+
+    btn.disabled = true;
+    input.disabled = true;
+
+    if (input.value === correctVal) {
+        input.classList.add('correct');
+        block.classList.add('answered-correct');
+        fb.className = 'q-feedback fb-correct';
+        fb.textContent = '✅ Correct!';
+        addTopicPoint(topicNum);
+    } else {
+        input.classList.add('wrong');
+        block.classList.add('answered-wrong');
+        fb.className = 'q-feedback fb-wrong';
+        fb.textContent = '❌ Not quite — ask Dave again and listen more carefully!';
+        setTimeout(() => {
+            btn.disabled = false;
+            input.disabled = false;
+            input.classList.remove('wrong');
+            block.classList.remove('answered-wrong');
+            input.value = '';
+            fb.className = 'q-feedback';
+        }, 2500);
+    }
+}
+
+// ══════════════════════════════════════════
+//  CHECK: RADIO
+// ══════════════════════════════════════════
+function checkRadio(groupName, correctVal, fbId, blockId, topicNum) {
+    const selected = document.querySelector(`input[name="${groupName}"]:checked`);
+    const fb       = document.getElementById(fbId);
+    const block    = document.getElementById(blockId);
+    const btn      = block.querySelector('.submit-btn');
+    const options  = block.querySelectorAll('.radio-option');
+
+    if (!selected) {
+        fb.className = 'q-feedback fb-wrong';
+        fb.textContent = '⚠️ Please choose an answer first!';
+        return;
+    }
+
+    btn.disabled = true;
+    block.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+
+    if (selected.value === correctVal) {
+        selected.closest('.radio-option').classList.add('correct');
+        block.classList.add('answered-correct');
+        fb.className = 'q-feedback fb-correct';
+        fb.textContent = '✅ Correct!';
+        addTopicPoint(topicNum);
+    } else {
+        selected.closest('.radio-option').classList.add('wrong');
+        options.forEach(opt => {
+            if (opt.querySelector('input').value === correctVal)
+                opt.classList.add('revealed');
+        });
+        block.classList.add('answered-wrong');
+        fb.className = 'q-feedback fb-wrong';
+        fb.textContent = '❌ Not quite — ask Dave again!';
+        setTimeout(() => {
+            btn.disabled = false;
+            block.querySelectorAll('input[type="radio"]').forEach(r => {
+                r.disabled = false;
+                r.checked = false;
+            });
+            options.forEach(o => o.classList.remove('wrong','revealed'));
+            block.classList.remove('answered-wrong');
+            fb.className = 'q-feedback';
+        }, 2500);
+    }
+}
+
+// ══════════════════════════════════════════
+//  CHECK: TEXT
+// ══════════════════════════════════════════
+function checkText(inputId, keywords, fbId, blockId, topicNum, requireAll = false) {
+    const input = document.getElementById(inputId);
+    const fb    = document.getElementById(fbId);
+    const block = document.getElementById(blockId);
+    const btn   = block.querySelector('.submit-btn');
+    const val   = input.value.toLowerCase().trim();
+
+    if (!val) {
+        fb.className = 'q-feedback fb-wrong';
+        fb.textContent = '⚠️ Please type an answer first!';
+        return;
+    }
+
+    const matches   = keywords.filter(kw => val.includes(kw.toLowerCase()));
+    const isCorrect = requireAll
+        ? matches.length === keywords.length
+        : matches.length > 0;
+
+    btn.disabled = true;
+    input.disabled = true;
+
+    if (isCorrect) {
+        input.classList.add('correct');
+        block.classList.add('answered-correct');
+        fb.className = 'q-feedback fb-correct';
+        fb.textContent = '✅ Correct!';
+        addTopicPoint(topicNum);
+    } else {
+        input.classList.add('wrong');
+        block.classList.add('answered-wrong');
+        fb.className = 'q-feedback fb-wrong';
+        fb.textContent = requireAll
+            ? '❌ Not quite — make sure you include both things Dave told you!'
+            : '❌ Not quite — try asking Dave again!';
+        setTimeout(() => {
+            btn.disabled = false;
+            input.disabled = false;
+            input.value = '';
+            input.classList.remove('wrong');
+            block.classList.remove('answered-wrong');
+            fb.className = 'q-feedback';
+        }, 2500);
+    }
+}
+
+// ══════════════════════════════════════════
+//  TOPIC POINTS
+// ══════════════════════════════════════════
+function addTopicPoint(n) {
+    topicProgress[n]++;
+    if (topicProgress[n] >= topicRequired[n] && !topicDone[n]) {
+        document.getElementById(`done-btn-${n}`).classList.add('visible');
+    }
+}
+
+// ══════════════════════════════════════════
+//  MARK DONE
+// ══════════════════════════════════════════
+function markDone(n) {
+    if (topicProgress[n] < topicRequired[n]) return;
+
+    topicDone[n] = true;
+    totalDone++;
+
+    const item = document.getElementById(`topic-${n}`);
+    item.classList.add('done');
+    item.classList.remove('active-topic');
+    document.getElementById(`check-${n}`).textContent = '✓';
+    document.getElementById(`score-${n}`).textContent =
+        `✅ Completed — 3/3 correct`;
+    document.getElementById(`done-btn-${n}`).classList.remove('visible');
+    document.getElementById(`body-${n}`).classList.remove('open');
+
+    updateProgress();
+
+    if (totalDone === 4) {
+        document.getElementById('well-done-screen').classList.add('visible');
+        setTimeout(() => {
+            document.getElementById('well-done-screen')
+                .scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+    }
+}
+
+// ══════════════════════════════════════════
+//  PROGRESS
+// ══════════════════════════════════════════
+function updateProgress() {
+    const pct = (totalDone / 4) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-count').textContent = `${totalDone} / 4 done`;
+}
+
+// init
+toggleTopic(1);
+</script>
+
+</body>
+</html>

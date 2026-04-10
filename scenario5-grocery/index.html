@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🛒 Grocery Game — First Day in Australia</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* --- Index-specific styles --- */
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 14px;
+    }
+
+    .how-it-works {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin: 32px 0;
+    }
+
+    .how-step {
+      text-align: center;
+      padding: 24px 16px;
+    }
+
+    .how-step .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin: 0 auto 14px;
+    }
+
+    .vocab-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .vocab-chip {
+      background: var(--light-green);
+      color: var(--dark-green);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+      cursor: default;
+    }
+
+    .vocab-chip:hover {
+      background: var(--green);
+      color: white;
+    }
+
+    .vocab-chip .chip-meaning {
+      display: none;
+      font-weight: 400;
+      font-size: 0.8rem;
+    }
+
+    .vocab-chip:hover .chip-meaning {
+      display: inline;
+    }
+
+    .store-logos {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin: 24px 0;
+      flex-wrap: wrap;
+    }
+
+    .store-logo-item {
+      text-align: center;
+      padding: 16px 24px;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      min-width: 120px;
+    }
+
+    .store-logo-item .logo-big {
+      font-size: 2.5rem;
+      margin-bottom: 6px;
+    }
+
+    .store-logo-item .logo-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .store-logo-item .logo-desc {
+      font-size: 0.8rem;
+      color: var(--mid-grey);
+    }
+
+    .money-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin: 16px 0;
+    }
+
+    .money-item {
+      text-align: center;
+      padding: 12px;
+      background: var(--grey);
+      border-radius: var(--radius-sm);
+      min-width: 80px;
+    }
+
+    .money-item .money-emoji {
+      font-size: 1.6rem;
+    }
+
+    .money-item .money-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .money-item .money-colour {
+      font-size: 0.7rem;
+      color: var(--mid-grey);
+    }
+
+    .cta-section {
+      text-align: center;
+      padding: 48px 24px;
+      background: linear-gradient(135deg, var(--green), var(--dark-green));
+      color: white;
+      border-radius: var(--radius);
+      margin: 32px 0;
+    }
+
+    .cta-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+
+    .cta-section p {
+      opacity: 0.9;
+      margin-bottom: 24px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      text-align: center;
+      margin: 48px 0 12px;
+    }
+
+    .section-title h2 {
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .section-subtitle {
+      color: var(--mid-grey);
+      font-size: 0.95rem;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .tip-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .tip-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 20px;
+    }
+
+    .tip-card .tip-card-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .tip-card h4 {
+      margin-bottom: 4px;
+      font-size: 1rem;
+    }
+
+    .tip-card p {
+      font-size: 0.88rem;
+      color: var(--mid-grey);
+      line-height: 1.5;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--mid-grey);
+      font-size: 0.85rem;
+    }
+
+    .footer a {
+      color: var(--green);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== TOP NAV ========== -->
+  <nav class="top-nav">
+    <div class="logo">🛒 Grocery Game</div>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="student.html">Play Game</a>
+      <a href="teacher.html">Teacher</a>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div class="flag-emoji">🇦🇺</div>
+    <h1>Welcome to Grocery Shopping in Australia!</h1>
+    <p>
+      Learn how to shop at an Australian supermarket. Practice real conversations, 
+      learn Aussie slang, and discover what everyday items cost — all before your first 
+      real trip to the shops!
+    </p>
+    <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a href="student.html" class="btn btn-gold">🎮 Start the Game</a>
+      <a href="teacher.html" class="btn btn-secondary" style="color: white; border-color: rgba(255,255,255,0.5);">
+        👩‍🏫 Teacher Settings
+      </a>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <!-- ========== WHAT YOU'LL LEARN ========== -->
+    <div class="section-title">
+      <h2>📚 What You'll Learn</h2>
+    </div>
+    <p class="section-subtitle">Everything you need for your first trip to an Australian supermarket</p>
+
+    <div class="card-grid">
+      <!-- Card 1 -->
+      <div class="card">
+        <div class="feature-icon" style="background: #e8f5e9;">🛒</div>
+        <h3>Navigate a Supermarket</h3>
+        <p>Learn the layout of Australian supermarkets — where to find meat, produce, dairy, Asian foods, and household items.</p>
+        <span class="badge">Interactive Map</span>
+      </div>
+      <!-- Card 2 -->
+      <div class="card">
+        <div class="feature-icon" style="background: #e3f2fd;">💬</div>
+        <h3>Talk to Shop Staff</h3>
+        <p>Practice real conversations — ordering at the meat counter, asking for help, and going through checkout.</p>
+        <span class="badge">Dialogue Practice</span>
+      </div>
+      <!-- Card 3 -->
+      <div class="card">
+        <div class="feature-icon" style="background: #fff3e0;">💰</div>
+        <h3>Understand Australian Money</h3>
+        <p>Learn the coins and notes, read price tags, compare unit prices, and manage a shopping budget.</p>
+        <span class="badge">Budget Challenge</span>
+      </div>
+      <!-- Card 4 -->
+      <div class="card">
+        <div class="feature-icon" style="background: #fce4ec;">🥩</div>
+        <h3>Know Your Meat Cuts</h3>
+        <p>As a future butcher, learn Australian names for meat cuts — mince, rashers, scotch fillet, chops, and more.</p>
+        <span class="badge">Butcher Focus</span>
+      </div>
+      <!-- Card 5 -->
+      <div class="card">
+        <div class="feature-icon" style="background: #f3e5f5;">🇦🇺</div>
+        <h3>Aussie Slang & Culture</h3>
+        <p>Understand "g'day", "no worries", "snags on the barbie", and other slang you'll hear every day.</p>
+        <span class="badge">Slang Quiz</span>
+      </div>
+      <!-- Card 6 -->
+      <div class="card">
+        <div class="feature-icon" style="background: #e0f7fa;">🤖</div>
+        <h3>Use Self-Checkout</h3>
+        <p>Step-by-step simulation of self-checkout machines — scan items, look up produce, and pay by card.</p>
+        <span class="badge">Simulation</span>
+      </div>
+    </div>
+
+    <!-- ========== HOW IT WORKS ========== -->
+    <div class="section-title">
+      <h2>🎮 How the Game Works</h2>
+    </div>
+    <p class="section-subtitle">Complete each phase to finish your shopping trip</p>
+
+    <div class="how-it-works">
+      <div class="how-step card">
+        <div class="step-number">1</div>
+        <h4>Get Your List</h4>
+        <p>Receive a shopping list and a budget. Your goal is to find everything on the list without going over budget.</p>
+      </div>
+      <div class="how-step card">
+        <div class="step-number">2</div>
+        <h4>Enter the Store</h4>
+        <p>Choose which section to visit first. Navigate between meat, produce, pantry, dairy, household, and drinks.</p>
+      </div>
+      <div class="how-step card">
+        <div class="step-number">3</div>
+        <h4>Shop & Talk</h4>
+        <p>Add items to your cart and practice conversations with store staff. Choose the best response in each dialogue.</p>
+      </div>
+      <div class="how-step card">
+        <div class="step-number">4</div>
+        <h4>Checkout & Score</h4>
+        <p>Pay for your items at regular checkout or try self-checkout. See your score, badges, and vocabulary learned!</p>
+      </div>
+    </div>
+
+    <!-- ========== AUSSIE SUPERMARKETS ========== -->
+    <div class="section-title">
+      <h2>🏪 Australian Supermarkets</h2>
+    </div>
+    <p class="section-subtitle">The three big supermarkets you'll find everywhere in Australia</p>
+
+    <div class="store-logos">
+      <div class="store-logo-item">
+        <div class="logo-big">🟢</div>
+        <div class="logo-name">Woolworths</div>
+        <div class="logo-desc">Called "Woolies" — biggest chain</div>
+      </div>
+      <div class="store-logo-item">
+        <div class="logo-big">🔴</div>
+        <div class="logo-name">Coles</div>
+        <div class="logo-desc">Second biggest — good specials</div>
+      </div>
+      <div class="store-logo-item">
+        <div class="logo-big">🔵</div>
+        <div class="logo-name">Aldi</div>
+        <div class="logo-desc">Budget-friendly — great value</div>
+      </div>
+      <div class="store-logo-item">
+        <div class="logo-big">🏮</div>
+        <div class="logo-name">Asian Grocers</div>
+        <div class="logo-desc">Best for Asian ingredients</div>
+      </div>
+    </div>
+
+    <!-- ========== MONEY PREVIEW ========== -->
+    <div class="section-title">
+      <h2>💵 Australian Money</h2>
+    </div>
+    <p class="section-subtitle">Coins and notes you'll use when shopping</p>
+
+    <div class="card" style="padding: 28px;">
+      <div class="money-preview" id="moneyPreview"></div>
+      <div class="tip-box" style="margin-top: 16px;">
+        <span class="tip-icon">💡</span>
+        <div>
+          <strong>Tip:</strong> Most Australians pay by card (tap/contactless). But keep a \$1 or \$2 coin 
+          in your pocket — you'll need it to unlock a shopping trolley!
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== VOCABULARY PREVIEW ========== -->
+    <div class="section-title">
+      <h2>🗣️ Aussie Words You'll Learn</h2>
+    </div>
+    <p class="section-subtitle">Hover over each word to see the meaning</p>
+
+    <div class="card" style="padding: 28px;">
+      <div class="vocab-preview" id="vocabPreview"></div>
+    </div>
+
+    <!-- ========== CULTURAL TIPS PREVIEW ========== -->
+    <div class="section-title">
+      <h2>🌏 Cultural Tips</h2>
+    </div>
+    <p class="section-subtitle">Things that might be different from what you're used to</p>
+
+    <div class="tip-cards" id="tipCards"></div>
+
+    <!-- ========== BUTCHER FOCUS ========== -->
+    <div class="section-title">
+      <h2>🥩 Butcher Focus</h2>
+    </div>
+    <p class="section-subtitle">Since you'll be working as a meat butcher, here's some extra vocabulary</p>
+
+    <div class="card" style="padding: 28px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px;" id="butcherVocab">
+        <!-- filled by JS -->
+      </div>
+      <div class="tip-box" style="margin-top: 20px;">
+        <span class="tip-icon">🔪</span>
+        <div>
+          <strong>At Work:</strong> As a butcher in Australia, you'll learn to break down carcasses, 
+          trim cuts, and serve customers at the counter. The vocabulary in this game will help you 
+          understand customer requests and read labels. You'll hear words like "mince", "rashers", 
+          "scotch fillet", and "chops" every day!
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== CTA ========== -->
+    <div class="cta-section">
+      <h2>Ready to Start Shopping? 🛒</h2>
+      <p>Jump into the game and practise buying groceries at an Australian supermarket. 
+         Choose your difficulty — easy for a quick shop, or hard for a full first-week experience!</p>
+      <div class="cta-buttons">
+        <a href="student.html" class="btn btn-gold" style="font-size: 1.1rem; padding: 14px 32px;">
+          🎮 Play the Game
+        </a>
+        <a href="teacher.html" class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.4); font-size: 1.1rem; padding: 14px 32px;">
+          👩‍🏫 Teacher Dashboard
+        </a>
+      </div>
+    </div>
+
+    <!-- ========== DIFFICULTY LEVELS ========== -->
+    <div class="section-title">
+      <h2>📊 Difficulty Levels</h2>
+    </div>
+    <p class="section-subtitle">Choose the right level for your student</p>
+
+    <div class="card-grid">
+      <div class="card" style="border-top: 4px solid #4caf50;">
+        <h3>🟢 Easy — Quick Shop</h3>
+        <p><strong>Budget:</strong> \$50</p>
+        <p><strong>Items:</strong> 6 essential items</p>
+        <p><strong>Dialogues:</strong> Meat counter + Checkout</p>
+        <p style="margin-top: 10px; color: var(--mid-grey); font-size: 0.85rem;">
+          Best for beginners. Short and simple — just buy a few items and practise basic checkout conversation.
+        </p>
+      </div>
+      <div class="card" style="border-top: 4px solid #ff9800;">
+        <h3>🟡 Medium — Weekly Groceries</h3>
+        <p><strong>Budget:</strong> \$80</p>
+        <p><strong>Items:</strong> 23 items across all sections</p>
+        <p><strong>Dialogues:</strong> Asking for help + Meat counter + Checkout</p>
+        <p style="margin-top: 10px; color: var(--mid-grey); font-size: 0.85rem;">
+          A realistic weekly shop. Practise navigating different sections and managing a budget.
+        </p>
+      </div>
+      <div class="card" style="border-top: 4px solid #e53935;">
+        <h3>🔴 Hard — First Week in Australia</h3>
+        <p><strong>Budget:</strong> \$120</p>
+        <p><strong>Items:</strong> 23+ items including household essentials</p>
+        <p><strong>Dialogues:</strong> All dialogues + Self-checkout + Slang quiz</p>
+        <p style="margin-top: 10px; color: var(--mid-grey); font-size: 0.85rem;">
+          The full experience! Buy everything you need for your first week — food, toiletries, cleaning products.
+        </p>
+      </div>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <div class="footer">
+      <p>🛒 Australian Grocery Shopping Game — Made for ESL learners preparing to live in Australia</p>
+      <p style="margin-top: 8px;">
+        Part of the <a href="#">First Day in Australia</a> series &nbsp;|&nbsp; 
+        Built with ❤️ for Vietnamese students
+      </p>
+    </div>
+
+  </div><!-- end .container -->
+
+  <!-- ========== SCRIPTS ========== -->
+  <script src="game-data.js"></script>
+  <script>
+    // ============================================
+    // INDEX PAGE — Populate preview sections
+    // ============================================
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderMoneyPreview();
+      renderVocabPreview();
+      renderTipCards();
+      renderButcherVocab();
+    });
+
+    // --- Money Preview ---
+    function renderMoneyPreview() {
+      const container = document.getElementById('moneyPreview');
+      if (!container || !GAME_DATA.australianMoney) return;
+
+      container.innerHTML = GAME_DATA.australianMoney.map(m => `
+        <div class="money-item">
+          <div class="money-emoji">${m.emoji}</div>
+          <div class="money-name">${m.name}</div>
+          ${m.note ? `<div class="money-colour">${m.note}</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    // --- Vocab Preview (show first 20 words as chips) ---
+    function renderVocabPreview() {
+      const container = document.getElementById('vocabPreview');
+      if (!container || !GAME_DATA.vocabulary) return;
+
+      const words = GAME_DATA.vocabulary.slice(0, 24);
+      container.innerHTML = words.map(v => `
+        <div class="vocab-chip" title="${v.meaning}">
+          <span>${v.word}</span>
+          <span class="chip-meaning">— ${v.meaning}</span>
+        </div>
+      `).join('');
+    }
+
+    // --- Cultural Tips (show first 8) ---
+    function renderTipCards() {
+      const container = document.getElementById('tipCards');
+      if (!container || !GAME_DATA.culturalTips) return;
+
+      const tips = GAME_DATA.culturalTips.slice(0, 8);
+      container.innerHTML = tips.map(t => `
+        <div class="card tip-card">
+          <div class="tip-card-icon">${t.icon}</div>
+          <div>
+            <h4>${t.title}</h4>
+            <p>${t.text}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // --- Butcher Vocabulary ---
+    function renderButcherVocab() {
+      const container = document.getElementById('butcherVocab');
+      if (!container || !GAME_DATA.vocabulary) return;
+
+      const butcherWords = GAME_DATA.vocabulary.filter(v =>
+        ['Mince', 'Rashers', 'Scotch fillet', 'Chops', 'Fillet', 'Snags',
+         'Sausage sizzle', 'Barbie', 'Brekkie'].includes(v.word)
+      );
+
+      container.innerHTML = butcherWords.map(v => `
+        <div style="background: var(--light-red); padding: 14px 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--red);">
+          <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 2px;">🥩 ${v.word}</div>
+          <div style="color: var(--mid-grey); font-size: 0.9rem;">${v.meaning}</div>
+        </div>
+      `).join('');
+    }
+  </script>
+
+</body>
+</html>

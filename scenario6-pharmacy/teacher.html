@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher - At the Pharmacy</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="top-bar">
+    <a href="index.html" class="back-link">← Back</a>
+    👩‍🏫 TEACHER ROLE
+  </div>
+
+  <main class="container">
+    <div class="role-badge teacher-badge">You are: Pharmacist / Teacher</div>
+    <h1>📋 Teacher Conversation Guide</h1>
+    <p class="subtitle">Follow the same 10-card order as the student page. Prompt, listen, and guide only if needed.</p>
+
+    <section class="info-card">
+      <h2>Class setup</h2>
+      <ul>
+        <li>Time: 15-20 minutes</li>
+        <li>Let the student speak first whenever possible</li>
+        <li>Repeat only if the student asks</li>
+        <li>Use the follow-up line only if the student gets stuck</li>
+      </ul>
+    </section>
+
+    <p class="step-indicator" id="teacherStep">Card 1 of 10</p>
+
+    <section class="card step-card active">
+      <h2>1) Start conversation</h2>
+      <p class="prompt"><strong>You say:</strong> Hi there, how can I help you today?</p>
+      <p class="hint-text"><strong>If needed:</strong> What symptoms do you have?</p>
+      <p><strong>Listen for:</strong> The student says they have a sore throat and a high fever, and asks for help or medicine.</p>
+      <p><strong>Target outcome:</strong> The student starts the conversation clearly and asks for advice.</p>
+    </section>
+
+    <section class="card step-card">
+      <h2>2) Describe symptoms</h2>
+      <p class="prompt"><strong>You say:</strong> How long have you been feeling like this?</p>
+      <p class="hint-text"><strong>If needed:</strong> Did it start yesterday, or has it been a few days?</p>
+      <p><strong>Listen for:</strong> A time phrase like <strong>since yesterday</strong> or <strong>for two days</strong>, plus tiredness, headache, or chills.</p>
+      <p><strong>Target outcome:</strong> The student explains both the symptom timeline and how they feel now.</p>
+    </section>
+
+    <section class="card step-card">
+      <h2>3) Add more details</h2>
+      <p class="prompt"><strong>You say:</strong> Do you have a cough, runny nose, or blocked nose as well?</p>
+      <p class="hint-text"><strong>If needed:</strong> Any other cold or flu symptoms?</p>
+      <p><strong>Listen for:</strong> The student adds one or two more symptoms, such as a cough or blocked nose.</p>
+      <p><strong>Target outcome:</strong> The student gives a fuller symptom description.</p>
+    </section>
+
+    <section class="card step-card">
+      <h2>4) Ask if a doctor is needed</h2>
+      <p class="prompt"><strong>You say:</strong> I can suggest some medicine here first.</p>
+      <p class="hint-text"><strong>If needed:</strong> Would you like to ask if you need to see a doctor?</p>
+      <p><strong>Listen for:</strong> The student asks whether they should see a doctor or if pharmacy medicine is enough.</p>
+      <p><strong>Target outcome:</strong> The student checks whether professional medical follow-up is necessary.</p>
+    </section>
+
+    <section class="card step-card">
+      <h2>5) Ask for medicine options</h2>
+      <p class="prompt"><strong>You say:</strong> We have tablets, lozenges, and throat spray. What would you prefer?</p>
+      <p class="hint-text"><strong>If needed:</strong> Do you want something non-drowsy?</p>
+      <p><strong>Listen for:</strong> The student asks for medicine that will not make them sleepy because they need to work or travel tomorrow.</p>
+      <p><strong>Target outcome:</strong> The student asks for a suitable non-drowsy option.</p>
+    </section>
+
+    <section class="card step-card">
+      <h2>6) Ask how to take it</h2>
+      <p class="prompt"><strong>You say:</strong> This medicine is easy to take.</p>
+      <p class="hint-text"><strong>If needed:</strong> You can ask whether to take it before or after food.</p>
+      <p><strong>Listen for:</strong> The student asks how to take the medicine properly, especially with food.</p>
+      <p><strong>Target outcome:</strong> The student checks practical instructions before buying.</p>
+    </section>
+
+    <section class="card step-card">
+      <h2>7) Ask safety questions</h2>
+      <p class="prompt"><strong>You say:</strong> Do you have any allergies, and are you taking any other medicine at the moment?</p>
+      <p class="hint-text"><strong>If needed:</strong> Would you like to ask about side effects too?</p>
+      <p><strong>Listen for:</strong> The student asks about allergies, side effects, and whether the medicine is safe with what they are already taking.</p>
+      <p><strong>Target outcome:</strong> The student checks safety before buying.</p>
+    </section>
+
+    <section class="card step-card">
+      <h2>8) Confirm dosage</h2>
+      <p class="prompt"><strong>You say:</strong> Take two tablets every six hours after food. Do not take more than eight in 24 hours.</p>
+      <p class="hint-text"><strong>If needed:</strong> Can you repeat the dosage back to me?</p>
+      <p><strong>Listen for:</strong> The student asks or repeats how many tablets to take, how often, and the daily maximum.</p>
+      <p><strong>Target outcome:</strong> The student confirms the dosage clearly and accurately.</p>
+    </section>
+
+    <section class="card step-card">
+      <h2>9) Ask when to come back</h2>
+      <p class="prompt"><strong>You say:</strong> If it does not improve, you may need more advice.</p>
+      <p class="hint-text"><strong>If needed:</strong> You can ask when to come back or see a doctor.</p>
+      <p><strong>Listen for:</strong> The student asks what to do if they do not feel better in a few days.</p>
+      <p><strong>Target outcome:</strong> The student checks what the next step should be if symptoms continue.</p>
+    </section>
+
+    <section class="card step-card">
+      <h2>10) Payment and closing</h2>
+      <p class="prompt"><strong>You say:</strong> That will be $14. EFTPOS is fine.</p>
+      <p class="hint-text"><strong>If needed:</strong> We close at 8 p.m. today.</p>
+      <p><strong>Listen for:</strong> The student asks to pay by card, asks what time the store closes, and ends politely.</p>
+      <p><strong>Target outcome:</strong> The student finishes the interaction naturally and politely.</p>
+    </section>
+
+    <div class="button-group">
+      <button class="btn ghost" id="teacherPrev">← Previous</button>
+      <button class="btn teacher" id="teacherNext">Next →</button>
+    </div>
+  </main>
+
+  <script>
+    const teacherCards = [...document.querySelectorAll('.step-card')];
+    const teacherStep = document.getElementById('teacherStep');
+    const teacherPrev = document.getElementById('teacherPrev');
+    const teacherNext = document.getElementById('teacherNext');
+    let teacherIndex = 0;
+
+    function renderTeacherCard() {
+      teacherCards.forEach((card, i) => card.classList.toggle('active', i === teacherIndex));
+      teacherStep.textContent = `Card ${teacherIndex + 1} of ${teacherCards.length}`;
+      teacherPrev.disabled = teacherIndex === 0;
+      teacherNext.textContent = teacherIndex === teacherCards.length - 1 ? 'Finish ✅' : 'Next →';
+    }
+
+    teacherPrev.addEventListener('click', () => {
+      if (teacherIndex > 0) {
+        teacherIndex -= 1;
+        renderTeacherCard();
+      }
+    });
+
+    teacherNext.addEventListener('click', () => {
+      if (teacherIndex < teacherCards.length - 1) {
+        teacherIndex += 1;
+        renderTeacherCard();
+      }
+    });
+
+    renderTeacherCard();
+  </script>
+</body>
+</html>

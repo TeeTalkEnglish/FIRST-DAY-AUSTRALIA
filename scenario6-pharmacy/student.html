@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student - At the Pharmacy</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="top-bar">
+    <a href="index.html" class="back-link">← Back</a>
+    🎓 STUDENT ROLE
+  </div>
+
+  <main class="container">
+    <div class="role-badge student-badge">You are: Student Customer</div>
+    <h1>🗣️ Student Speaking Challenge</h1>
+    <p class="subtitle">One card at a time. Respond naturally in English.</p>
+
+    <p class="step-indicator" id="studentStep">Card 1 of 10</p>
+
+    <section class="card step-card active">
+      <h2>1) Start conversation</h2>
+      <p class="prompt"><strong>Your task:</strong> You just arrived in Australia and feel sick <span class="task-vocab">đau họng, sốt cao</span>. Ask for help at the pharmacy counter.</p>
+      <details class="hint-toggle">
+        <summary>💡 Show hint phrase</summary>
+        <p class="hint-text">Say that you have a <strong>sore throat</strong> and a <strong>high fever</strong>, then ask the pharmacist to recommend suitable medicine.</p>
+      </details>
+      <details class="hint-toggle">
+        <summary>💬 Show question hint</summary>
+        <p class="hint-text">"Hi, I have a sore throat and a fever. Can you help me, please?"</p>
+      </details>
+    </section>
+
+    <section class="card step-card">
+      <h2>2) Describe symptoms</h2>
+      <p class="prompt"><strong>Your task:</strong> Explain when the symptoms started and how you feel now <span class="task-vocab">mệt, đau đầu, ớn lạnh</span>.</p>
+      <details class="hint-toggle">
+        <summary>💡 Show hint phrase</summary>
+        <p class="hint-text">Use a time phrase like <strong>since yesterday</strong> or <strong>for two days</strong>, then add extra symptoms such as tiredness, headache, or chills.</p>
+      </details>
+      <details class="hint-toggle">
+        <summary>💬 Show question hint</summary>
+        <p class="hint-text">"I have felt like this since yesterday, and I also have a headache and chills."</p>
+      </details>
+    </section>
+
+    <section class="card step-card">
+      <h2>3) Add more details</h2>
+      <p class="prompt"><strong>Your task:</strong> Mention any other cold or flu symptoms <span class="task-vocab">ho, sổ mũi, nghẹt mũi</span>.</p>
+      <details class="hint-toggle">
+        <summary>💡 Show hint phrase</summary>
+        <p class="hint-text">Add one or two more symptoms so the pharmacist has a clearer picture of your condition.</p>
+      </details>
+      <details class="hint-toggle">
+        <summary>💬 Show question hint</summary>
+        <p class="hint-text">"I also have a cough and a blocked nose."</p>
+      </details>
+    </section>
+
+    <section class="card step-card">
+      <h2>4) Ask if you need a doctor</h2>
+      <p class="prompt"><strong>Your task:</strong> Ask whether you can buy medicine here or if you should see a doctor <span class="task-vocab">cần gặp bác sĩ không</span>.</p>
+      <details class="hint-toggle">
+        <summary>💡 Show hint phrase</summary>
+        <p class="hint-text">Ask if your symptoms sound serious or if over-the-counter medicine is enough.</p>
+      </details>
+      <details class="hint-toggle">
+        <summary>💬 Show question hint</summary>
+        <p class="hint-text">"Do you think I need to see a doctor, or can I take medicine from here?"</p>
+      </details>
+    </section>
+
+    <section class="card step-card">
+      <h2>5) Ask for medicine options</h2>
+      <p class="prompt"><strong>Your task:</strong> Ask for medicine <span class="task-vocab">không buồn ngủ</span> that is suitable if you need to work or travel the next day.</p>
+      <details class="hint-toggle">
+        <summary>💡 Show hint phrase</summary>
+        <p class="hint-text">Ask for a <strong>non-drowsy</strong> option because you need to stay alert tomorrow.</p>
+      </details>
+      <details class="hint-toggle">
+        <summary>💬 Show question hint</summary>
+        <p class="hint-text">"Do you have anything non-drowsy? I need to work tomorrow."</p>
+      </details>
+    </section>
+
+    <section class="card step-card">
+      <h2>6) Ask how to take it</h2>
+      <p class="prompt"><strong>Your task:</strong> Ask how to take the medicine properly <span class="task-vocab">trước/sau khi ăn</span>.</p>
+      <details class="hint-toggle">
+        <summary>💡 Show hint phrase</summary>
+        <p class="hint-text">Check whether you should take it before food, after food, or with water.</p>
+      </details>
+      <details class="hint-toggle">
+        <summary>💬 Show question hint</summary>
+        <p class="hint-text">"Should I take it before or after food?"</p>
+      </details>
+    </section>
+
+    <section class="card step-card">
+      <h2>7) Ask safety questions</h2>
+      <p class="prompt"><strong>Your task:</strong> Before buying, ask about <span class="task-vocab">dị ứng, tác dụng phụ</span> and whether it is safe with your current medicine.</p>
+      <details class="hint-toggle">
+        <summary>💡 Show hint phrase</summary>
+        <p class="hint-text">Mention any allergies first, then ask about side effects and whether it is safe with what you are already taking.</p>
+      </details>
+      <details class="hint-toggle">
+        <summary>💬 Show question hint</summary>
+        <p class="hint-text">"Are there any side effects, and is it safe with the medicine I am taking now?"</p>
+      </details>
+    </section>
+
+    <section class="card step-card">
+      <h2>8) Confirm dosage</h2>
+      <p class="prompt"><strong>Your task:</strong> Confirm the dosage clearly <span class="task-vocab">liều dùng</span>.</p>
+      <details class="hint-toggle">
+        <summary>💡 Show hint phrase</summary>
+        <p class="hint-text">Repeat the dosage clearly to confirm how many tablets to take, how often to take them, and the daily maximum.</p>
+      </details>
+      <details class="hint-toggle">
+        <summary>💬 Show question hint</summary>
+        <p class="hint-text">"So how many tablets should I take, and what is the maximum in one day?"</p>
+      </details>
+    </section>
+
+    <section class="card step-card">
+      <h2>9) Ask when to come back</h2>
+      <p class="prompt"><strong>Your task:</strong> Ask what to do if you do not feel better <span class="task-vocab">nếu không đỡ</span>.</p>
+      <details class="hint-toggle">
+        <summary>💡 Show hint phrase</summary>
+        <p class="hint-text">Ask when you should come back or see a doctor if your symptoms get worse or do not improve.</p>
+      </details>
+      <details class="hint-toggle">
+        <summary>💬 Show question hint</summary>
+        <p class="hint-text">"If I do not feel better in a few days, should I come back or see a doctor?"</p>
+      </details>
+    </section>
+
+    <section class="card step-card">
+      <h2>10) Payment and closing</h2>
+      <p class="prompt"><strong>Your task:</strong> Ask to pay by card, ask store closing time, and end politely <span class="task-vocab">thanh toán thẻ, giờ đóng cửa</span>.</p>
+      <details class="hint-toggle">
+        <summary>💡 Show hint phrase</summary>
+        <p class="hint-text">Ask if you can pay by card, ask what time the store closes, and finish politely with thanks.</p>
+      </details>
+      <details class="hint-toggle">
+        <summary>💬 Show question hint</summary>
+        <p class="hint-text">"Can I pay by card, and what time do you close today?"</p>
+      </details>
+    </section>
+
+    <div class="button-group">
+      <button class="btn ghost" id="studentPrev">← Previous</button>
+      <button class="btn student" id="studentNext">Next →</button>
+    </div>
+  </main>
+
+  <script>
+    const studentCards = [...document.querySelectorAll('.step-card')];
+    const studentStep = document.getElementById('studentStep');
+    const studentPrev = document.getElementById('studentPrev');
+    const studentNext = document.getElementById('studentNext');
+    let studentIndex = 0;
+    let studentFinished = false;
+
+    function renderStudentCard() {
+      studentCards.forEach((card, i) => card.classList.toggle('active', i === studentIndex));
+      studentStep.textContent = `Card ${studentIndex + 1} of ${studentCards.length}`;
+      studentPrev.disabled = studentIndex === 0;
+
+      if (studentIndex === studentCards.length - 1) {
+        studentNext.textContent = studentFinished ? 'Finished ✅' : 'Finish ✅';
+        studentNext.disabled = studentFinished;
+      } else {
+        studentNext.textContent = 'Next →';
+        studentNext.disabled = false;
+      }
+    }
+
+    studentPrev.addEventListener('click', () => {
+      if (studentIndex > 0) {
+        studentIndex -= 1;
+        studentFinished = false;
+        renderStudentCard();
+      }
+    });
+
+    studentNext.addEventListener('click', () => {
+      if (studentIndex < studentCards.length - 1) {
+        studentIndex += 1;
+        renderStudentCard();
+      } else {
+        localStorage.setItem('scenario6-pharmacy-done', 'true');
+        studentFinished = true;
+        renderStudentCard();
+      }
+    });
+
+    renderStudentCard();
+  </script>
+</body>
+</html>

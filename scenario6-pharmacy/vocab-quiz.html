@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vocab Quiz - At the Pharmacy</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="top-bar">
+    <a href="student.html" class="back-link">← Student Page</a>
+    🧠 VOCAB QUIZ
+  </div>
+
+  <main class="container">
+    <div class="role-badge student-badge">Pharmacy Vocabulary Practice</div>
+    <h1>📝 Click and Match</h1>
+    <p class="subtitle">Click one word in English, then click the correct Vietnamese meaning.</p>
+
+    <section class="info-card">
+      <div class="match-grid interactive-match-grid">
+        <div class="match-column">
+          <h3>Column 1: English</h3>
+          <button type="button" class="match-card match-option" data-group="english" data-key="fever"><span class="flash-emoji">🤒</span> Fever</button>
+          <button type="button" class="match-card match-option" data-group="english" data-key="sore-throat"><span class="flash-emoji">🫁</span> Sore throat</button>
+          <button type="button" class="match-card match-option" data-group="english" data-key="tablet"><span class="flash-emoji">💊</span> Tablet</button>
+          <button type="button" class="match-card match-option" data-group="english" data-key="drowsy"><span class="flash-emoji">😴</span> Drowsy</button>
+          <button type="button" class="match-card match-option" data-group="english" data-key="side-effects"><span class="flash-emoji">⚠️</span> Side effects</button>
+          <button type="button" class="match-card match-option" data-group="english" data-key="dosage"><span class="flash-emoji">🧾</span> Dosage</button>
+          <button type="button" class="match-card match-option" data-group="english" data-key="allergy"><span class="flash-emoji">🧬</span> Allergy</button>
+          <button type="button" class="match-card match-option" data-group="english" data-key="eftpos"><span class="flash-emoji">💳</span> EFTPOS</button>
+        </div>
+
+        <div class="match-column">
+          <h3>Column 2: Vietnamese</h3>
+          <button type="button" class="match-card match-option" data-group="vietnamese" data-key="eftpos">Thanh toán thẻ</button>
+          <button type="button" class="match-card match-option" data-group="vietnamese" data-key="tablet">Viên thuốc</button>
+          <button type="button" class="match-card match-option" data-group="vietnamese" data-key="side-effects">Tác dụng phụ</button>
+          <button type="button" class="match-card match-option" data-group="vietnamese" data-key="sore-throat">Đau họng</button>
+          <button type="button" class="match-card match-option" data-group="vietnamese" data-key="dosage">Liều dùng</button>
+          <button type="button" class="match-card match-option" data-group="vietnamese" data-key="allergy">Dị ứng</button>
+          <button type="button" class="match-card match-option" data-group="vietnamese" data-key="fever">Sốt</button>
+          <button type="button" class="match-card match-option" data-group="vietnamese" data-key="drowsy">Buồn ngủ</button>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button type="button" class="btn student" id="resetMatchBtn">Reset</button>
+        <a href="index.html" class="btn ghost">Back to Scenario</a>
+      </div>
+
+      <div id="quizResult" class="quiz-result" aria-live="polite">Matches: 0/8</div>
+    </section>
+  </main>
+
+  <script>
+    const options = [...document.querySelectorAll('.match-option')];
+    const result = document.getElementById('quizResult');
+    const resetBtn = document.getElementById('resetMatchBtn');
+
+    let selectedEnglish = null;
+    let selectedVietnamese = null;
+    let matchedCount = 0;
+
+    function updateResult(message) {
+      result.textContent = message;
+    }
+
+    function clearSelection(group) {
+      const selected = group === 'english' ? selectedEnglish : selectedVietnamese;
+      if (selected) {
+        selected.classList.remove('selected');
+      }
+
+      if (group === 'english') {
+        selectedEnglish = null;
+      } else {
+        selectedVietnamese = null;
+      }
+    }
+
+    function tryMatch() {
+      if (!selectedEnglish || !selectedVietnamese) return;
+
+      const isCorrect = selectedEnglish.dataset.key === selectedVietnamese.dataset.key;
+
+      if (isCorrect) {
+        selectedEnglish.classList.remove('selected');
+        selectedVietnamese.classList.remove('selected');
+        selectedEnglish.classList.add('matched');
+        selectedVietnamese.classList.add('matched');
+        selectedEnglish.disabled = true;
+        selectedVietnamese.disabled = true;
+        matchedCount += 1;
+
+        if (matchedCount === 8) {
+          updateResult('Matches: 8/8. Excellent work!');
+        } else {
+          updateResult(`Correct match. Matches: ${matchedCount}/8`);
+        }
+      } else {
+        const wrongEnglish = selectedEnglish;
+        const wrongVietnamese = selectedVietnamese;
+
+        wrongEnglish.classList.add('wrong');
+        wrongVietnamese.classList.add('wrong');
+        updateResult(`Not a match yet. Matches: ${matchedCount}/8`);
+
+        setTimeout(() => {
+          wrongEnglish.classList.remove('wrong', 'selected');
+          wrongVietnamese.classList.remove('wrong', 'selected');
+        }, 500);
+      }
+
+      selectedEnglish = null;
+      selectedVietnamese = null;
+    }
+
+    options.forEach((option) => {
+      option.addEventListener('click', () => {
+        if (option.disabled) return;
+
+        const group = option.dataset.group;
+        clearSelection(group);
+        option.classList.add('selected');
+
+        if (group === 'english') {
+          selectedEnglish = option;
+        } else {
+          selectedVietnamese = option;
+        }
+
+        tryMatch();
+      });
+    });
+
+    resetBtn.addEventListener('click', () => {
+      selectedEnglish = null;
+      selectedVietnamese = null;
+      matchedCount = 0;
+
+      options.forEach((option) => {
+        option.disabled = false;
+        option.classList.remove('selected', 'matched', 'wrong');
+      });
+
+      updateResult('Matches: 0/8');
+    });
+  </script>
+</body>
+</html>

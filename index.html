@@ -330,7 +330,7 @@
         <div class="progress-bar-bg">
           <div class="progress-bar-fill" id="progressFill"></div>
         </div>
-        <div class="progress-label" id="progressLabel">0 of 5 completed</div>
+        <div class="progress-label" id="progressLabel">0 of 6 completed</div>
       </div>
     </div>
 
@@ -440,15 +440,16 @@
 
   <script>
     // Simple progress tracker using localStorage
-    const total = 5;
+    const total = 6;
     let completed = 0;
 
     const scenarios = [
       "scenario1-taxi",
       "scenario2-simcard",
-      "scenario3-accommodation",
-      "scenario4-supermarket",
-      "scenario5-pharmacy"
+      "scenario3-inthetaxi",
+      "scenario4-accommodation",
+      "scenario5-grocery",
+      "scenario6-pharmacy"
     ];
 
     scenarios.forEach(s => {

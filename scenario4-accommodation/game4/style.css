@@ -1,0 +1,386 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+/* Container */
+.container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Titles */
+h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    text-align: center;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+/* Card (Duolingo style) */
+.card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 2px solid #e5e5e5;
+    box-shadow: 0 4px 0 #e5e5e5;
+    transition: 0.15s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+/* Highlight card */
+.highlight {
+    background: #e9f9ee;
+    border-color: #58cc02;
+    box-shadow: 0 4px 0 #58cc02;
+}
+
+/* Lists */
+ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* Buttons (Duolingo style) */
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn {
+    flex: 1;
+    text-align: center;
+    padding: 14px;
+    border-radius: 16px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    border-bottom: 4px solid rgba(0,0,0,0.15);
+    transition: 0.1s ease;
+}
+
+/* Student button */
+.student {
+    background-color: #58cc02;
+    color: white;
+    border-bottom: 4px solid #3a9e01;
+}
+
+/* Teacher button */
+.teacher {
+    background-color: #1cb0f6;
+    color: white;
+    border-bottom: 4px solid #0b8ecf;
+}
+
+/* Button press effect */
+.btn:active {
+    transform: translateY(3px);
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+/* Small badge style (optional later) */
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    background: #eee;
+    margin-right: 5px;
+}
+
+/* Situation cards */
+.situation {
+    cursor: pointer;
+    border: 2px solid #e5e5e5;
+}
+
+/* Hover effect */
+.situation:hover {
+    border-color: #58cc02;
+    box-shadow: 0 6px 0 #58cc02;
+    transform: translateY(-2px);
+}
+
+/* Active (clicked) */
+.situation.active {
+    border-color: #58cc02;
+    background: #e9f9ee;
+}
+
+
+/* Fixed top bar */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1000;
+     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+    border-bottom: 2px solid #e5e5e5;
+}
+
+/* push content down so it doesn't hide */
+.container {
+    margin-top: 80px;
+}
+
+/* Progress bar */
+.progress {
+    flex: 1;
+    height: 14px;
+    background: #e5e5e5;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #58cc02;
+    transition: width 0.3s ease;
+}
+
+/* XP text */
+.xp {
+    font-weight: bold;
+    color: #58cc02;
+    white-space: nowrap;
+}
+/* Situation grid */
+.situation {
+    cursor: pointer;
+    border: 2px solid #e5e5e5;
+    transition: 0.15s;
+}
+
+/* Hover = alive */
+.situation:hover {
+    border-color: #58cc02;
+    box-shadow: 0 6px 0 #58cc02;
+    transform: translateY(-3px) scale(1.01);
+}
+
+/* Active = selected */
+.situation.active {
+    border-color: #58cc02;
+    background: #e9f9ee;
+    box-shadow: 0 6px 0 #58cc02;
+}
+
+/* Completed state */
+.situation.done {
+    background: #d7f9d2;
+    border-color: #3a9e01;
+    opacity: 0.9;
+}
+
+.random-btn {
+    width: 100%;
+    background: #ff9600;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 4px solid #cc7a00;
+}
+
+.random-btn:active {
+    transform: translateY(2px);
+}
+
+.timer {
+    position: fixed;
+    top: 60px;
+    right: 15px;
+    background: #ff4b4b;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+.aussie {
+    border-color: #1cb0f6;
+    box-shadow: 0 4px 0 #1cb0f6;
+    background: #eef8ff;
+}
+
+.phrase-group {
+    margin-bottom: 12px;
+}
+
+.phrase {
+    background: white;
+    padding: 8px 12px;
+    border-radius: 10px;
+    margin: 6px 0;
+    border: 1px solid #e5e5e5;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.phrase:hover {
+    background: #dff3ff;
+    border-color: #1cb0f6;
+}
+
+.floating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1cb0f6;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+.popup {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    width: 260px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.popup p {
+    background: #f7f7f7;
+    padding: 8px;
+    border-radius: 10px;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.hint {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #666;
+    background: #fff7cc;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid #f1e3a0;
+}
+
+
+/* OPTION CONTAINER */
+.options {
+    margin-top: 15px;
+}
+
+/* OPTION BUTTON (MAIN) */
+.option {
+    display: block;
+    width: 100%;
+    padding: 14px 16px;
+    margin: 8px 0;
+
+    border-radius: 16px;
+    border: 2px solid #e5e5e5;
+
+    background: white;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: left;
+
+    cursor: pointer;
+
+    /* Duolingo depth */
+    box-shadow: 0 4px 0 #e5e5e5;
+
+    transition: all 0.12s ease;
+}
+
+/* HOVER (alive feeling) */
+.option:hover {
+    border-color: #1cb0f6;
+    box-shadow: 0 6px 0 #1cb0f6;
+    transform: translateY(-2px);
+}
+
+/* CLICK PRESS */
+.option:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #ccc;
+}
+
+/* CORRECT */
+.option.correct {
+    background: #d7f9d2;
+    border-color: #58cc02;
+    box-shadow: 0 4px 0 #3a9e01;
+}
+
+/* WRONG */
+.option.wrong {
+    background: #ffd6d6;
+    border-color: #ff4b4b;
+    box-shadow: 0 4px 0 #c0392b;
+}
+
+/* ADD LETTER LABEL (A B C D) */
+.option::before {
+    content: attr(data-label);
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+
+    text-align: center;
+    font-weight: bold;
+    margin-right: 10px;
+
+    border-radius: 50%;
+    background: #f0f0f0;
+}
+.option.correct {
+    animation: pop 0.2s ease;
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}

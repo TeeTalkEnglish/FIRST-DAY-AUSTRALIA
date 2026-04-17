@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game 4 - Student</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+    <a href="index.html" class="back-btn">← Back</a>
+
+    <div class="progress">
+        <div class="progress-fill"></div>
+    </div>
+
+    <div class="xp">⭐ 0 XP</div>
+</div>
+
+<!-- TIMER -->
+<div class="timer">⏱ 30s</div>
+
+<!-- PHRASE BUTTON -->
+<button class="floating-btn" onclick="togglePhrases()">🇦🇺 Phrases</button>
+
+<!-- PHRASE POPUP -->
+<div id="phrasePopup" class="popup hidden">
+    <h3>🇦🇺 Quick Phrases</h3>
+
+    <p onclick="speak(this.textContent)">Hey mate, there’s a problem with the tap.</p>
+    <p onclick="speak(this.textContent)">It’s not working properly.</p>
+    <p onclick="speak(this.textContent)">I really need this fixed today.</p>
+    <p onclick="speak(this.textContent)">Can you come and have a look?</p>
+    <p onclick="speak(this.textContent)">What should I do for now?</p>
+
+    <button onclick="togglePhrases()">Close</button>
+</div>
+
+<div class="container">
+
+    <h1>🔧 Problem Report</h1>
+    <h2>You are Mai</h2>
+
+    <!-- RANDOM BUTTON -->
+    <div class="card">
+        <button class="random-btn">🎲 Random Situation</button>
+    </div>
+
+    <!-- SITUATIONS -->
+
+    <!-- 1 -->
+    <div class="card situation">
+        <h3>1. No Hot Water 🚿</h3>
+        <p class="hint">💡 Ask: No hot water. When did it stop? I need to shower.</p>
+        <div class="options" data-answer="1">
+            <button class="option">Dave will come tonight</button>
+            <button class="option">Dave will fix it next week</button>
+            <button class="option">Do nothing and wait</button>
+            <button class="option">Use cold water</button>
+        </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="card situation">
+        <h3>2. Leaking Tap 🚰</h3>
+        <p class="hint">💡 Ask: Tap leaking. Since when? Getting worse?</p>
+        <div class="options" data-answer="3">
+            <button class="option">Ignore the problem</button>
+            <button class="option">Turn off water and wait</button>
+            <button class="option">Dave will call a plumber</button>
+            <button class="option">Buy a new tap</button>
+        </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="card situation">
+        <h3>3. Broken Door Lock 🔒</h3>
+        <p class="hint">💡 Ask: Door cannot lock. Is it safe? Fix today?</p>
+        <div class="options" data-answer="1">
+            <button class="option">Dave will fix the lock today</button>
+            <button class="option">Leave it open</button>
+            <button class="option">Ignore it</button>
+            <button class="option">Sleep outside</button>
+        </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="card situation">
+        <h3>4. Power Out ⚡</h3>
+        <p class="hint">💡 Ask: No electricity. Which room? When did it stop?</p>
+        <div class="options" data-answer="2">
+            <button class="option">Use candles only</button>
+            <button class="option">Dave will check the electricity</button>
+            <button class="option">Do nothing</button>
+            <button class="option">Go to sleep</button>
+        </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="card situation">
+        <h3>5. Broken Bed 🛏️</h3>
+        <p class="hint">💡 Ask: Bed broken. Can’t sleep. Can you fix it?</p>
+        <div class="options" data-answer="4">
+            <button class="option">Sleep on floor</button>
+            <button class="option">Ignore it</button>
+            <button class="option">Fix it yourself</button>
+            <button class="option">Dave will fix or replace the bed</button>
+        </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="card situation">
+        <h3>6. Fridge Not Working 🧊</h3>
+        <p class="hint">💡 Ask: Fridge not cold. Food problem. Since when?</p>
+        <div class="options" data-answer="1">
+            <button class="option">Dave will repair or replace the fridge</button>
+            <button class="option">Throw food away</button>
+            <button class="option">Eat everything</button>
+            <button class="option">Ignore it</button>
+        </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="card situation">
+        <h3>7. Toilet Blocked 🚽</h3>
+        <p class="hint">💡 Ask: Toilet blocked. Cannot use. Need urgent help.</p>
+        <div class="options" data-answer="3">
+            <button class="option">Do nothing</button>
+            <button class="option">Use another house</button>
+            <button class="option">Dave will call a plumber</button>
+            <button class="option">Stop using it</button>
+        </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="card situation">
+        <h3>8. No Water 🚱</h3>
+        <p class="hint">💡 Ask: No water. Whole house? When did it stop?</p>
+        <div class="options" data-answer="2">
+            <button class="option">Wait for rain</button>
+            <button class="option">Dave will check water supply</button>
+            <button class="option">Buy water daily</button>
+            <button class="option">Ignore it</button>
+        </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="card situation">
+        <h3>9. Broken Window 🪟</h3>
+        <p class="hint">💡 Ask: Window broken. Cold air. Can you fix it?</p>
+        <div class="options" data-answer="4">
+            <button class="option">Leave it open</button>
+            <button class="option">Cover with paper</button>
+            <button class="option">Ignore cold</button>
+            <button class="option">Dave will fix or replace window</button>
+        </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="card situation">
+        <h3>10. Washing Machine 🧺</h3>
+        <p class="hint">💡 Ask: Machine not working. Need to wash clothes.</p>
+        <div class="options" data-answer="1">
+            <button class="option">Dave will repair washing machine</button>
+            <button class="option">Wash by hand forever</button>
+            <button class="option">Throw clothes away</button>
+            <button class="option">Ignore it</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const situations = document.querySelectorAll('.situation');
+const progressFill = document.querySelector('.progress-fill');
+const xpText = document.querySelector('.xp');
+const randomBtn = document.querySelector('.random-btn');
+
+let completed = 0;
+let time = 30;
+let countdown;
+
+// SOUND
+function speak(text) {
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang === "en-AU") || voices[0];
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.voice = voice;
+    speech.rate = 0.9;
+    speechSynthesis.speak(speech);
+}
+
+// TIMER
+function startTimer() {
+    clearInterval(countdown);
+    time = 30;
+    const timerDisplay = document.querySelector('.timer');
+
+    countdown = setInterval(() => {
+        time--;
+        timerDisplay.textContent = "⏱ " + time + "s";
+
+        if (time <= 0) {
+            clearInterval(countdown);
+            alert("Time’s up!");
+        }
+    }, 1000);
+}
+
+// OPTION CLICK
+document.querySelectorAll('.options').forEach(group => {
+    const correct = group.getAttribute('data-answer');
+    const buttons = group.querySelectorAll('.option');
+
+    buttons.forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+
+            buttons.forEach(b => b.classList.remove('correct','wrong'));
+
+            if ((index + 1) == correct) {
+                btn.classList.add('correct');
+                speak("Good job");
+
+                completed++;
+                xpText.textContent = "⭐ " + (completed * 10) + " XP";
+
+                const percent = (completed / 10) * 100;
+                progressFill.style.width = percent + "%";
+            } else {
+                btn.classList.add('wrong');
+                speak("Try again");
+            }
+
+            startTimer();
+        });
+    });
+});
+
+// RANDOM
+randomBtn.addEventListener('click', () => {
+    const randomIndex = Math.floor(Math.random() * situations.length);
+    situations[randomIndex].scrollIntoView({ behavior: "smooth" });
+});
+
+// POPUP
+function togglePhrases() {
+    document.getElementById("phrasePopup").classList.toggle("hidden");
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game 5 - HARD MODE</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+.mode {
+    background: #ffe0e0;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.card {
+    margin-bottom: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
+.reveal-btn {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    background: #1cb0f6;
+    color: white;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">
+    <a href="index.html" class="back-btn">← Back</a>
+</div>
+
+<div class="container">
+
+<h1>🔥 HARD MODE: Survival Simulation</h1>
+
+<div class="mode">
+Rules:
+<br>• Speak fast
+<br>• Use slang
+<br>• Do NOT repeat unless asked
+<br>• Student must understand meaning, not words
+</div>
+
+<!-- 1 -->
+<div class="card">
+<h3>1. Notice</h3>
+
+<p>Say ONE of these (fast, natural):</p>
+<ul>
+<li>“You gotta give me a week’s notice.”</li>
+<li>“Can’t just leave like that, need a week heads up.”</li>
+<li>“Nah, you gotta tell me earlier—like a week.”</li>
+</ul>
+
+<button class="reveal-btn">Show Meaning</button>
+<div class="hidden">Correct: Give one week notice</div>
+</div>
+
+<!-- 2 -->
+<div class="card">
+<h3>2. Bond</h3>
+
+<p>Say ONE:</p>
+<ul>
+<li>“You’ll get it back in a couple days.”</li>
+<li>“Takes a few days, I’ll send it through.”</li>
+<li>“Yeah nah, bond comes back after a few days.”</li>
+</ul>
+
+<button class="reveal-btn">Show Meaning</button>
+<div class="hidden">Correct: Bond returned in a few days</div>
+</div>
+
+<!-- 3 -->
+<div class="card">
+<h3>3. Cleaning</h3>
+
+<p>Say ONE:</p>
+<ul>
+<li>“Make sure it’s clean before you go.”</li>
+<li>“Gotta clean the place up first.”</li>
+<li>“Leave it tidy, yeah?”</li>
+</ul>
+
+<button class="reveal-btn">Show Meaning</button>
+<div class="hidden">Correct: Must clean before leaving</div>
+</div>
+
+<!-- 4 -->
+<div class="card">
+<h3>4. Inspection</h3>
+
+<p>Say ONE:</p>
+<ul>
+<li>“I’ll swing by tomorrow.”</li>
+<li>“I’ll come have a look tomorrow.”</li>
+<li>“I’ll check it out tomorrow.”</li>
+</ul>
+
+<button class="reveal-btn">Show Meaning</button>
+<div class="hidden">Correct: Inspection tomorrow</div>
+</div>
+
+<!-- 5 -->
+<div class="card">
+<h3>5. Key</h3>
+
+<p>Say ONE:</p>
+<ul>
+<li>“Just leave the key on the table.”</li>
+<li>“Leave it inside.”</li>
+<li>“Chuck the key on the table.”</li>
+</ul>
+
+<button class="reveal-btn">Show Meaning</button>
+<div class="hidden">Correct: Leave key on table</div>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.reveal-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const hidden = btn.nextElementSibling;
+        hidden.classList.toggle('hidden');
+    });
+});
+</script>
+
+</body>
+</html>

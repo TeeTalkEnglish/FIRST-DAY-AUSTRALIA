@@ -1,0 +1,206 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    margin: 0;
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+/* TOP BAR */
+.top-bar {
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+}
+
+.back-btn {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.progress {
+    flex: 1;
+    height: 10px;
+    background: #eee;
+    border-radius: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #58cc02;
+    border-radius: 10px;
+}
+
+.xp {
+    font-size: 14px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+/* MINI HINT */
+.mini-hint {
+    font-size: 12px;
+    color: #888;
+}
+
+/* HINT */
+.hint-wrap {
+    margin: 8px 0;
+}
+
+.hint-pill {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #fff7cc;
+    border: 1px solid #f1e3a0;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.hint-bubble {
+    display: none;
+    margin-top: 6px;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    font-size: 13px;
+}
+
+.hint-wrap.active .hint-bubble {
+    display: block;
+}
+
+/* OPTIONS */
+.option {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin: 8px 0;
+    border-radius: 12px;
+    border: 2px solid #e5e5e5;
+    background: white;
+    cursor: pointer;
+    text-align: left;
+    transition: 0.15s;
+}
+
+.option:hover {
+    border-color: #1cb0f6;
+}
+
+.option.correct {
+    background: #d7f9d2;
+    border-color: #58cc02;
+}
+
+.option.wrong {
+    background: #ffd6d6;
+    border-color: #ff4b4b;
+}
+
+
+/* SUBTITLE */
+.subtitle {
+    text-align: center;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+/* GAME CARD */
+.game-card {
+    padding: 20px;
+}
+
+/* HEADER ROW */
+.game-header {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* NUMBER CIRCLE */
+.game-number {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+    color: white;
+    font-size: 18px;
+}
+
+.purple {
+    background: #a560ff;
+}
+
+/* BUTTON GROUP */
+.buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+/* BUTTON BASE */
+.btn {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+
+    transition: 0.15s;
+}
+
+/* PRIMARY */
+.btn.primary {
+    background: #58cc02;
+    color: white;
+}
+
+/* SECONDARY */
+.btn.secondary {
+    background: #1cb0f6;
+    color: white;
+}
+
+/* HOVER EFFECT */
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* INFO CARD */
+.info ul {
+    padding-left: 18px;
+}
+
+.info li {
+    margin-bottom: 6px;
+}

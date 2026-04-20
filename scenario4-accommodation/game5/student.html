@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game 5 - Survival Mode</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="top-bar">
+<a href="index.html" class="back-btn">← Back</a>
+
+<div class="progress">
+<div class="progress-fill"></div>
+</div>
+
+<div class="xp">⭐ 0 XP</div>
+</div>
+
+<div class="container">
+
+<h1>🔥 Survival Mode</h1>
+<h2>Speak → Listen → Choose</h2>
+
+<!-- 1 -->
+<div class="card">
+<h3>1. Give Notice 📅</h3>
+<p class="mini-hint">You are moving out next week.</p>
+
+<div class="hint-wrap">
+<button class="hint-pill">💡 Need help</button>
+<div class="hint-bubble">
+Hi Dave, I’m moving out next week.
+</div>
+</div>
+
+<div class="options" data-answer="1">
+<button class="option">Yeah nah, you gotta give me a week’s notice.</button>
+<button class="option">Just leave whenever you want.</button>
+<button class="option">Don’t worry about telling me.</button>
+<button class="option">Stay longer.</button>
+</div>
+</div>
+
+<!-- 2 -->
+<div class="card">
+<h3>2. Bond 💰</h3>
+<p class="mini-hint">You want your money back.</p>
+
+<div class="hint-wrap">
+<button class="hint-pill">💡 Need help</button>
+<div class="hint-bubble">
+When will I get my bond back?
+</div>
+</div>
+
+<div class="options" data-answer="3">
+<button class="option">You won’t get it back.</button>
+<button class="option">Give me more money first.</button>
+<button class="option">Takes a couple days, I’ll send it through.</button>
+<button class="option">Forget about it.</button>
+</div>
+</div>
+
+<!-- 3 -->
+<div class="card">
+<h3>3. Cleaning 🧼</h3>
+<p class="mini-hint">You are about to leave your room.</p>
+
+<div class="hint-wrap">
+<button class="hint-pill">💡 Need help</button>
+<div class="hint-bubble">
+Do I need to clean the room?
+</div>
+</div>
+
+<div class="options" data-answer="1">
+<button class="option">Make sure it’s clean before you go.</button>
+<button class="option">Leave it messy.</button>
+<button class="option">Doesn’t matter.</button>
+<button class="option">Break stuff.</button>
+</div>
+</div>
+
+<!-- 4 -->
+<div class="card">
+<h3>4. Inspection 🔍</h3>
+<p class="mini-hint">You want him to check the room.</p>
+
+<div class="hint-wrap">
+<button class="hint-pill">💡 Need help</button>
+<div class="hint-bubble">
+When will you check the room?
+</div>
+</div>
+
+<div class="options" data-answer="4">
+<button class="option">Not coming.</button>
+<button class="option">No need.</button>
+<button class="option">Ignore it.</button>
+<button class="option">I’ll swing by tomorrow.</button>
+</div>
+</div>
+
+<!-- 5 -->
+<div class="card">
+<h3>5. Key 🔑</h3>
+<p class="mini-hint">You still have the house key.</p>
+
+<div class="hint-wrap">
+<button class="hint-pill">💡 Need help</button>
+<div class="hint-bubble">
+Where should I return the key?
+</div>
+</div>
+
+<div class="options" data-answer="2">
+<button class="option">Keep it.</button>
+<button class="option">Just chuck it on the table.</button>
+<button class="option">Throw it away.</button>
+<button class="option">Ignore it.</button>
+</div>
+</div>
+
+</div>
+
+<script>
+const groups = document.querySelectorAll('.options');
+const progressFill = document.querySelector('.progress-fill');
+const xpText = document.querySelector('.xp');
+
+let completed = 0;
+
+groups.forEach(group => {
+const correct = group.getAttribute('data-answer');
+const buttons = group.querySelectorAll('.option');
+
+buttons.forEach((btn, index) => {
+btn.addEventListener('click', () => {
+
+buttons.forEach(b => b.classList.remove('correct','wrong'));
+
+if ((index + 1) == correct) {
+btn.classList.add('correct');
+completed++;
+
+xpText.textContent = "⭐ " + (completed * 10) + " XP";
+progressFill.style.width = (completed / 5) * 100 + "%";
+
+} else {
+btn.classList.add('wrong');
+}
+});
+});
+});
+
+document.querySelectorAll('.hint-pill').forEach(btn => {
+btn.addEventListener('click', () => {
+btn.parentElement.classList.toggle('active');
+});
+});
+</script>
+
+</body>
+</html>

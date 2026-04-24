@@ -37,6 +37,121 @@
       gap: 10px;
       font-size: 1.3rem;
     }
+    .directions-panel {
+      background: linear-gradient(135deg, #fff8e1, #f1f8e9);
+      border: 2px solid #dce775;
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    .directions-panel.hidden { display: none; }
+    .directions-panel h3 {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .directions-layout {
+      display: grid;
+      grid-template-columns: minmax(220px, 280px) 1fr;
+      gap: 18px;
+      margin-top: 16px;
+    }
+    .section-bank {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+    .direction-token {
+      border: 2px solid #d9d9d9;
+      background: white;
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition);
+      font: inherit;
+    }
+    .direction-token.selected {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.12);
+    }
+    .direction-token.correct {
+      border-color: var(--green);
+      background: var(--light-green);
+      color: var(--dark-green);
+    }
+    .direction-token .token-name {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .direction-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .direction-slot {
+      min-height: 130px;
+      border: 2px dashed #bdbdbd;
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.7);
+      padding: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .direction-slot.selected-target,
+    .direction-slot:hover {
+      border-color: var(--gold);
+      background: #fffde7;
+    }
+    .direction-slot.correct {
+      border-style: solid;
+      border-color: var(--green);
+      background: var(--light-green);
+    }
+    .direction-slot.wrong {
+      border-style: solid;
+      border-color: var(--red);
+      background: var(--light-red);
+    }
+    .direction-slot-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--mid-grey);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .direction-slot-hint {
+      font-size: 0.8rem;
+      color: var(--mid-grey);
+      margin-bottom: 10px;
+    }
+    .direction-slot-section {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .direction-slot-status {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .section-card.locked {
+      opacity: 0.7;
+      border-style: dashed;
+    }
+    .section-card.locked .lock-note {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: var(--red);
+      font-weight: 600;
+    }
+    @media (max-width: 900px) {
+      .directions-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .direction-grid { grid-template-columns: 1fr; }
+    }
     .dialogue-progress {
       display: flex;
       gap: 6px;
@@ -219,6 +334,7 @@
             <h2>🏪 Store Sections</h2>
             <span style="color: var(--mid-grey); font-size: 0.9rem;">Click a section to browse items</span>
           </div>
+          <div class="directions-panel hidden" id="storeDirectionsPanel"></div>
           <div class="store-map" id="storeMap"></div>
           <div class="tip-box">
             <span class="tip-icon">🛒</span>
@@ -240,6 +356,73 @@
           <div id="sectionTip"></div>
           <div class="product-grid" id="productGrid"></div>
           <div id="sectionVocab" style="margin-top: 16px;"></div>
+        </div>
+
+        <!-- SPEAKING PRACTICE (Teacher-led dialogue) -->
+        <div class="screen" id="screen-speaking">
+          <div class="dialogue-box" style="max-width: 600px; margin: 0 auto; box-shadow: var(--shadow);">
+            <div class="dialogue-header" id="speakingHeader">
+              <span class="speaker-avatar" id="speakingAvatar">👨‍🍳</span>
+              <div>
+                <div class="speaker-name" id="speakingName">Butcher Dave</div>
+                <div class="speaker-role" id="speakingRole">Meat Counter Staff</div>
+              </div>
+              <div style="margin-left:auto;background:var(--green);color:white;padding:4px 12px;border-radius:12px;font-size:0.75rem;font-weight:700;">
+                🎤 SPEAKING PRACTICE
+              </div>
+            </div>
+            <div class="dialogue-body">
+              <div class="dialogue-progress" id="speakingProgress"></div>
+              
+              <!-- Teacher speaks prompt -->
+              <div id="speakingPrompt">
+                <div style="background:#e8f5e9;border:2px solid var(--green);border-radius:var(--radius-sm);padding:20px;text-align:center;margin-bottom:16px;">
+                  <div style="font-size:2.5rem;margin-bottom:8px;">🎤</div>
+                  <div style="font-weight:700;font-size:1.1rem;color:var(--dark-green);">Listen to your teacher!</div>
+                  <div style="font-size:0.85rem;color:var(--mid-grey);margin-top:4px;">Your teacher will speak as the store staff. Listen carefully, then respond.</div>
+                </div>
+                
+                <!-- Hint for student -->
+                <div id="speakingHint" style="background:var(--light-blue);border:1px solid #bbdefb;border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:16px;">
+                  <div style="font-weight:600;font-size:0.85rem;color:var(--blue);margin-bottom:4px;">💡 Hint</div>
+                  <div id="speakingHintText" style="font-size:0.9rem;color:var(--mid-grey);"></div>
+                </div>
+              </div>
+
+              <!-- Student response options -->
+              <div id="speakingResponseArea">
+                <div style="font-weight:600;font-size:0.9rem;margin-bottom:8px;">🗣️ What would you say?</div>
+                <div class="dialogue-options" id="speakingOptions"></div>
+              </div>
+
+              <!-- Amount input (for price questions) -->
+              <div id="speakingAmountArea" style="display:none;">
+                <div style="font-weight:600;font-size:0.9rem;margin-bottom:8px;">💰 How much did they say? Type the dollar amount:</div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                  <span style="font-size:1.5rem;font-weight:700;">$</span>
+                  <input type="number" id="speakingAmountInput" step="0.01" min="0" max="999"
+                    placeholder="0.00"
+                    style="flex:1;padding:14px;border:3px solid #e0e0e0;border-radius:var(--radius-sm);font-size:1.3rem;font-weight:700;text-align:center;">
+                </div>
+                <button class="btn btn-primary btn-block" id="speakingAmountSubmit" onclick="submitSpeakingAmount()">
+                  💰 Submit Amount
+                </button>
+              </div>
+
+              <!-- Feedback -->
+              <div id="speakingFeedback" style="display:none;margin-top:16px;">
+                <div id="speakingScoreBar" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;"></div>
+                <div id="speakingFeedbackText" style="padding:12px 16px;border-radius:var(--radius-sm);font-size:0.9rem;"></div>
+                <div id="speakingExampleAnswer" style="margin-top:12px;background:var(--light-green);border:1px solid #a5d6a7;border-radius:var(--radius-sm);padding:12px 16px;">
+                  <div style="font-weight:600;font-size:0.85rem;color:var(--dark-green);margin-bottom:4px;">💬 Good response:</div>
+                  <div id="speakingExampleText" style="font-size:0.95rem;font-weight:600;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="dialogue-footer" id="speakingFooter" style="display: none;">
+              <button class="btn btn-primary btn-sm" id="speakingNextBtn" onclick="nextSpeakingLine()">Continue →</button>
+            </div>
+          </div>
         </div>
 
                <!-- DIALOGUE (supports both normal and challenge mode) -->
@@ -471,6 +654,9 @@
       currentQuizIndex: 0,
       vocabLearned: new Set(),
       achievements: new Set(),
+      storeDirectionsMode: false,
+      sectionPlacements: {},
+      selectedDirectionSection: null,
       startTime: null,
       timerInterval: null,
       elapsedSeconds: 0
@@ -517,6 +703,15 @@
       var budget = params.get('budget') || localStorage.getItem('teacherBudget');
       if (budget) {
         STATE.budget = parseFloat(budget);
+      }
+      var speakingOnly = params.get('speakingOnly') || localStorage.getItem('teacherSpeakingOnly');
+      if (speakingOnly === 'true') {
+        GAME_DATA.settings.speakingOnly = true;
+      }
+      var storeDirections = params.get('storeDirections') || localStorage.getItem('teacherStoreDirections');
+      if (storeDirections === 'true') {
+        GAME_DATA.settings.storeDirections = true;
+        STATE.storeDirectionsMode = true;
       }
     }
 
@@ -580,6 +775,18 @@
     function startGame() {
       var listData = GAME_DATA.shoppingLists[STATE.difficulty];
       STATE.budget = listData.budget;
+      STATE.cart = [];
+      STATE.spent = 0;
+      STATE.foundItems = [];
+      STATE.sectionsVisited = [];
+      STATE.dialogueScores = { correct: 0, partial: 0, wrong: 0, total: 0, meatDone: false, helpDone: false };
+      STATE.scScore = { correct: 0, total: 0 };
+      STATE.quizScore = { correct: 0, total: 0 };
+      STATE.vocabLearned = new Set();
+      STATE.achievements = new Set();
+      STATE.sectionPlacements = {};
+      STATE.selectedDirectionSection = null;
+      STATE.storeDirectionsMode = !!GAME_DATA.settings.storeDirections;
       STATE.requiredItems = [];
       for (var i = 0; i < listData.requiredItems.length; i++) {
         var prod = findProductById(listData.requiredItems[i]);
@@ -617,6 +824,7 @@
         list: 'screen-list',
         store: 'screen-store',
         shopping: 'screen-section',
+        speaking: 'screen-speaking',
         selfCheckout: 'screen-selfCheckout',
         checkout: 'screen-checkout',
         quiz: 'screen-quiz',
@@ -629,6 +837,7 @@
 
       if (phaseId === 'list') renderListPreview();
       if (phaseId === 'store') renderStoreMap();
+      if (phaseId === 'speaking') startSpeakingPhase();
       if (phaseId === 'selfCheckout') initSelfCheckout();
       if (phaseId === 'results') renderResults();
     }
@@ -665,13 +874,172 @@
       document.getElementById('listProgress').textContent = STATE.foundItems.length;
     }
 
+    function getDirectionSlotForSection(sectionId) {
+      var slots = GAME_DATA.storeDirections && GAME_DATA.storeDirections.slots ? GAME_DATA.storeDirections.slots : [];
+      for (var i = 0; i < slots.length; i++) {
+        if (slots[i].sectionId === sectionId) return slots[i];
+      }
+      return null;
+    }
+
+    function getPlacedSlotForSection(sectionId) {
+      var slotIds = Object.keys(STATE.sectionPlacements);
+      for (var i = 0; i < slotIds.length; i++) {
+        if (STATE.sectionPlacements[slotIds[i]] === sectionId) return slotIds[i];
+      }
+      return null;
+    }
+
+    function findSectionById(sectionId) {
+      for (var i = 0; i < GAME_DATA.sections.length; i++) {
+        if (GAME_DATA.sections[i].id === sectionId) return GAME_DATA.sections[i];
+      }
+      return null;
+    }
+
+    function isSectionUnlocked(sectionId) {
+      if (!STATE.storeDirectionsMode) return true;
+      var slot = getDirectionSlotForSection(sectionId);
+      if (!slot) return true;
+      return STATE.sectionPlacements[slot.id] === sectionId;
+    }
+
+    function selectDirectionSection(sectionId) {
+      if (isSectionUnlocked(sectionId)) return;
+      STATE.selectedDirectionSection = STATE.selectedDirectionSection === sectionId ? null : sectionId;
+      renderStoreDirectionsPanel();
+    }
+
+    function clearDirectionPlacement(sectionId) {
+      var slotId = getPlacedSlotForSection(sectionId);
+      if (!slotId || isSectionUnlocked(sectionId)) return;
+      delete STATE.sectionPlacements[slotId];
+      if (STATE.selectedDirectionSection === sectionId) STATE.selectedDirectionSection = null;
+      renderStoreMap();
+    }
+
+    function placeDirectionSection(slotId) {
+      if (!STATE.selectedDirectionSection) {
+        showToast('Select a store section first, then choose its location.', 'warning');
+        return;
+      }
+
+      var currentSlot = getPlacedSlotForSection(STATE.selectedDirectionSection);
+      if (currentSlot) delete STATE.sectionPlacements[currentSlot];
+
+      var replacedSection = STATE.sectionPlacements[slotId];
+      STATE.sectionPlacements[slotId] = STATE.selectedDirectionSection;
+      STATE.selectedDirectionSection = replacedSection && !isSectionUnlocked(replacedSection) ? replacedSection : null;
+
+      var slot = null;
+      var slots = GAME_DATA.storeDirections.slots;
+      for (var i = 0; i < slots.length; i++) {
+        if (slots[i].id === slotId) {
+          slot = slots[i];
+          break;
+        }
+      }
+
+      if (slot && slot.sectionId === STATE.sectionPlacements[slotId]) {
+        var section = findSectionById(slot.sectionId);
+        showToast((section ? section.name : 'This section') + ' is in the correct place.', 'success');
+      } else {
+        showToast('That location is not correct yet. Listen to the teacher and try again.', 'warning');
+      }
+
+      renderStoreMap();
+    }
+
+    function renderStoreDirectionsPanel() {
+      var panel = document.getElementById('storeDirectionsPanel');
+      if (!STATE.storeDirectionsMode) {
+        panel.classList.add('hidden');
+        panel.innerHTML = '';
+        return;
+      }
+
+      panel.classList.remove('hidden');
+
+      var tokenHtml = '';
+      for (var i = 0; i < GAME_DATA.sections.length; i++) {
+        var section = GAME_DATA.sections[i];
+        var unlocked = isSectionUnlocked(section.id);
+        var placedSlotId = getPlacedSlotForSection(section.id);
+        var placementText = 'Not placed yet';
+        if (placedSlotId) {
+          var placedSlot = null;
+          for (var p = 0; p < GAME_DATA.storeDirections.slots.length; p++) {
+            if (GAME_DATA.storeDirections.slots[p].id === placedSlotId) {
+              placedSlot = GAME_DATA.storeDirections.slots[p];
+              break;
+            }
+          }
+          placementText = placedSlot ? 'Placed at ' + placedSlot.label : 'Placed';
+        }
+
+        tokenHtml += '<div class="direction-token';
+        if (STATE.selectedDirectionSection === section.id) tokenHtml += ' selected';
+        if (unlocked) tokenHtml += ' correct';
+        tokenHtml += '" onclick="selectDirectionSection(\'' + section.id + '\')">';
+        tokenHtml += '<span class="token-name">' + section.icon + ' ' + section.name + '</span>';
+        tokenHtml += '<span style="font-size:0.82rem;color:var(--mid-grey);">' + (unlocked ? 'Unlocked' : placementText) + '</span>';
+        if (placedSlotId && !unlocked) {
+          tokenHtml += '<div style="margin-top:8px;"><span class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearDirectionPlacement(\'' + section.id + '\')">Remove</span></div>';
+        }
+        tokenHtml += '</div>';
+      }
+
+      var slotHtml = '';
+      for (var j = 0; j < GAME_DATA.storeDirections.slots.length; j++) {
+        var slot = GAME_DATA.storeDirections.slots[j];
+        var placedSectionId = STATE.sectionPlacements[slot.id];
+        var placedSection = placedSectionId ? findSectionById(placedSectionId) : null;
+        var slotClass = 'direction-slot';
+        if (placedSectionId && placedSectionId === slot.sectionId) slotClass += ' correct';
+        if (placedSectionId && placedSectionId !== slot.sectionId) slotClass += ' wrong';
+
+        slotHtml += '<div class="' + slotClass + '" onclick="placeDirectionSection(\'' + slot.id + '\')">';
+        slotHtml += '<div class="direction-slot-label">' + slot.label + '</div>';
+        slotHtml += '<div class="direction-slot-hint">' + slot.hint + '</div>';
+        if (placedSection) {
+          slotHtml += '<div class="direction-slot-section">' + placedSection.icon + ' ' + placedSection.name + '</div>';
+          slotHtml += '<div class="direction-slot-status">';
+          slotHtml += placedSectionId === slot.sectionId ? 'Correct place. Section unlocked.' : 'Wrong place. Try another location.';
+          slotHtml += '</div>';
+        } else {
+          slotHtml += '<div class="direction-slot-section" style="color:var(--mid-grey);">Tap to place a section here</div>';
+          slotHtml += '<div class="direction-slot-status" style="color:var(--mid-grey);">Listen for clues like left, right, between, behind, and opposite.</div>';
+        }
+        slotHtml += '</div>';
+      }
+
+      var unlockedCount = 0;
+      for (var k = 0; k < GAME_DATA.sections.length; k++) {
+        if (isSectionUnlocked(GAME_DATA.sections[k].id)) unlockedCount++;
+      }
+
+      panel.innerHTML =
+        '<h3>ðŸ§­ Store Directions Challenge</h3>' +
+        '<p style="color:var(--mid-grey);margin-bottom:10px;">Your teacher gives the directions. Select a store section, then place it in the correct spot to unlock that area.</p>' +
+        '<div class="tip-box" style="margin:0;">' +
+          '<span class="tip-icon">ðŸ’¡</span>' +
+          '<div><strong>Unlocked sections:</strong> ' + unlockedCount + '/' + GAME_DATA.sections.length + '. Use words like <strong>left</strong>, <strong>right</strong>, <strong>between</strong>, <strong>behind</strong>, and <strong>opposite</strong>.</div>' +
+        '</div>' +
+        '<div class="directions-layout">' +
+          '<div><div style="font-weight:700;margin-bottom:10px;">Store sections</div><div class="section-bank">' + tokenHtml + '</div></div>' +
+          '<div><div style="font-weight:700;margin-bottom:10px;">Store layout</div><div class="direction-grid">' + slotHtml + '</div></div>' +
+        '</div>';
+    }
+
     /* --- STORE MAP --- */
     function renderStoreMap() {
+      renderStoreDirectionsPanel();
       var c = document.getElementById('storeMap');
       var html = '';
       for (var i = 0; i < GAME_DATA.sections.length; i++) {
         var s = GAME_DATA.sections[i];
         var visited = STATE.sectionsVisited.indexOf(s.id) >= 0;
+        var unlocked = isSectionUnlocked(s.id);
 
         // Count list items in section
         var sectionListCount = 0;
@@ -688,11 +1056,14 @@
           badge = '<div style="font-size:0.75rem;margin-top:6px;color:var(--green);">⭐ ' + sectionFoundCount + '/' + sectionListCount + ' list items</div>';
         }
 
-        html += '<div class="section-card ' + (visited ? 'completed' : '') + '" onclick="enterSection(\'' + s.id + '\')">';
+        html += '<div class="section-card ' + (visited ? 'completed' : '') + (unlocked ? '' : ' locked') + '" onclick="enterSection(\'' + s.id + '\')">';
         html += '<div class="section-icon">' + s.icon + '</div>';
         html += '<h4>' + s.name + '</h4>';
         html += '<p>' + s.description + '</p>';
         html += badge;
+        if (!unlocked) {
+          html += '<div class="lock-note">Unlock this section by placing it in the correct position above.</div>';
+        }
         html += '</div>';
       }
       c.innerHTML = html;
@@ -701,31 +1072,47 @@
 
     /* --- ENTER SECTION --- */
     function enterSection(sectionId) {
+      if (!isSectionUnlocked(sectionId)) {
+        showToast('This section is still locked. Place it in the correct store position first.', 'warning');
+        return;
+      }
+
       if (STATE.sectionsVisited.indexOf(sectionId) < 0) {
         STATE.sectionsVisited.push(sectionId);
       }
 
-      var section = null;
-      for (var i = 0; i < GAME_DATA.sections.length; i++) {
-        if (GAME_DATA.sections[i].id === sectionId) { section = GAME_DATA.sections[i]; break; }
-      }
+      var section = findSectionById(sectionId);
 
-      // Meat counter dialogue
+      // Meat counter dialogue - use speaking practice if enabled
       if (sectionId === 'meat' && !STATE.dialogueScores.meatDone) {
-        startDialogue('meatCounter', function() {
-          STATE.dialogueScores.meatDone = true;
-          showSection(sectionId, section);
-        });
+        if (GAME_DATA.settings.speakingOnly) {
+          startSpeakingPractice('meatCounter', function() {
+            STATE.dialogueScores.meatDone = true;
+            showSection(sectionId, section);
+          });
+        } else {
+          startDialogue('meatCounter', function() {
+            STATE.dialogueScores.meatDone = true;
+            showSection(sectionId, section);
+          });
+        }
         return;
       }
 
-      // Asking for help dialogue
+      // Asking for help dialogue - use speaking practice if enabled
       if (sectionId === 'pantry' && !STATE.dialogueScores.helpDone &&
           (STATE.difficulty === 'medium' || STATE.difficulty === 'hard')) {
-        startDialogue('askingHelp', function() {
-          STATE.dialogueScores.helpDone = true;
-          showSection(sectionId, section);
-        });
+        if (GAME_DATA.settings.speakingOnly) {
+          startSpeakingPractice('askingHelp', function() {
+            STATE.dialogueScores.helpDone = true;
+            showSection(sectionId, section);
+          });
+        } else {
+          startDialogue('askingHelp', function() {
+            STATE.dialogueScores.helpDone = true;
+            showSection(sectionId, section);
+          });
+        }
         return;
       }
 
@@ -1018,14 +1405,232 @@
     }
 
     /* =====================
+       SPEAKING PRACTICE (Teacher-led)
+       ===================== */
+    function startSpeakingPractice(dialogueKey, onComplete) {
+      // Use challengeDialogues for speaking practice
+      var dialogueData = GAME_DATA.challengeDialogues[dialogueKey];
+      if (!dialogueData || dialogueData.length === 0) {
+        // Fallback to normal dialogues if no challenge version
+        dialogueData = GAME_DATA.dialogues[dialogueKey];
+      }
+      if (!dialogueData || dialogueData.length === 0) {
+        if (onComplete) onComplete();
+        return;
+      }
+
+      STATE.currentDialogue = dialogueData;
+      STATE.currentDialogueIndex = 0;
+      STATE.onDialogueComplete = onComplete;
+      STATE.speakingMode = true;
+
+      var screens = document.querySelectorAll('.screen');
+      for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+      document.getElementById('screen-speaking').classList.add('active');
+      STATE.phase = 'speaking';
+      renderPhaseBar();
+
+      renderSpeakingLine();
+    }
+
+    function renderSpeakingLine() {
+      var line = STATE.currentDialogue[STATE.currentDialogueIndex];
+      if (!line) {
+        if (STATE.onDialogueComplete) STATE.onDialogueComplete();
+        return;
+      }
+
+      document.getElementById('speakingAvatar').textContent = line.avatar || '👨‍🍳';
+      document.getElementById('speakingName').textContent = line.speaker || 'Store Staff';
+      document.getElementById('speakingRole').textContent = line.role || 'Staff';
+
+      // Show hint
+      document.getElementById('speakingHintText').textContent = line.hint || '';
+
+      // Progress dots
+      var progHtml = '';
+      for (var i = 0; i < STATE.currentDialogue.length; i++) {
+        var cls = 'dialogue-dot';
+        if (i < STATE.currentDialogueIndex) cls += ' done';
+        if (i === STATE.currentDialogueIndex) cls += ' active';
+        progHtml += '<div class="' + cls + '"></div>';
+      }
+      document.getElementById('speakingProgress').innerHTML = progHtml;
+
+      // Reset UI
+      document.getElementById('speakingFeedback').style.display = 'none';
+      document.getElementById('speakingFooter').style.display = 'none';
+      document.getElementById('speakingAmountArea').style.display = 'none';
+      document.getElementById('speakingResponseArea').style.display = 'block';
+
+      // Check if this is an amount question
+      if (line.type === 'amount') {
+        document.getElementById('speakingResponseArea').style.display = 'none';
+        document.getElementById('speakingAmountArea').style.display = 'block';
+        document.getElementById('speakingAmountInput').value = '';
+        document.getElementById('speakingAmountInput').focus();
+        return;
+      }
+
+      // Show response options
+      var optHtml = '';
+      var options = line.options || line.followUpOptions || [];
+      for (var i = 0; i < options.length; i++) {
+        var letter = String.fromCharCode(65 + i);
+        optHtml += '<button class="dialogue-option" onclick="chooseSpeakingOption(' + i + ')" id="sopt-' + i + '">';
+        optHtml += '<span style="font-weight:700;color:var(--blue);">' + letter + '.</span> ';
+        optHtml += '<span>' + options[i].text + '</span>';
+        optHtml += '</button>';
+      }
+      document.getElementById('speakingOptions').innerHTML = optHtml;
+    }
+
+    function chooseSpeakingOption(index) {
+      var line = STATE.currentDialogue[STATE.currentDialogueIndex];
+      var options = line.options || line.followUpOptions || [];
+      var option = options[index];
+
+      // Disable all
+      var allOpts = document.querySelectorAll('#speakingOptions .dialogue-option');
+      for (var i = 0; i < allOpts.length; i++) {
+        allOpts[i].disabled = true;
+        allOpts[i].style.pointerEvents = 'none';
+      }
+
+      var chosen = document.getElementById('sopt-' + index);
+      var cls = option.quality === 'correct' ? 'correct' : option.quality === 'partial' ? 'partial' : 'wrong';
+      chosen.classList.add(cls);
+
+      // Show correct if wrong
+      if (option.quality !== 'correct') {
+        for (var i = 0; i < options.length; i++) {
+          if (options[i].quality === 'correct') {
+            document.getElementById('sopt-' + i).classList.add('correct');
+            break;
+          }
+        }
+      }
+
+      showSpeakingFeedback(option);
+    }
+
+    function submitSpeakingAmount() {
+      var line = STATE.currentDialogue[STATE.currentDialogueIndex];
+      var input = document.getElementById('speakingAmountInput');
+      var amount = parseFloat(input.value);
+      var correct = line.correctAmount;
+      var tolerance = line.tolerance || 0;
+
+      var isCorrect = !isNaN(amount) && Math.abs(amount - correct) <= tolerance;
+
+      var option = {
+        quality: isCorrect ? 'correct' : 'wrong',
+        feedback: isCorrect 
+          ? 'Perfect! You got the amount right.' 
+          : 'The correct amount was $' + correct.toFixed(2) + '. Listen carefully next time!'
+      };
+
+      input.disabled = true;
+      document.getElementById('speakingAmountSubmit').disabled = true;
+
+      showSpeakingFeedback(option);
+    }
+
+    function showSpeakingFeedback(option) {
+      var fb = document.getElementById('speakingFeedback');
+      fb.style.display = 'block';
+
+      // Score bar
+      var sbHtml = '';
+      var total = STATE.dialogueScores.total + 1;
+      for (var i = 0; i < STATE.dialogueScores.correct; i++) {
+        sbHtml += '<div style="width:20px;height:8px;background:var(--green);border-radius:4px;"></div>';
+      }
+      for (var i = STATE.dialogueScores.correct; i < total - 1; i++) {
+        sbHtml += '<div style="width:20px;height:8px;background:#ddd;border-radius:4px;"></div>';
+      }
+      document.getElementById('speakingScoreBar').innerHTML = sbHtml;
+
+      var fbText = document.getElementById('speakingFeedbackText');
+      fbText.textContent = option.feedback;
+      fbText.className = 'machine-feedback ' + (option.quality === 'correct' ? 'good' : 'bad');
+
+      // Show example answer
+      var line = STATE.currentDialogue[STATE.currentDialogueIndex];
+      var options = line.options || line.followUpOptions || [];
+      for (var i = 0; i < options.length; i++) {
+        if (options[i].quality === 'correct') {
+          document.getElementById('speakingExampleText').textContent = options[i].text;
+          break;
+        }
+      }
+
+      STATE.dialogueScores[option.quality]++;
+      STATE.dialogueScores.total++;
+
+      document.getElementById('speakingFooter').style.display = 'block';
+    }
+
+    function nextSpeakingLine() {
+      STATE.currentDialogueIndex++;
+      if (STATE.currentDialogueIndex >= STATE.currentDialogue.length) {
+        STATE.speakingMode = false;
+        if (STATE.onDialogueComplete) STATE.onDialogueComplete();
+        return;
+      }
+      renderSpeakingLine();
+    }
+
+    /* =====================
        CHECKOUT
        ===================== */
     function goToCheckoutPhase() {
+      // Check if speaking-only mode is enabled
+      if (GAME_DATA.settings.speakingOnly) {
+        // Go to speaking practice first
+        goToPhase('speaking');
+        return;
+      }
+      
       if (STATE.difficulty === 'hard') {
         goToPhase('selfCheckout');
       } else {
         startCheckoutDialogue();
       }
+    }
+
+    function startSpeakingPhase() {
+      // Collect all dialogues that need speaking practice
+      var dialogues = [];
+      
+      // Meat counter dialogue
+      if (!STATE.dialogueScores.meatDone) {
+        dialogues.push({ key: 'meatCounter', doneFlag: 'meatDone' });
+      }
+      
+      // Checkout dialogue
+      dialogues.push({ key: 'checkout', doneFlag: 'checkoutDone' });
+      
+      // Run speaking practice for all dialogues
+      runNextSpeakingDialogue(dialogues, 0);
+    }
+
+    function runNextSpeakingDialogue(dialogues, index) {
+      if (index >= dialogues.length) {
+        // All speaking done, go to next phase
+        if (STATE.difficulty === 'hard') {
+          goToPhase('selfCheckout');
+        } else {
+          startCheckoutDialogue();
+        }
+        return;
+      }
+
+      var dlg = dialogues[index];
+      startSpeakingPractice(dlg.key, function() {
+        STATE.dialogueScores[dlg.doneFlag] = true;
+        runNextSpeakingDialogue(dialogues, index + 1);
+      });
     }
 
     function startCheckoutDialogue() {

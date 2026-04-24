@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supermarket Map Builder - Student</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* =============================================
+       SUPERMARKET FLOOR PLAN — Bird's Eye View
+       ============================================= */
+
+    .map-shell {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .map-side {
+      position: sticky;
+      top: 82px;
+      display: grid;
+      gap: 16px;
+    }
+
+    /* --- Prompt List --- */
+    .prompt-list {
+      display: grid;
+      gap: 8px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .prompt-chip {
+      background: var(--light-blue);
+      border: 1px solid #bbdefb;
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    /* --- Section Bank --- */
+    .section-bank {
+      display: grid;
+      gap: 6px;
+      max-height: 420px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .section-token {
+      background: var(--white);
+      border: 2px solid #e0e0e0;
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      cursor: grab;
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .section-token:hover {
+      border-color: var(--green);
+      box-shadow: var(--shadow);
+      transform: translateY(-1px);
+    }
+
+    .section-token:active { cursor: grabbing; }
+
+    .section-token.dragging {
+      opacity: 0.4;
+      transform: scale(0.96);
+    }
+
+    .section-token.selected-token {
+      outline: 3px solid var(--green);
+      outline-offset: 1px;
+      background: var(--light-green);
+    }
+
+    .token-name {
+      font-weight: 700;
+      display: block;
+      font-size: 0.88rem;
+      margin-bottom: 1px;
+    }
+
+    .token-products {
+      color: var(--mid-grey);
+      font-size: 0.75rem;
+    }
+
+    /* =============================================
+       THE FLOOR PLAN BOARD
+       ============================================= */
+
+    .map-board {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .board-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 20px;
+      background: #fafafa;
+      border-bottom: 2px solid #eee;
+      flex-wrap: wrap;
+    }
+
+    .status-text {
+      font-size: 0.85rem;
+      color: var(--mid-grey);
+    }
+
+    /* --- Floor plan container --- */
+    .floor-plan-wrapper {
+      padding: 20px;
+      background: #f5f0e8;
+      position: relative;
+      overflow-x: auto;
+    }
+
+    .floor-plan {
+      width: 100%;
+      min-width: 700px;
+      aspect-ratio: 1.6 / 1;
+      background: #faf8f4;
+      border: 3px solid #d4c9b8;
+      border-radius: 8px;
+      position: relative;
+      display: grid;
+      grid-template-columns: 70px 1fr 90px;
+      grid-template-rows: auto 1fr auto auto;
+      overflow: hidden;
+    }
+
+    /* =============================================
+       TOP WALL — Bakery, Dairy, Meat & Poultry
+       ============================================= */
+
+    .top-wall {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      display: grid;
+      grid-template-columns: 70px 1fr 1fr 1fr;
+      gap: 0;
+      border-bottom: 3px solid #d4c9b8;
+    }
+
+    .top-wall .map-slot {
+      border-radius: 0;
+      border: none;
+      border-right: 2px solid #d4c9b8;
+      min-height: 65px;
+    }
+
+    .top-wall .map-slot:last-child {
+      border-right: none;
+    }
+
+    /* =============================================
+       LEFT WALL — Produce, Flowers
+       ============================================= */
+
+    .left-wall {
+      grid-column: 1;
+      grid-row: 2;
+      display: grid;
+      grid-template-rows: 2fr 1fr;
+      gap: 0;
+      border-right: 3px solid #d4c9b8;
+    }
+
+    .left-wall .map-slot {
+      border-radius: 0;
+      border: none;
+      border-bottom: 2px solid #d4c9b8;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      min-height: auto;
+    }
+
+    .left-wall .map-slot:last-child {
+      border-bottom: none;
+    }
+
+    .left-wall .map-slot .slot-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 8px 4px;
+    }
+
+    /* =============================================
+       RIGHT WALL — Seafood, Pharmacy, Grab & Go, Deli
+       ============================================= */
+
+    .right-wall {
+      grid-column: 3;
+      grid-row: 2;
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+      gap: 0;
+      border-left: 3px solid #d4c9b8;
+    }
+
+    .right-wall .map-slot {
+      border-radius: 0;
+      border: none;
+      border-bottom: 2px solid #d4c9b8;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      min-height: auto;
+    }
+
+    .right-wall .map-slot:last-child {
+      border-bottom: none;
+    }
+
+    .right-wall .map-slot .slot-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 8px 4px;
+    }
+
+    /* =============================================
+       CENTER — Aisles with shelf units
+       ============================================= */
+
+    .center-area {
+      grid-column: 2;
+      grid-row: 2;
+      display: grid;
+      grid-template-rows: 1fr auto auto;
+      padding: 12px 16px;
+      gap: 8px;
+    }
+
+    /* --- Aisle Shelves --- */
+    .aisles-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      padding: 8px 0;
+    }
+
+    .aisle-shelf {
+      display: grid;
+      grid-template-rows: 1fr 8px 1fr;
+      gap: 0;
+    }
+
+    .shelf-unit {
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .shelf-unit.top-shelf {
+      border-radius: 4px 4px 0 0;
+    }
+
+    .shelf-unit.bottom-shelf {
+      border-radius: 0 0 4px 4px;
+    }
+
+    .shelf-gap {
+      background: #faf8f4;
+    }
+
+    .aisle-label {
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.55rem;
+      font-weight: 800;
+      color: #bbb;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    /* --- Impulse Buy / Checkout Area --- */
+    .impulse-row {
+      width: 70%;
+      margin: 0 auto;
+    }
+
+    .impulse-row .map-slot {
+      min-height: 40px;
+    }
+
+    .register-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr) auto;
+      gap: 6px;
+      align-items: end;
+    }
+
+    .register-lane {
+      background: #f0ead6;
+      border-radius: 3px;
+      padding: 5px 2px;
+      text-align: center;
+      font-size: 0.55rem;
+      font-weight: 700;
+      color: #bbb;
+      border: 1px solid #e0d9c8;
+    }
+
+    .register-lane.self-checkout {
+      background: #e3f2fd;
+      color: #64b5f6;
+      border-color: #bbdefb;
+    }
+
+    .cart-icon {
+      font-size: 2rem;
+      text-align: center;
+      padding: 0 8px;
+      opacity: 0.3;
+    }
+
+    /* =============================================
+       BOTTOM — Entrance / Exit
+       ============================================= */
+
+    .bottom-bar {
+      grid-column: 1 / -1;
+      grid-row: 4;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 3px solid #d4c9b8;
+    }
+
+    .entrance-zone,
+    .exit-zone {
+      text-align: center;
+      padding: 10px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #888;
+      position: relative;
+    }
+
+    .entrance-zone {
+      border-right: 2px solid #d4c9b8;
+    }
+
+    .entrance-zone::after,
+    .exit-zone::after {
+      content: '▼ ▼ ▼';
+      display: block;
+      font-size: 0.6rem;
+      color: #ccc;
+      margin-top: 2px;
+      letter-spacing: 4px;
+    }
+
+    .exit-zone::after {
+      content: '▲ ▲ ▲';
+    }
+
+    /* =============================================
+       MAP SLOTS (drop zones)
+       ============================================= */
+
+    .map-slot {
+      min-height: 55px;
+      background: rgba(255,255,255,0.6);
+      border: 2px dashed #ccc;
+      border-radius: 4px;
+      padding: 6px;
+      transition: all 0.2s ease;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .map-slot:hover {
+      border-color: #aaa;
+      background: rgba(255,255,255,0.85);
+    }
+
+    .map-slot.over {
+      border-color: var(--gold);
+      background: #fffde7;
+      transform: scale(1.03);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      z-index: 5;
+    }
+
+    .map-slot.correct {
+      border-style: solid;
+      border-color: var(--green);
+      background: rgba(200, 230, 201, 0.7);
+    }
+
+    .map-slot.wrong {
+      border-style: solid;
+      border-color: var(--red);
+      background: rgba(255, 205, 210, 0.7);
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      75% { transform: translateX(3px); }
+    }
+
+    .slot-label {
+      font-size: 0.6rem;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+      margin-bottom: 2px;
+      writing-mode: horizontal-tb;
+    }
+
+    .slot-placeholder {
+      color: #ccc;
+      font-size: 0.7rem;
+      text-align: center;
+      padding: 4px 0;
+      writing-mode: horizontal-tb;
+    }
+
+    /* --- Placed Card (filled slot) --- */
+    .slot-card {
+      border-radius: 4px;
+      padding: 6px 8px;
+      color: white;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
+
+    .slot-card .card-name {
+      font-weight: 800;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: block;
+    }
+
+    .slot-card .card-products {
+      font-size: 0.6rem;
+      opacity: 0.85;
+      margin-top: 2px;
+      display: block;
+    }
+
+    /* Vertical card for side walls */
+    .left-wall .slot-card,
+    .right-wall .slot-card {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      padding: 8px 4px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .left-wall .slot-card .card-products,
+    .right-wall .slot-card .card-products {
+      display: none;
+    }
+
+    /* =============================================
+       AISLE DROP ZONES (on the shelves)
+       ============================================= */
+
+    .shelf-slot {
+      min-height: auto;
+      height: 100%;
+      border: 2px dashed rgba(0,0,0,0.12);
+      background: #d8c8e8;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+    }
+
+    .shelf-slot .slot-placeholder {
+      font-size: 0.58rem;
+      writing-mode: vertical-rl;
+      color: rgba(0,0,0,0.2);
+    }
+
+    .shelf-slot.over {
+      background: #fffde7;
+      border-color: var(--gold);
+    }
+
+    .shelf-slot.correct {
+      border-style: solid;
+      border-color: var(--green);
+      background: rgba(200, 230, 201, 0.7);
+    }
+
+    .shelf-slot.wrong {
+      border-style: solid;
+      border-color: var(--red);
+      background: rgba(255, 205, 210, 0.7);
+    }
+
+    .shelf-slot .slot-card {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      padding: 4px;
+      font-size: 0.6rem;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shelf-slot .slot-card .card-name {
+      font-size: 0.6rem;
+    }
+
+    .shelf-slot .slot-card .card-products {
+      display: none;
+    }
+
+    /* =============================================
+       LEGEND & FOOTER
+       ============================================= */
+
+    .map-legend {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      padding: 10px 16px;
+      flex-wrap: wrap;
+      background: #fafafa;
+      border-top: 2px solid #eee;
+      font-size: 0.75rem;
+      color: #888;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* =============================================
+       TOAST
+       ============================================= */
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      padding: 14px 28px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.9rem;
+      z-index: 200;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+      max-width: 90vw;
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast.success { background: var(--green); color: white; }
+    .toast.warning { background: var(--gold); color: var(--dark); }
+    .toast.error { background: var(--red); color: white; }
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
+
+    @media (max-width: 1060px) {
+      .map-shell {
+        grid-template-columns: 1fr;
+      }
+      .map-side {
+        position: static;
+      }
+    }
+
+    @media (max-width: 750px) {
+      .floor-plan {
+        min-width: 600px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <div class="logo">🗺️ Supermarket Map</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="map-student.html" class="active">Student Map</a>
+      <a href="map-teacher.html">Teacher Key</a>
+      <a href="student.html">Shop Game</a>
+    </div>
+  </nav>
+
+  <section class="hero" style="margin-bottom: 24px;">
+    <div class="flag-emoji">🗺️</div>
+    <h1>Build the Supermarket Map</h1>
+    <p>Ask your teacher for directions, then drag each section card into the correct place on the floor plan.</p>
+  </section>
+
+  <div class="container-wide">
+    <div class="map-shell">
+
+      <!-- ========== LEFT SIDEBAR ========== -->
+      <aside class="map-side">
+
+        <div class="card">
+          <h3 style="margin-bottom: 10px;">🎮 How To Play</h3>
+          <div class="tip-box" style="margin: 0 0 8px;">
+            <span class="tip-icon">💬</span>
+            <div>Ask: <strong>"Where can I find the milk?"</strong></div>
+          </div>
+          <div class="tip-box" style="margin: 0 0 8px;">
+            <span class="tip-icon">👂</span>
+            <div>Listen for: <em>back wall, left wall, right wall, aisle, near entrance</em></div>
+          </div>
+          <div class="tip-box" style="margin: 0;">
+            <span class="tip-icon">🧩</span>
+            <div>Drag cards onto the map. <strong>Double-click</strong> to remove.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-bottom: 8px;">💬 Ask Your Teacher</h3>
+          <div class="prompt-list" id="promptList"></div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+            <h3>📦 Section Cards</h3>
+            <button class="btn btn-secondary btn-sm" id="returnAllBtn" type="button" style="font-size:0.72rem; padding:3px 8px;">↩ Return All</button>
+          </div>
+          <div class="section-bank" id="sectionBank"></div>
+          <div id="bankEmpty" style="display:none; text-align:center; padding:14px; color:var(--green); font-weight:700; font-size:0.9rem;">
+            ✅ All sections placed!
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- ========== FLOOR PLAN ========== -->
+      <main class="map-board">
+
+        <div class="board-header">
+          <div>
+            <h2 style="font-size:1.15rem; margin-bottom:2px;">🏪 Supermarket Floor Plan</h2>
+            <div class="status-text" id="statusText">0 of 16 sections placed</div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn btn-primary" id="checkBtn" type="button">✅ Check</button>
+            <button class="btn btn-secondary" id="resetBtn" type="button">🔄 Reset</button>
+          </div>
+        </div>
+
+        <div class="floor-plan-wrapper">
+          <div class="floor-plan" id="floorPlan">
+
+            <!-- ====== TOP WALL ====== -->
+            <div class="top-wall">
+              <div class="map-slot" data-slot-id="top-left">
+                <div class="slot-label">Top Left</div>
+                <div class="slot-placeholder">?</div>
+              </div>
+              <div class="map-slot" data-slot-id="top-center-left">
+                <div class="slot-label">Top Center-L</div>
+                <div class="slot-placeholder">?</div>
+              </div>
+              <div class="map-slot" data-slot-id="top-center-right" style="grid-column: span 2;">
+                <div class="slot-label">Top Center-R to Right</div>
+                <div class="slot-placeholder">?</div>
+              </div>
+            </div>
+
+            <!-- ====== LEFT WALL ====== -->
+            <div class="left-wall">
+              <div class="map-slot" data-slot-id="left-top">
+                <div class="slot-inner">
+                  <div class="slot-placeholder" style="writing-mode:vertical-rl;">?</div>
+                </div>
+              </div>
+              <div class="map-slot" data-slot-id="left-bottom">
+                <div class="slot-inner">
+                  <div class="slot-placeholder" style="writing-mode:vertical-rl;">?</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ====== CENTER AREA ====== -->
+            <div class="center-area">
+
+              <!-- Aisle Shelves -->
+              <div class="aisles-container">
+
+                <!-- Aisle 1 -->
+                <div class="aisle-shelf">
+                  <div class="shelf-slot map-slot" data-slot-id="aisle1-top">
+                    <div class="slot-placeholder">?</div>
+                  </div>
+                  <div class="shelf-gap"></div>
+                  <div class="shelf-slot map-slot" data-slot-id="aisle1-bottom">
+                    <div class="slot-placeholder">?</div>
+                  </div>
+                  <div class="aisle-label">Aisle 1</div>
+                </div>
+
+                <!-- Aisle 2 -->
+                <div class="aisle-shelf">
+                  <div class="shelf-slot map-slot" data-slot-id="aisle2-top">
+                    <div class="slot-placeholder">?</div>
+                  </div>
+                  <div class="shelf-gap"></div>
+                  <div class="shelf-slot map-slot" data-slot-id="aisle2-bottom">
+                    <div class="slot-placeholder">?</div>
+                  </div>
+                  <div class="aisle-label">Aisle 2</div>
+                </div>
+
+                <!-- Aisle 3 -->
+                <div class="aisle-shelf">
+                  <div class="shelf-slot map-slot" data-slot-id="aisle3-top">
+                    <div class="slot-placeholder">?</div>
+                  </div>
+                  <div class="shelf-gap"></div>
+                  <div class="shelf-slot map-slot" data-slot-id="aisle3-bottom">
+                    <div class="slot-placeholder">?</div>
+                  </div>
+                  <div class="aisle-label">Aisle 3</div>
+                </div>
+
+                <!-- Aisle 4 -->
+                <div class="aisle-shelf">
+                  <div class="shelf-slot map-slot" data-slot-id="aisle4-top">
+                    <div class="slot-placeholder">?</div>
+                  </div>
+                  <div class="shelf-gap"></div>
+                  <div class="shelf-slot map-slot" data-slot-id="aisle4-bottom">
+                    <div class="slot-placeholder">?</div>
+                  </div>
+                  <div class="aisle-label">Aisle 4</div>
+                </div>
+
+                <!-- Aisle 5 -->
+                <div class="aisle-shelf">
+                  <div class="shelf-slot map-slot" data-slot-id="aisle5-top">
+                    <div class="slot-placeholder">?</div>
+                  </div>
+                  <div class="shelf-gap"></div>
+                  <div class="shelf-slot map-slot" data-slot-id="aisle5-bottom">
+                    <div class="slot-placeholder">?</div>
+                  </div>
+                  <div class="aisle-label">Aisle 5</div>
+                </div>
+
+              </div>
+
+              <!-- Impulse Buy Row -->
+              <div class="impulse-row">
+                <div class="map-slot" data-slot-id="impulse" style="min-height:38px;">
+                  <div class="slot-label">Near Registers</div>
+                  <div class="slot-placeholder">?</div>
+                </div>
+              </div>
+
+              <!-- Register Row -->
+              <div class="register-row">
+                <div class="register-lane">1</div>
+                <div class="register-lane">2</div>
+                <div class="register-lane">3</div>
+                <div class="register-lane">4</div>
+                <div class="register-lane self-checkout">Self</div>
+                <div class="register-lane self-checkout">Self</div>
+                <div class="cart-icon">🛒</div>
+              </div>
+
+            </div>
+
+            <!-- ====== RIGHT WALL ====== -->
+            <div class="right-wall">
+              <div class="map-slot" data-slot-id="right-top">
+                <div class="slot-inner">
+                  <div class="slot-placeholder" style="writing-mode:vertical-rl;">?</div>
+                </div>
+              </div>
+              <div class="map-slot" data-slot-id="right-upper">
+                <div class="slot-inner">
+                  <div class="slot-placeholder" style="writing-mode:vertical-rl;">?</div>
+                </div>
+              </div>
+              <div class="map-slot" data-slot-id="right-lower">
+                <div class="slot-inner">
+                  <div class="slot-placeholder" style="writing-mode:vertical-rl;">?</div>
+                </div>
+              </div>
+              <div class="map-slot" data-slot-id="right-bottom">
+                <div class="slot-inner">
+                  <div class="slot-placeholder" style="writing-mode:vertical-rl;">?</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ====== BOTTOM — Entrance / Exit ====== -->
+            <div class="bottom-bar">
+              <div class="entrance-zone">🚪 Entrance</div>
+              <div class="exit-zone">🚪 Exit</div>
+            </div>
+
+          </div><!-- end floor-plan -->
+        </div><!-- end wrapper -->
+
+        <div class="map-legend">
+          <div class="legend-item"><div class="legend-dot" style="border: 2px dashed #bbb; background:transparent;"></div> Empty</div>
+          <div class="legend-item"><div class="legend-dot" style="background: var(--green);"></div> Correct</div>
+          <div class="legend-item"><div class="legend-dot" style="background: var(--red);"></div> Wrong</div>
+          <div class="legend-item">💡 Double-click to remove</div>
+          <div class="legend-item">📱 Tap card, then tap slot</div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="game-data.js"></script>
+  <script>
+    // =============================================
+    // MAP LAYOUT — Matches bird's-eye floor plan
+    // =============================================
+
+    const MAP_LAYOUT = {
+      sections: [
+        // TOP WALL
+        {
+          id: 'bakery',
+          name: 'Bakery',
+          icon: '🍞',
+          color: '#f9a825',
+          products: ['Bread', 'Meat pies', 'Sausage rolls', 'Lamingtons'],
+          slotId: 'top-left'
+        },
+        {
+          id: 'dairy',
+          name: 'Dairy',
+          icon: '🧀',
+          color: '#fdd835',
+          products: ['Milk', 'Tasty cheese', 'Yoghurt', 'Eggs', 'Butter'],
+          slotId: 'top-center-left'
+        },
+        {
+          id: 'meat',
+          name: 'Meat & Poultry',
+          icon: '🥩',
+          color: '#ef9a9a',
+          products: ['Mince', 'Snags', 'Lamb chops', 'Rashers', 'Chook'],
+          slotId: 'top-center-right'
+        },
+
+        // LEFT WALL
+        {
+          id: 'produce',
+          name: 'Produce',
+          icon: '🥦',
+          color: '#a5d6a7',
+          products: ['Bananas', 'Spuds', 'Capsicum', 'Avos', 'Rocket'],
+          slotId: 'left-top'
+        },
+        {
+          id: 'flowers',
+          name: 'Flowers',
+          icon: '💐',
+          color: '#c8e6c9',
+          products: ['Bouquets', 'Potted plants', 'Herbs'],
+          slotId: 'left-bottom'
+        },
+
+        // RIGHT WALL
+        {
+          id: 'seafood',
+          name: 'Seafood',
+          icon: '🦐',
+          color: '#b39ddb',
+          products: ['Prawns', 'Salmon', 'Barramundi', 'Fish fingers'],
+          slotId: 'right-top'
+        },
+        {
+          id: 'pharmacy',
+          name: 'Pharmacy',
+          icon: '💊',
+          color: '#90caf9',
+          products: ['Medicine', 'Vitamins', 'First aid', 'Sunscreen'],
+          slotId: 'right-upper'
+        },
+        {
+          id: 'grabgo',
+          name: 'Grab & Go',
+          icon: '🥪',
+          color: '#ffab91',
+          products: ['Sandwiches', 'Sushi', 'Wraps', 'Salads'],
+          slotId: 'right-lower'
+        },
+        {
+          id: 'deli',
+          name: 'Deli & Coffee',
+          icon: '☕',
+          color: '#bcaaa4',
+          products: ['Hot chook', 'Smallgoods', 'Coffee', 'Dips'],
+          slotId: 'right-bottom'
+        },
+
+        // AISLES — Top shelves (back-facing)
+        {
+          id: 'pantry',
+          name: 'Pantry',
+          icon: '🥫',
+          color: '#7e57c2',
+          products: ['Vegemite', 'Milo', 'Rice', 'Pasta', 'Tinned tomatoes'],
+          slotId: 'aisle1-top'
+        },
+        {
+          id: 'sauces',
+          name: 'Sauces & Spices',
+          icon: '🫙',
+          color: '#9575cd',
+          products: ['Tomato sauce', 'Soy sauce', 'Chicken salt', 'Curry paste'],
+          slotId: 'aisle2-top'
+        },
+        {
+          id: 'snacks',
+          name: 'Snacks',
+          icon: '🍪',
+          color: '#7e57c2',
+          products: ['Tim Tams', 'Shapes', 'Twisties', 'Freddo Frogs'],
+          slotId: 'aisle3-top'
+        },
+        {
+          id: 'drinks',
+          name: 'Drinks',
+          icon: '🥤',
+          color: '#9575cd',
+          products: ['Soft drink', 'Cordial', 'Coffee', 'Tea bags'],
+          slotId: 'aisle4-top'
+        },
+        {
+          id: 'frozen',
+          name: 'Frozen',
+          icon: '🧊',
+          color: '#80cbc4',
+          products: ['Party pies', 'Ice cream', 'Frozen chips', 'Dim sims'],
+          slotId: 'aisle5-top'
+        },
+
+        // AISLES — Bottom shelves (front-facing)
+        {
+          id: 'asian',
+          name: 'Asian Food',
+          icon: '🍜',
+          color: '#ce93d8',
+          products: ['Fish sauce', 'Mi goreng', 'Rice noodles', 'Tofu'],
+          slotId: 'aisle1-bottom'
+        },
+        {
+          id: 'baking',
+          name: 'Baking',
+          icon: '🧁',
+          color: '#b39ddb',
+          products: ['Flour', 'Sugar', 'Golden syrup', 'Wattleseed'],
+          slotId: 'aisle2-bottom'
+        },
+        {
+          id: 'lollies',
+          name: 'Lollies & Chocolate',
+          icon: '🍬',
+          color: '#ce93d8',
+          products: ['Lollies', 'Caramello Koalas', 'Wagon Wheels'],
+          slotId: 'aisle3-bottom'
+        },
+        {
+          id: 'household',
+          name: 'Household',
+          icon: '🧹',
+          color: '#b39ddb',
+          products: ['Loo roll', 'Glad Wrap', 'Alfoil', 'Bin bags'],
+          slotId: 'aisle4-bottom'
+        },
+        {
+          id: 'personal',
+          name: 'Personal Care',
+          icon: '🧴',
+          color: '#80cbc4',
+          products: ['Shampoo', 'Toothpaste', 'Aerogard', 'Mortein'],
+          slotId: 'aisle5-bottom'
+        },
+
+        // IMPULSE
+        {
+          id: 'impulse',
+          name: 'Impulse Buy',
+          icon: '🍫',
+          color: '#ef5350',
+          products: ['Magazines', 'Gum', 'Freddo Frogs', 'Mints'],
+          slotId: 'impulse'
+        }
+      ],
+
+      questionPrompts: [
+        { product: '🍞 Bakery', question: '"Where are the meat pies and bread?"' },
+        { product: '🧀 Dairy', question: '"Where is the milk and tasty cheese?"' },
+        { product: '🥩 Meat', question: '"Where can I find mince and snags?"' },
+        { product: '🥦 Produce', question: '"Where are the bananas and avos?"' },
+        { product: '💐 Flowers', question: '"Where are the flowers?"' },
+        { product: '🦐 Seafood', question: '"Where can I find prawns?"' },
+        { product: '💊 Pharmacy', question: '"Where is the medicine section?"' },
+        { product: '🥪 Grab & Go', question: '"Where are the pre-made sandwiches?"' },
+        { product: '☕ Deli', question: '"Where can I grab a hot chook?"' },
+        { product: '🥫 Pantry', question: '"Where is the Vegemite and Milo?"' },
+        { product: '🫙 Sauces', question: '"Where is the tomato sauce and soy sauce?"' },
+        { product: '🍪 Snacks', question: '"Where are the Tim Tams and Shapes?"' },
+        { product: '🥤 Drinks', question: '"Where is the soft drink and cordial?"' },
+        { product: '🧊 Frozen', question: '"Where are the party pies and ice cream?"' },
+        { product: '🍜 Asian', question: '"Where is the fish sauce and mi goreng?"' },
+        { product: '🧁 Baking', question: '"Where is the flour and golden syrup?"' },
+        { product: '🍬 Lollies', question: '"Where are the lollies and chocolate?"' },
+        { product: '🧹 Household', question: '"Where is the loo roll and Glad Wrap?"' },
+        { product: '🧴 Personal', question: '"Where is the shampoo and sunscreen?"' },
+        { product: '🍫 Impulse', question: '"What\'s near the registers?"' }
+      ]
+    };
+
+    // =============================================
+    // GAME STATE
+    // =============================================
+
+    const placements = {};
+    let selectedSectionId = null;
+
+    // =============================================
+    // INIT
+    // =============================================
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPrompts();
+      renderBank();
+      setupAllSlots();
+      updateStatus();
+
+      document.getElementById('checkBtn').addEventListener('click', checkAnswers);
+      document.getElementById('resetBtn').addEventListener('click', resetMap);
+      document.getElementById('returnAllBtn').addEventListener('click', resetMap);
+    });
+
+    // =============================================
+    // RENDER — Prompts
+    // =============================================
+
+    function renderPrompts() {
+      const list = document.getElementById('promptList');
+      list.innerHTML = MAP_LAYOUT.questionPrompts.map(p => `
+        <div class="prompt-chip">
+          <strong>${p.product}</strong> — ${p.question}
+        </div>
+      `).join('');
+    }
+
+    // =============================================
+    // RENDER — Section Bank
+    // =============================================
+
+    function renderBank() {
+      const bank = document.getElementById('sectionBank');
+      const placedIds = new Set(Object.values(placements));
+      const available = MAP_LAYOUT.sections.filter(s => !placedIds.has(s.id));
+
+      bank.innerHTML = available.map(section => `
+        <div class="section-token" draggable="true" data-section-id="${section.id}">
+          <span class="token-name">${section.icon} ${section.name}</span>
+          <span class="token-products">${section.products.join(', ')}</span>
+        </div>
+      `).join('');
+
+      document.getElementById('bankEmpty').style.display = available.length === 0 ? 'block' : 'none';
+
+      bank.querySelectorAll('.section-token').forEach(token => {
+        token.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', token.dataset.sectionId);
+          token.classList.add('dragging');
+        });
+        token.addEventListener('dragend', () => token.classList.remove('dragging'));
+
+        // Tap to select
+        token.addEventListener('click', () => {
+          clearTokenSelection();
+          selectedSectionId = token.dataset.sectionId;
+          token.classList.add('selected-token');
+        });
+      });
+    }
+
+    function clearTokenSelection() {
+      document.querySelectorAll('.section-token').forEach(t => t.classList.remove('selected-token'));
+      selectedSectionId = null;
+    }
+
+    // =============================================
+    // SETUP ALL DROP SLOTS
+    // =============================================
+
+    function setupAllSlots() {
+      document.querySelectorAll('.map-slot').forEach(slot => {
+        slot.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          slot.classList.add('over');
+        });
+
+        slot.addEventListener('dragleave', () => {
+          slot.classList.remove('over');
+        });
+
+        slot.addEventListener('drop', (e) => {
+          e.preventDefault();
+          slot.classList.remove('over');
+          const sectionId = e.dataTransfer.getData('text/plain');
+          if (sectionId) placeSection(slot.dataset.slotId, sectionId);
+        });
+
+        // Double-click to remove
+        slot.addEventListener('dblclick', () => {
+          clearSlot(slot.dataset.slotId);
+        });
+
+        // Tap to place selected
+        slot.addEventListener('click', (e) => {
+          // Don't trigger if double-clicking
+          if (selectedSectionId) {
+            placeSection(slot.dataset.slotId, selectedSectionId);
+            clearTokenSelection();
+          }
+        });
+      });
+    }
+
+    // =============================================
+    // PLACE & CLEAR
+    // =============================================
+
+    function placeSection(slotId, sectionId) {
+      // Remove from previous slot
+      for (const key in placements) {
+        if (placements[key] === sectionId) {
+          delete placements[key];
+          renderSlotContent(key);
+        }
+      }
+
+      // Remove existing section from target slot
+      if (placements[slotId]) {
+        delete placements[slotId];
+      }
+
+      placements[slotId] = sectionId;
+      renderSlotContent(slotId);
+      renderBank();
+      updateStatus();
+
+      // Clear any check styling
+      const slotEl = document.querySelector(`[data-slot-id="${slotId}"]`);
+      if (slotEl) slotEl.classList.remove('correct', 'wrong');
+    }
+
+    function clearSlot(slotId) {
+      if (!placements[slotId]) return;
+      delete placements[slotId];
+      renderSlotContent(slotId);
+      renderBank();
+      updateStatus();
+    }
+
+    // =============================================
+    // RENDER SLOT CONTENT
+    // =============================================
+
+    function renderSlotContent(slotId) {
+      const slotEl = document.querySelector(`[data-slot-id="${slotId}"]`);
+      if (!slotEl) return;
+
+      const sectionId = placements[slotId];
+      const section = MAP_LAYOUT.sections.find(s => s.id === sectionId);
+
+      slotEl.classList.remove('correct', 'wrong');
+
+      // Remove existing card/placeholder
+      const existingCard = slotEl.querySelector('.slot-card');
+      if (existingCard) existingCard.remove();
+      const existingPH = slotEl.querySelector('.slot-placeholder');
+      if (existingPH) existingPH.remove();
+      const existingInner = slotEl.querySelector('.slot-inner');
+
+      if (section) {
+        const card = document.createElement('div');
+        card.className = 'slot-card';
+        card.style.background = section.color;
+        card.innerHTML = `
+          <span class="card-name">${section.icon} ${section.name}</span>
+          <span class="card-products">${section.products.slice(0, 3).join(', ')}</span>
+        `;
+
+        if (existingInner) {
+          existingInner.innerHTML = '';
+          existingInner.appendChild(card);
+        } else {
+          slotEl.appendChild(card);
+        }
+      } else {
+        const ph = document.createElement('div');
+        ph.className = 'slot-placeholder';
+        ph.textContent = '?';
+
+        // Check if it's a wall slot with inner container
+        const isWallSlot = slotEl.closest('.left-wall') || slotEl.closest('.right-wall');
+        if (isWallSlot) {
+          ph.style.writingMode = 'vertical-rl';
+        }
+
+        if (existingInner) {
+          existingInner.innerHTML = '';
+          existingInner.appendChild(ph);
+        } else {
+          slotEl.appendChild(ph);
+        }
+      }
+    }
+
+    // =============================================
+    // CHECK ANSWERS
+    // =============================================
+
+    function checkAnswers() {
+      let correct = 0;
+      const total = MAP_LAYOUT.sections.length;
+
+      document.querySelectorAll('.map-slot').forEach(slotEl => {
+        const slotId = slotEl.dataset.slotId;
+        slotEl.classList.remove('correct', 'wrong');
+
+        if (!placements[slotId]) return;
+
+        const expectedSection = MAP_LAYOUT.sections.find(s => s.slotId === slotId);
+        if (!expectedSection) return;
+
+        if (placements[slotId] === expectedSection.id) {
+          slotEl.classList.add('correct');
+          correct++;
+        } else {
+          slotEl.classList.add('wrong');
+        }
+      });
+
+      updateStatus(correct);
+
+      if (correct === total) {
+        showToast('🎉 Perfect! You\'ve mapped the whole supermarket!', 'success');
+      } else if (correct >= total * 0.7) {
+        showToast(`👍 ${correct}/${total} correct! Nearly there!`, 'warning');
+      } else if (correct > 0) {
+        showToast(`${correct}/${total} correct. Ask your teacher for more help!`, 'warning');
+      } else {
+        const placed = Object.keys(placements).length;
+        if (placed === 0) {
+          showToast('Drag some section cards onto the map first!', 'error');
+        } else {
+          showToast('None correct yet — ask your teacher "Where is the ___?"', 'error');
+        }
+      }
+    }
+
+    // =============================================
+    // STATUS
+    // =============================================
+
+    function updateStatus(forcedCorrect) {
+      const total = MAP_LAYOUT.sections.length;
+      const placed = Object.keys(placements).length;
+      let text = `${placed} of ${total} sections placed`;
+      if (typeof forcedCorrect === 'number') {
+        text += ` — ${forcedCorrect} correct ✅`;
+      }
+      document.getElementById('statusText').textContent = text;
+    }
+
+    // =============================================
+    // RESET
+    // =============================================
+
+    function resetMap() {
+      Object.keys(placements).forEach(key => delete placements[key]);
+
+      document.querySelectorAll('.map-slot').forEach(slotEl => {
+        slotEl.classList.remove('correct', 'wrong');
+        renderSlotContent(slotEl.dataset.slotId);
+      });
+
+      renderBank();
+      updateStatus();
+      clearTokenSelection();
+      showToast('🔄 Map cleared!', 'success');
+    }
+
+    // =============================================
+    // TOAST
+    // =============================================
+
+    let toastTimeout;
+    function showToast(message, type) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast ${type || ''} show`;
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏪 Sort the Groceries — Where Does It Belong?</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Nav -->
+  <nav class="top-nav">
+    <div class="logo">🛒 Section Sorter</div>
+    <div class="nav-links">
+      <a href="../index.html">🏠 Home</a>
+      <a href="index.html" class="active">Sort Game</a>
+      <a href="../student.html">🎮 Shop Game</a>
+      <a href="../map-student.html">🗺️ Map</a>
+      <a href="../teacher.html">👩‍🏫 Teacher</a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="game-header">
+      <h1>🏪 Sort the Groceries!</h1>
+      <p>Drag each item into the correct supermarket section. Learn where to find everything in an Australian store!</p>
+    </div>
+
+    <!-- Difficulty -->
+    <div class="difficulty-selector">
+      <button class="diff-btn active" data-level="easy">🟢 Easy (12)</button>
+      <button class="diff-btn" data-level="medium">🟡 Medium (20)</button>
+      <button class="diff-btn" data-level="hard">🔴 Hard (30)</button>
+    </div>
+
+    <!-- Score Bar -->
+    <div class="score-bar">
+      <div class="score-item">
+        <div class="score-label">Sorted</div>
+        <div class="score-value" id="sortedCount">0 / 12</div>
+      </div>
+      <div class="score-item">
+        <div class="score-label">Correct</div>
+        <div class="score-value correct-text" id="correctCount">0</div>
+      </div>
+      <div class="score-item">
+        <div class="score-label">Mistakes</div>
+        <div class="score-value mistake-text" id="mistakeCount">0</div>
+      </div>
+      <div class="score-item">
+        <div class="score-label">⏱ Time</div>
+        <div class="score-value timer" id="timerDisplay">0:00</div>
+      </div>
+      <div class="score-item">
+        <div class="score-label">Streak</div>
+        <div class="score-value streak-text" id="streakCount">🔥 0</div>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-wrapper">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-label" id="progressLabel">0% complete</div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="btn btn-green" id="btnHint">💡 Hint</button>
+      <button class="btn btn-outline" id="btnReset">🔄 Reset</button>
+      <button class="btn btn-outline" id="btnCheck">✅ Check All</button>
+    </div>
+
+    <!-- Hint Panel -->
+    <div class="hint-panel" id="hintPanel">
+      <h4>💡 Hint</h4>
+      <p id="hintText">Click an unsorted item first, then click "Hint" to get help!</p>
+    </div>
+
+    <!-- Touch hint for mobile -->
+    <div class="touch-hint">📱 Tap an item, then tap the section where it belongs</div>
+
+    <!-- Game Layout -->
+    <div class="game-layout">
+
+      <!-- Left: Item Tray -->
+      <div class="item-tray" id="itemTrayWrapper">
+        <h3>📦 Unsorted Items</h3>
+        <p class="tray-subtitle">Drag items to the correct section →</p>
+        <div class="tray-items" id="itemTray">
+          <!-- Filled by JS -->
+        </div>
+        <div class="tray-empty-msg" id="trayEmpty" style="display:none;">
+          ✅ All items sorted!
+        </div>
+      </div>
+
+      <!-- Right: Drop Zones -->
+      <div class="sections-grid" id="sectionsGrid">
+        <!-- Filled by JS -->
+      </div>
+
+    </div>
+
+    <!-- Learning Summary (shown after completion) -->
+    <div class="learning-summary" id="learningSummary" style="display:none;">
+      <h3>📚 What You Learned</h3>
+      <div class="summary-sections" id="summarySections"></div>
+    </div>
+
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Complete Modal -->
+  <div class="modal-overlay" id="completeModal">
+    <div class="modal-box">
+      <div class="big-emoji" id="modalEmoji">🎉</div>
+      <h2 id="modalTitle">Great Job!</h2>
+      <p id="modalSubtitle">You sorted all the groceries!</p>
+      <div class="modal-stats">
+        <div class="modal-stat">
+          <div class="stat-val" id="finalCorrect">0</div>
+          <div class="stat-label">Correct</div>
+        </div>
+        <div class="modal-stat">
+          <div class="stat-val mistake-text" id="finalMistakes">0</div>
+          <div class="stat-label">Mistakes</div>
+        </div>
+        <div class="modal-stat">
+          <div class="stat-val timer" id="finalTime">0:00</div>
+          <div class="stat-label">Time</div>
+        </div>
+        <div class="modal-stat">
+          <div class="stat-val" id="finalStars">⭐⭐⭐</div>
+          <div class="stat-label">Rating</div>
+        </div>
+      </div>
+      <div class="modal-badges" id="modalBadges"></div>
+      <div class="modal-actions">
+        <button class="btn btn-green" onclick="resetGame()">🔄 Play Again</button>
+        <button class="btn btn-gold" onclick="nextDifficulty()">⬆ Harder Level</button>
+        <a href="../index.html" class="btn btn-outline">🏠 Home</a>
+        <a href="../student.html" class="btn btn-outline">🛒 Shop Game</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="game-data.js"></script>
+  <script src="game.js"></script>
+
+</body>
+</html>

@@ -4,6 +4,12 @@
 
 const GAME_DATA = {
 
+  // ----- GAME SETTINGS -----
+  settings: {
+    speakingOnly: false,  // When true, student must interact with teacher for dialogues
+    storeDirections: false  // When true, student must place sections before entering them
+  },
+
   // ----- STORE SECTIONS -----
   sections: [
     { id: 'meat', name: 'Meat & Deli Counter', icon: '🥩', color: '#e53935', description: 'Fresh meats and deli items' },
@@ -13,6 +19,60 @@ const GAME_DATA = {
     { id: 'household', name: 'Household & Essentials', icon: '🧴', color: '#7b1fa2', description: 'Toiletries and cleaning' },
     { id: 'drinks', name: 'Drinks', icon: '🥤', color: '#00838f', description: 'Water, juice, coffee' }
   ],
+
+  // ----- STORE DIRECTIONS ACTIVITY -----
+  storeDirections: {
+    slots: [
+      {
+        id: 'front-left',
+        label: 'Front Left',
+        hint: 'near the entrance',
+        sectionId: 'produce',
+        clue: 'Fresh Produce is at the front on the left.',
+        extraClue: 'It is left of Dairy & Fridge and opposite Pantry & Asian Foods.'
+      },
+      {
+        id: 'front-center',
+        label: 'Front Centre',
+        hint: 'middle of the front row',
+        sectionId: 'dairy',
+        clue: 'Dairy & Fridge is between Fresh Produce and Meat & Deli Counter.',
+        extraClue: 'It is opposite Drinks.'
+      },
+      {
+        id: 'front-right',
+        label: 'Front Right',
+        hint: 'front row on the right',
+        sectionId: 'meat',
+        clue: 'Meat & Deli Counter is on the right of Dairy & Fridge.',
+        extraClue: 'It is opposite Household & Essentials.'
+      },
+      {
+        id: 'back-left',
+        label: 'Back Left',
+        hint: 'left side at the back',
+        sectionId: 'pantry',
+        clue: 'Pantry & Asian Foods is behind Fresh Produce.',
+        extraClue: 'It is left of Drinks.'
+      },
+      {
+        id: 'back-center',
+        label: 'Back Centre',
+        hint: 'middle of the back row',
+        sectionId: 'drinks',
+        clue: 'Drinks is opposite Dairy & Fridge.',
+        extraClue: 'It is between Pantry & Asian Foods and Household & Essentials.'
+      },
+      {
+        id: 'back-right',
+        label: 'Back Right',
+        hint: 'back row on the right',
+        sectionId: 'household',
+        clue: 'Household & Essentials is behind Meat & Deli Counter.',
+        extraClue: 'It is right of Drinks.'
+      }
+    ]
+  },
 
   // ----- PRODUCTS -----
   products: {
@@ -545,7 +605,9 @@ const GAME_DATA = {
     { id: 'welcome', name: 'Welcome', icon: '👋' },
     { id: 'list', name: 'Shopping List', icon: '📋' },
     { id: 'store', name: 'Enter Store', icon: '🏪' },
+    { id: 'sectionMatch', name: 'Section Match', icon: '🎯' },
     { id: 'shopping', name: 'Shopping', icon: '🛒' },
+    { id: 'speaking', name: 'Speaking Practice', icon: '🎤' },
     { id: 'selfCheckout', name: 'Self-Checkout', icon: '🤖' },
     { id: 'checkout', name: 'Checkout', icon: '💳' },
     { id: 'results', name: 'Results', icon: '⭐' }
@@ -685,6 +747,157 @@ const GAME_DATA = {
       }
     ]
   }
+};
+
+GAME_DATA.supermarketMap = {
+  title: 'Supermarket Map Builder',
+  description: 'Ask the teacher for directions, then place each store section in the correct location on the map.',
+  slots: [
+    {
+      id: 'top-left',
+      label: 'Top Left',
+      hint: 'back left corner',
+      sectionId: 'produce'
+    },
+    {
+      id: 'top-center',
+      label: 'Top Centre',
+      hint: 'back middle',
+      sectionId: 'bakery'
+    },
+    {
+      id: 'top-right',
+      label: 'Top Right',
+      hint: 'back right corner',
+      sectionId: 'meat'
+    },
+    {
+      id: 'middle-left',
+      label: 'Middle Left',
+      hint: 'middle row on the left',
+      sectionId: 'frozen'
+    },
+    {
+      id: 'middle-center',
+      label: 'Middle Centre',
+      hint: 'centre of the store',
+      sectionId: 'pantry'
+    },
+    {
+      id: 'middle-right',
+      label: 'Middle Right',
+      hint: 'middle row on the right',
+      sectionId: 'dairy'
+    },
+    {
+      id: 'bottom-left',
+      label: 'Bottom Left',
+      hint: 'front left near the entrance',
+      sectionId: 'drinks'
+    },
+    {
+      id: 'bottom-center',
+      label: 'Bottom Centre',
+      hint: 'front middle near the entrance',
+      sectionId: 'checkout'
+    },
+    {
+      id: 'bottom-right',
+      label: 'Bottom Right',
+      hint: 'front right near the entrance',
+      sectionId: 'household'
+    }
+  ],
+  sections: [
+    {
+      id: 'produce',
+      name: 'Produce',
+      icon: '🥬',
+      color: '#43a047',
+      products: ['apples', 'bananas', 'carrots'],
+      teacherClue: 'Go straight to the back and turn left. It is in the back left corner.',
+      locationHint: 'It is left of the bakery and behind the frozen section.'
+    },
+    {
+      id: 'bakery',
+      name: 'Bakery',
+      icon: '🍞',
+      color: '#fb8c00',
+      products: ['bread', 'rolls', 'cakes'],
+      teacherClue: 'Go straight to the back. The bakery is in the middle at the back.',
+      locationHint: 'It is between produce and meat, and opposite pantry.'
+    },
+    {
+      id: 'meat',
+      name: 'Meat',
+      icon: '🥩',
+      color: '#e53935',
+      products: ['steak', 'sausages', 'chicken'],
+      teacherClue: 'Go straight to the back and turn right. It is in the back right corner.',
+      locationHint: 'It is right of the bakery and behind the dairy section.'
+    },
+    {
+      id: 'frozen',
+      name: 'Frozen',
+      icon: '🧊',
+      color: '#1e88e5',
+      products: ['ice cream', 'frozen peas', 'dumplings'],
+      teacherClue: 'Go straight and look on the left side in the middle row.',
+      locationHint: 'It is below produce and opposite dairy.'
+    },
+    {
+      id: 'pantry',
+      name: 'Pantry',
+      icon: '🥫',
+      color: '#8d6e63',
+      products: ['rice', 'pasta', 'canned soup'],
+      teacherClue: 'Go straight ahead. The pantry is in the centre of the supermarket.',
+      locationHint: 'It is between frozen and dairy, below bakery, and behind checkout.'
+    },
+    {
+      id: 'dairy',
+      name: 'Dairy',
+      icon: '🥛',
+      color: '#3949ab',
+      products: ['milk', 'cheese', 'yoghurt'],
+      teacherClue: 'Go straight and turn right. It is opposite the frozen section.',
+      locationHint: 'It is right of pantry, below meat, and behind household.'
+    },
+    {
+      id: 'drinks',
+      name: 'Drinks',
+      icon: '🥤',
+      color: '#00838f',
+      products: ['water', 'juice', 'soft drink'],
+      teacherClue: 'From the entrance, it is on the front left.',
+      locationHint: 'It is below frozen and left of checkout.'
+    },
+    {
+      id: 'checkout',
+      name: 'Checkout',
+      icon: '💳',
+      color: '#6d4c41',
+      products: ['cashier', 'bags', 'payment'],
+      teacherClue: 'From the entrance, the checkout is straight ahead in the front centre.',
+      locationHint: 'It is between drinks and household, and in front of pantry.'
+    },
+    {
+      id: 'household',
+      name: 'Household',
+      icon: '🧴',
+      color: '#7b1fa2',
+      products: ['soap', 'toothpaste', 'detergent'],
+      teacherClue: 'From the entrance, turn right. It is on the front right.',
+      locationHint: 'It is right of checkout and in front of dairy.'
+    }
+  ],
+  questionPrompts: [
+    { product: 'milk', answerSectionId: 'dairy', question: 'Excuse me, where is the milk section?' },
+    { product: 'bread', answerSectionId: 'bakery', question: 'Where can I find bread?' },
+    { product: 'rice', answerSectionId: 'pantry', question: 'Can you tell me where the rice is?' },
+    { product: 'soap', answerSectionId: 'household', question: 'Where is the household section?' },
+    { product: 'apples', answerSectionId: 'produce', question: 'Where is the fruit and vegetable section?' }
+  ]
 };
 
 if (typeof module !== 'undefined' && module.exports) {

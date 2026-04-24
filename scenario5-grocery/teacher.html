@@ -318,6 +318,26 @@
               </label>
             </div>
 
+            <div class="form-group">
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="settingSpeakingOnly" onchange="updateGameLink()" style="accent-color: var(--green); width: 16px; height: 16px;">
+                🎤 Speaking Practice Mode (student interacts with teacher for all dialogues)
+              </label>
+              <p style="font-size: 0.8rem; color: var(--mid-grey); margin-top: 4px; margin-left: 24px;">
+                When enabled, the student must listen to the teacher speak as the store staff, then choose their response. Focuses on listening and speaking skills.
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="settingStoreDirections" onchange="updateGameLink()" style="accent-color: var(--green); width: 16px; height: 16px;">
+                ðŸ§­ Store Directions Mode (student places sections before entering them)
+              </label>
+              <p style="font-size: 0.8rem; color: var(--mid-grey); margin-top: 4px; margin-left: 24px;">
+                You give spoken directions like left, right, between, behind, and opposite. The student must place each store section in the correct spot to unlock it.
+              </p>
+            </div>
+
             <div style="margin-top: 20px;">
               <button class="btn btn-primary" onclick="applySettings()">💾 Save Settings</button>
               <button class="btn btn-secondary" onclick="resetSettings()" style="margin-left: 8px;">🔄 Reset</button>
@@ -427,6 +447,10 @@
       <div class="card" style="margin-top: 20px;">
         <h3 style="margin-bottom: 16px;">🤖 Self-Checkout — Answer Key</h3>
         <div id="selfCheckoutAnswers"></div>
+      </div>
+      <div class="card" style="margin-top: 20px;">
+        <h3 style="margin-bottom: 16px;">ðŸ§­ Store Directions â€” Answer Key</h3>
+        <div id="storeDirectionsAnswers"></div>
       </div>
     </div>
 
@@ -544,6 +568,14 @@
       var savedBudget = localStorage.getItem('teacherBudget');
       if (savedBudget) {
         document.getElementById('settingBudget').value = savedBudget;
+      }
+      var savedSpeakingOnly = localStorage.getItem('teacherSpeakingOnly');
+      if (savedSpeakingOnly === 'true') {
+        document.getElementById('settingSpeakingOnly').checked = true;
+      }
+      var savedStoreDirections = localStorage.getItem('teacherStoreDirections');
+      if (savedStoreDirections === 'true') {
+        document.getElementById('settingStoreDirections').checked = true;
       }
       updateGameLink();
     }
@@ -671,11 +703,15 @@
       var store = document.getElementById('settingStore').value;
       var budget = document.getElementById('settingBudget').value;
       var autoStart = document.getElementById('settingAutoStart').checked;
+      var speakingOnly = document.getElementById('settingSpeakingOnly').checked;
+      var storeDirections = document.getElementById('settingStoreDirections').checked;
 
       var params = 'difficulty=' + diff;
       if (store) params += '&store=' + store;
       if (budget) params += '&budget=' + budget;
       if (autoStart) params += '&autostart=true';
+      if (speakingOnly) params += '&speakingOnly=true';
+      if (storeDirections) params += '&storeDirections=true';
 
       document.getElementById('gameLinkInput').value = 'student.html?' + params;
       updatePreview(diff, budget);
@@ -698,6 +734,14 @@
 
       // Features
       var features = [];
+      var speakingOnly = document.getElementById('settingSpeakingOnly').checked;
+      var storeDirections = document.getElementById('settingStoreDirections').checked;
+      if (speakingOnly) {
+        features.push('🎤 Speaking Practice Mode');
+      }
+      if (storeDirections) {
+        features.push('ðŸ§­ Store Directions Mode');
+      }
       for (var i = 0; i < listData.dialogues.length; i++) {
         var d = listData.dialogues[i];
         if (d === 'meatCounter') features.push('🥩 Meat Counter');
@@ -711,7 +755,9 @@
 
       var featHtml = '';
       for (var i = 0; i < features.length; i++) {
-        featHtml += '<span style="display:inline-block;background:var(--light-green);color:var(--green);';
+        var bg = features[i].includes('Speaking') ? 'var(--light-blue)' : 'var(--light-green)';
+        var color = features[i].includes('Speaking') ? 'var(--blue)' : 'var(--green)';
+        featHtml += '<span style="display:inline-block;background:' + bg + ';color:' + color + ';';
         featHtml += 'padding:2px 10px;border-radius:10px;margin:2px;font-size:0.8rem;">';
         featHtml += features[i] + '</span>';
       }
@@ -746,6 +792,8 @@
       var diff = document.getElementById('settingDifficulty').value;
       var store = document.getElementById('settingStore').value;
       var budget = document.getElementById('settingBudget').value;
+      var speakingOnly = document.getElementById('settingSpeakingOnly').checked;
+      var storeDirections = document.getElementById('settingStoreDirections').checked;
 
       localStorage.setItem('teacherDifficulty', diff);
 
@@ -761,6 +809,9 @@
         localStorage.removeItem('teacherBudget');
       }
 
+      localStorage.setItem('teacherSpeakingOnly', speakingOnly ? 'true' : 'false');
+      localStorage.setItem('teacherStoreDirections', storeDirections ? 'true' : 'false');
+
       showTeacherToast('✅ Settings saved! Student will use these next time.');
     }
 
@@ -768,11 +819,15 @@
       localStorage.removeItem('teacherDifficulty');
       localStorage.removeItem('teacherStore');
       localStorage.removeItem('teacherBudget');
+      localStorage.removeItem('teacherSpeakingOnly');
+      localStorage.removeItem('teacherStoreDirections');
 
       document.getElementById('settingDifficulty').value = 'easy';
       document.getElementById('settingStore').value = '';
       document.getElementById('settingBudget').value = '';
       document.getElementById('settingAutoStart').checked = false;
+      document.getElementById('settingSpeakingOnly').checked = false;
+      document.getElementById('settingStoreDirections').checked = false;
 
       updateGameLink();
       showTeacherToast('🔄 Settings reset to defaults.');
@@ -1074,6 +1129,33 @@
         quizHtml += '</div>';
       }
       document.getElementById('slangQuizAnswers').innerHTML = quizHtml;
+
+      // Store Directions Answers
+      var directionsHtml = '';
+      if (GAME_DATA.storeDirections && GAME_DATA.storeDirections.slots) {
+        for (var i = 0; i < GAME_DATA.storeDirections.slots.length; i++) {
+          var slot = GAME_DATA.storeDirections.slots[i];
+          var sectionName = slot.sectionId;
+          var sectionIcon = 'ðŸ“¦';
+          for (var s = 0; s < GAME_DATA.sections.length; s++) {
+            if (GAME_DATA.sections[s].id === slot.sectionId) {
+              sectionName = GAME_DATA.sections[s].name;
+              sectionIcon = GAME_DATA.sections[s].icon;
+              break;
+            }
+          }
+
+          directionsHtml += '<div class="answer-line">';
+          directionsHtml += '<div class="al-speaker">' + slot.label + ' â€” ' + sectionIcon + ' ' + sectionName + '</div>';
+          directionsHtml += '<div class="al-text">' + slot.hint + '</div>';
+          directionsHtml += '<div style="font-size:0.88rem;line-height:1.6;">';
+          directionsHtml += '<div><strong>Main clue:</strong> ' + slot.clue + '</div>';
+          directionsHtml += '<div style="margin-top:4px;"><strong>Extra clue:</strong> ' + slot.extraClue + '</div>';
+          directionsHtml += '</div>';
+          directionsHtml += '</div>';
+        }
+      }
+      document.getElementById('storeDirectionsAnswers').innerHTML = directionsHtml;
 
       // Self-Checkout Answers
       var scHtml = '';

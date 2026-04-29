@@ -640,6 +640,17 @@
       <aside class="map-side">
 
         <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+            <h3>📦 Section Cards</h3>
+            <button class="btn btn-secondary btn-sm" id="returnAllBtn" type="button" style="font-size:0.72rem; padding:3px 8px;">↩ Return All</button>
+          </div>
+          <div class="section-bank" id="sectionBank"></div>
+          <div id="bankEmpty" style="display:none; text-align:center; padding:14px; color:var(--green); font-weight:700; font-size:0.9rem;">
+            ✅ All sections placed!
+          </div>
+        </div>
+
+        <div class="card">
           <h3 style="margin-bottom: 10px;">🎮 How To Play</h3>
           <div class="tip-box" style="margin: 0 0 8px;">
             <span class="tip-icon">💬</span>
@@ -655,22 +666,15 @@
           </div>
         </div>
 
+         
+
+
         <div class="card">
           <h3 style="margin-bottom: 8px;">💬 Ask Your Teacher</h3>
           <div class="prompt-list" id="promptList"></div>
         </div>
 
-        <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
-            <h3>📦 Section Cards</h3>
-            <button class="btn btn-secondary btn-sm" id="returnAllBtn" type="button" style="font-size:0.72rem; padding:3px 8px;">↩ Return All</button>
-          </div>
-          <div class="section-bank" id="sectionBank"></div>
-          <div id="bankEmpty" style="display:none; text-align:center; padding:14px; color:var(--green); font-weight:700; font-size:0.9rem;">
-            ✅ All sections placed!
-          </div>
-        </div>
-
+       
       </aside>
 
       <!-- ========== FLOOR PLAN ========== -->
